@@ -51,6 +51,25 @@ Before starting, collect two settings from the user if they were not already pro
 
 Default language for the response is Russian.
 
+## Preflight: document completeness
+
+Before Layer 1, verify that the user likely provided a full Gate 2 document rather than a fragment.
+
+Signals that the input may be incomplete:
+
+- only one or two sections are present
+- the text looks like an excerpt, screenshot transcription, or copied fragment
+- key parts of a Gate 2 defense are structurally missing
+- the document has local claims, but there is no surrounding decision context
+
+Behavior:
+
+- if the input is clearly incomplete, prefer refusing a full final verdict and ask for the complete document
+- if the user explicitly wants a fragment review anyway, allow a provisional assessment only
+- in fragment mode, do not present the verdict as full-document grade
+- in fragment mode, force `confidence: LOW`
+- explicitly say that the result is partial and limited by incomplete input
+
 ## Workflow
 
 ### Step 1: Run Layer 1
@@ -104,3 +123,14 @@ When the final verdict is `APPROVE`:
 
 - still include critical non-blocking improvements in the final synthesis
 - keep them clearly separate from blockers
+
+## Anti-patterns
+
+Never do the following:
+
+- do not invent causes beyond the data in the document
+- do not treat the presence of numbers as proof that the model is credible
+- do not treat a roadmap as proof that delivery is realistic
+- do not treat phrases like `we checked`, `on track`, or `done` as evidence without method, results, and conclusion
+- do not output `APPROVE` only because every block contains some answer
+- do not retell the document section by section instead of evaluating it

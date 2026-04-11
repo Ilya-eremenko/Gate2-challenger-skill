@@ -8,6 +8,33 @@ Every block-level and layer-level decision must use exactly one of:
 - `NEED_EVIDENCE`
 - `REJECT`
 
+## Definitions
+
+### What counts as a blocker
+
+Treat an issue as blocker-grade when:
+
+- the document does not provide the data needed to make a decision
+- the available data is not sufficient to support the stated decision or conclusion
+- the data and the conclusions drawn from that data contradict each other
+
+### What counts as an evidence gap
+
+Treat an issue as `NEED_EVIDENCE` when:
+
+- the available proof is too weak for a decision-ready conclusion
+- the logic of the document cannot be restored without filling gaps by inference
+- the claims may be directionally plausible, but they are not decision-safe without stronger support
+
+### What does not count as evidence
+
+Do not treat the following as evidence:
+
+- claims or conclusions without research, measurements, or concrete numbers behind them
+- status statements such as `on track` or `done` when only the current metric is shown but the target is missing
+- phrases like `we checked` or `we validated` without method, result, and conclusion
+- isolated numbers that do not prove causality, model quality, or decision validity on their own
+
 ## Layer 1 block policy
 
 Layer 1 is the primary decision-critical review.
@@ -69,3 +96,9 @@ Use:
 - `HIGH` when the document contains direct evidence and internal consistency across the main blocks
 - `MEDIUM` when the verdict is clear but some evidence is indirect or partial
 - `LOW` when the verdict depends on sparse evidence, ambiguous wording, or unresolved internal contradictions
+
+If the user provided only a fragment rather than a full Gate 2 document:
+
+- prefer refusing a full final verdict
+- if a fragment review is still requested, force `LOW` confidence
+- explicitly mark the result as provisional and incomplete
