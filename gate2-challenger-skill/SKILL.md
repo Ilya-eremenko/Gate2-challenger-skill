@@ -7,8 +7,9 @@ description: Use when reviewing a Gate 2 initiative defense document, product de
 
 ## Overview
 
-Review a pasted Gate 2 defense document in three passes:
+Review a Gate 2 defense document in four passes:
 
+0. Input normalization: if the input is a PDF file, convert it to Markdown first
 1. Layer 1: decision-critical block review
 2. Layer 2: atomic question review
 3. Final synthesis: blocker-first verdict
@@ -42,7 +43,11 @@ Do not use it for:
 
 ## Input contract
 
-This v1 skill works on pasted text only.
+This skill can work with:
+
+- pasted text
+- a Markdown file
+- a PDF file that must be converted to Markdown first
 
 Before starting, collect two settings from the user if they were not already provided:
 
@@ -71,6 +76,28 @@ Behavior:
 - explicitly say that the result is partial and limited by incomplete input
 
 ## Workflow
+
+### Step 0: Normalize the input
+
+If the input is a PDF file:
+
+- run `python3 scripts/pdf_to_md_docling.py <path-to-pdf>`
+- use the produced Markdown file from `../review-documents/` as the review input
+- analyze the Markdown content, not the original PDF
+
+If `docling` is not installed or the conversion script cannot import it:
+
+- do not continue with a partial PDF review
+- tell the user that PDF-to-Markdown conversion requires `docling`
+- offer the user to install `docling`, then resume the review after conversion
+
+If the input is already a Markdown file:
+
+- read and analyze the Markdown file directly
+
+If the input is pasted text:
+
+- analyze the pasted text directly
 
 ### Step 1: Run Layer 1
 
