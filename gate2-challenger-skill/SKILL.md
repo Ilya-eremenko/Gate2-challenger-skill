@@ -51,8 +51,13 @@ This skill can work with:
 
 Before starting, collect two settings from the user if they were not already provided:
 
-1. output mode: `summary` or `detailed`
+1. review mode: `standard` or `extended`
 2. debug stages: `on` or `off` (default `off`)
+
+Mode mapping:
+
+- `standard` -> `summary`
+- `extended` -> `detailed`
 
 Default language for the response is Russian.
 
@@ -78,6 +83,12 @@ Behavior:
 ## Workflow
 
 ### Step 0: Normalize the input
+
+If the user did not explicitly specify the review mode:
+
+- ask which mode to use: `standard` or `extended`
+- treat `standard` as `summary`
+- treat `extended` as `detailed`
 
 If the input is a PDF file:
 
@@ -134,8 +145,8 @@ Read [output-contract.md](references/output-contract.md) and follow it exactly.
 
 Formatting rules:
 
-- `summary` mode: output only final synthesis
-- `detailed` mode: output final synthesis, then Layer 1, then Layer 2
+- `standard` / `summary` mode: output only final synthesis
+- `extended` / `detailed` mode: output final synthesis, then Layer 1, then Layer 2
 - `debug stages=on`: make Layer 1 and Layer 2 sections explicit even when the user asked for a compact answer
 
 ## Review discipline
