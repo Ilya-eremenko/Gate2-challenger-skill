@@ -2,15 +2,24 @@
 
 ## Output modes
 
-The skill must ask for output mode if the user did not specify it:
+The skill must ask for output mode if the user did not specify it.
 
-- `summary`
-- `detailed`
+Accepted user-facing modes:
+
+- `standard`
+- `extended`
+
+Internal formatting aliases:
+
+- `standard` -> `summary`
+- `extended` -> `detailed`
 
 The skill must also support:
 
 - `debug stages`: `on` or `off`
 - default is `off`
+
+Internal reasoning artifacts such as the hypothesis ledger, evidence ladder, dependency map, and consistency matrix remain hidden unless the user explicitly asks for internal reasoning dumps. Their existence must not change the external output schema below.
 
 ## Summary mode
 
@@ -55,6 +64,7 @@ Rules:
 - if final verdict is `APPROVE`, include `critical_improvements`
 - `critical_improvements` are important but non-mandatory
 - do not include internal layer refs in the final synthesis; keep them only in diagnostic sections
+- when the review is fragmentary, keep the wording explicitly provisional and force `LOW` confidence
 
 ## Layer 1 format
 
@@ -111,6 +121,7 @@ layer_2_aggregate:
 Rules:
 
 - atomic checks are always `YES | NO`
+- internal `PASS / PARTIAL / FAIL` reasoning must be collapsed into `YES | NO` without changing the external schema
 - `issue` is required when `result = NO`
 - `promoted_issues` summarize the atomic issues that shaped the block verdict
 

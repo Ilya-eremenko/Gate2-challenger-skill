@@ -6,87 +6,81 @@ Layer 2 is atomic and diagnostic.
 
 For each atomic question:
 
-- answer `YES` or `NO`
+- reason internally as `PASS`, `PARTIAL`, or `FAIL`
+- answer externally as `YES` or `NO`
 - provide evidence
 - if `NO`, provide a short issue statement
 
-Then aggregate the atomic results back into one block verdict per dimension.
+Mapping rule:
 
-Layer 2 is not meant to enumerate every imaginable risk in the document. Its role is to provide repeatable, evidence-rich detail for the explicit atomic questions below, and to refine or challenge Layer 1 through that evidence rather than replace Layer 1 on style alone.
+- `PASS` -> `YES`
+- `PARTIAL` -> `NO`
+- `FAIL` -> `NO`
+
+For every atomic question, the reasoning must answer three things even if the output remains compact:
+
+1. what exactly is being checked
+2. what evidence the conclusion depends on
+3. what decision-relevant consequence follows from `PASS`, `PARTIAL`, or `FAIL`
+
+Layer 2 is not meant to enumerate every imaginable risk in the document. Its role is to provide repeatable, evidence-rich detail for explicit weak links and to refine or challenge Layer 1 through that evidence rather than replace Layer 1 on style alone.
+
+Global rules:
+
+- Treat appendix, FAQ, legal, compliance, analytics comments, support tables, and operating notes as first-class evidence.
+- Do not require a specific section title when the needed logic is provable elsewhere.
+- Do not reward a familiar section title when the logic under it is weak.
+- Future tests or planned work do not count as present proof for the current gate.
 
 ## 1. Problem framing and significance
 
-- What is the overall business / product idea?
-- Which user segments are we addressing, what is their size, and how will the product meet their needs?
-- How will this product benefit Avito? Is there an estimate of the impact?
-- How does this product fit into Avito's strategy?
-- What hypotheses were defined at Gate 1, and what conclusions and results do we have for them?
-
-For this block, do not require a separate Gate 1 section if the document still makes the hypothesis chain reconstructable. Evaluate whether the reviewer can reliably restore `Gate 1 hypothesis -> expected result -> fact -> conclusion` from the material actually provided.
+- Can the reviewer identify the target segment, pain, and intended behavior change without restoring missing logic by inference?
+- Can the core Gate 2 decision thesis be traced back to the decision-critical Gate 1 hypotheses?
+- For each decision-critical hypothesis, are the expected result, actual result, and conclusion aligned?
+- Is evidence from one segment, one use case, or one flow being stretched to justify a different segment, use case, or flow?
 
 ## 2. Solution quality and logic
 
-- Is it clear which specific problems for which segments the initiative is solving?
-- Are they connected to the original problem and the validated hypotheses from Gate 1?
-- Are different pains, segments, and use cases improperly combined into one broad formulation?
-- Is there a clear segment -> pain -> solution linkage, rather than just a list of features?
-- Is the mechanism of impact clearly explained?
+- Does each central hypothesis use a validation method that actually answers the decision question?
+- If a claim concerns mandatory or scaled behavior, is the evidence drawn from that same behavior rather than from an optional or opt-in proxy?
+- Is the causal mechanism from solution elements to metric movement explicit rather than implied?
+- Is the current flow / CJM / key user path clear enough to judge adoption or conversion claims when those claims are central?
 
 ## 3. Scope of work and implementation plan
 
-- Is there a prioritization of problems?
-- Is it clear what is included in the MLP, what belongs to the end state, and what is out of scope?
-- Why was this particular scope chosen?
-- Are there any critical areas left in a gray zone where it is unclear whether they are planned for later or are completely out of scope?
-- Is there a description of what the solution will look like for the user?
-- What user value is delivered at each stage?
-- Is there a clear link between the delivered value and the output metrics?
-- How does the roadmap lead from MLP to the end state?
-- How will the rollout happen: by region, by segment, gradually, or all at once?
-- How will we verify that everything is progressing as expected?
-- Are risks and mitigation measures reflected in the plan?
+- Does each major milestone have explicit prerequisites rather than only a target date?
+- Are unresolved foundational dependencies treated as decision-relevant weaknesses rather than as neutral future work?
+- Are key prerequisites already solved, in progress, only planned, or outside team control, and is that status reflected honestly in the roadmap?
+- Are rollout checkpoints tied to operational, legal, compliance, tooling, integration, or abuse-readiness constraints where those constraints matter?
 
 ## 4. Success criteria and metrics
 
-- Is it clear how we will verify that a specific pain point has actually been solved: by which metric, by how much, and through what mechanism?
-- Are the key output metrics, proxy metrics, and counter-metrics for the initiative defined?
-- Is it clear how they relate to the problems and solutions described in the document?
-- Is the solution -> input metrics -> output metrics linkage clear?
-- Does each output metric have a clear and sufficient set of input metrics behind it?
-- Have the right key business metrics been selected?
-- Do the output metrics match the essence of the initiative?
+- Is each claimed success criterion measurable and tied to the actual decision question?
+- Is there an explicit threshold where the document claims validation rather than observation?
+- When a threshold exists, do the actual observed results meet it?
+- Are output claims supported by input or proxy metrics that plausibly explain how the result was achieved?
+- Are the success criteria strong enough for the stated end-state ambition?
 
 ## 5. Traction model credibility
 
-- Can we reconstruct where the expected impact comes from?
-- Can the team realistically influence the input metrics through its initiatives?
-- Are there any sharp jumps that are not explained by the drivers behind them?
-- Does the model account for the learning period and adoption lag?
-- Is the traction model consistent with the logic described in Gate 1 and Gate 2?
-- Are the segments, scope, roadmap, and model drivers aligned with each other?
-- Does the traction promise more than the roadmap can realistically deliver?
-- Does the model rely on assumptions that are not included in the solution scope?
-- Is it clear what exactly changed in the traction model compared with Gate 1?
-- Is it clear why the numbers or drivers changed?
-- Are the changes driven by new insights rather than simply by an updated forecast?
-- Does the document show whether confidence in the model has increased or decreased?
+- Can the expected impact be reconstructed from concrete drivers and evidence rather than from topline assertion?
+- Are horizons, adoption lag, and learning periods consistent with the roadmap and rollout plan?
+- Does the model rely on aggressive step-changes, unsupported baselines, or assumptions outside funded scope?
+- Is the evidence behind the model directional or definitive, and does the document keep the conclusion at the same strength level?
 
 ## 6. Key assumptions and risks completeness
 
-- Have we identified the assumptions that could critically undermine traction or materially change the end state?
-- Is it clear which assumptions have already been validated and which remain hypotheses?
-- Is it clear which assumptions need to be tested first?
-- Does each assumption have a source: data, research, analogs, or expert judgment?
-- Under what scenario does the model stop holding together?
+- Are the killer assumptions explicit, and are validated assumptions separated from remaining hypotheses?
+- Do mitigations control the risk, rather than merely acknowledge it?
+- Do supporting sections surface unresolved legal, compliance, abuse, operational, or integration constraints that materially affect rollout readiness?
+- Does the document define a scenario in which the model or rollout thesis stops holding together?
 
 ## 7. Consistency
 
-- Do the problem statement and proposed solution align?
-- Do the target segments change throughout the document?
-- Does the solution scope conflict with the roadmap?
-- Do the success metrics and traction conflict with the described impact mechanism?
-- Does the traction promise more than the scope and rollout timing allow?
-- Is it possible to restore a continuous chain of segment -> pain -> solution -> roadmap -> metrics -> impact without major logical jumps?
+- Can the reviewer restore a continuous chain of `segment -> pain -> hypotheses -> solution -> roadmap -> metrics -> impact` without major logical jumps?
+- Do target, fact, and conclusion stay aligned across sections?
+- Do ambition, metrics, roadmap, traction, and risks describe the same end-state, or do they pull in different directions?
+- When supporting sections and main narrative disagree, is the disagreement visible in the decision logic rather than ignored?
 
 ## Aggregation reminder
 
