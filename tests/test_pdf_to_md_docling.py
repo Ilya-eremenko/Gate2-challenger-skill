@@ -10,7 +10,9 @@ from docling_core.types.doc import ImageRefMode
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-MODULE_PATH = REPO_ROOT / "scripts" / "pdf_to_md_docling.py"
+MODULE_PATH = (
+    REPO_ROOT / "skills" / "gate2-challenger" / "scripts" / "pdf_to_md_docling.py"
+)
 
 
 def load_module():
@@ -37,6 +39,38 @@ class ResolveOutputPathTests(unittest.TestCase):
 
 
 class ConvertPdfTests(unittest.TestCase):
+    def test_convert_defaults_output_dir_next_to_source_pdf(self):
+        module = load_module()
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            temp_root = Path(tmp_dir)
+            pdf_dir = temp_root / "incoming"
+            pdf_dir.mkdir()
+            pdf_path = pdf_dir / "source.pdf"
+            pdf_path.write_bytes(b"%PDF-1.4\n")
+
+            captured = {}
+
+            class FakeDocument:
+                def save_as_markdown(self, filename, **kwargs):
+                    captured["filename"] = Path(filename)
+                    captured["kwargs"] = kwargs
+                    Path(filename).write_text("# converted\n", encoding="utf-8")
+
+            class FakeConversionResult:
+                document = FakeDocument()
+
+            class FakeConverter:
+                def convert(self, source):
+                    captured["source"] = Path(source)
+                    return FakeConversionResult()
+
+            with patch.object(module, "DocumentConverter", FakeConverter):
+                output_path = module.convert_pdf_to_markdown(pdf_path)
+
+        self.assertEqual(pdf_dir / "review-documents" / "source.md", output_path)
+        self.assertEqual(output_path, captured["filename"])
+
     def test_convert_creates_output_dir_and_uses_placeholder_images(self):
         module = load_module()
 

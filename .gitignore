@@ -1,2 +1,6 @@
 .DS_Store
 ../review-documents/
+Examples/
+UX Skill Example/
+__pycache__/
+*.pyc

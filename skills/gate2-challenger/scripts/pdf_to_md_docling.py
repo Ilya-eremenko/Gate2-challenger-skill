@@ -8,10 +8,6 @@ from docling.document_converter import DocumentConverter
 from docling_core.types.doc import ImageRefMode
 
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_OUTPUT_DIR = REPO_ROOT.parent / "review-documents"
-
-
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Convert a PDF file to Markdown with Docling."
@@ -32,13 +28,17 @@ def resolve_output_path(pdf_path: Path, output_dir: Path) -> Path:
     return candidate
 
 
+def default_output_dir(pdf_path: Path) -> Path:
+    return pdf_path.parent / "review-documents"
+
+
 def convert_pdf_to_markdown(pdf_path: Path, output_dir: Path | None = None) -> Path:
     if not pdf_path.exists():
         raise FileNotFoundError(f"PDF file does not exist: {pdf_path}")
     if not pdf_path.is_file():
         raise FileNotFoundError(f"PDF path is not a file: {pdf_path}")
 
-    target_dir = output_dir or DEFAULT_OUTPUT_DIR
+    target_dir = output_dir or default_output_dir(pdf_path)
     target_dir.mkdir(parents=True, exist_ok=True)
     output_path = resolve_output_path(pdf_path, target_dir)
 

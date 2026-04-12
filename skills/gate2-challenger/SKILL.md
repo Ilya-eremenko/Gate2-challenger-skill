@@ -11,7 +11,7 @@ Review a Gate 2 defense document in four passes:
 
 0. Coordinator: input normalization and preflight
 1. Layer 1 worker: decision-critical block review
-2. Layer 2 worker: atomic question review
+2. Layer 2 worker: atomic weak-link review
 3. Synthesizer: blocker-first final verdict
 
 Core principle: make the decision from logic and evidence, not from document polish.
@@ -22,8 +22,23 @@ Apply these rules in every review:
 
 - Do not reward the document for having section headers without actual logic.
 - Prefer logical consistency over surface completeness.
-- Penalize contradictions across problems, solutions, roadmap, metrics, and traction.
+- Penalize contradictions across problems, hypotheses, solutions, roadmap, metrics, traction, and risks.
 - Distinguish between validated evidence and narrative assumptions.
+- Do not silently reconstruct missing proof in favor of the document.
+- Numbers, targets, and roadmap dates are not proof by themselves.
+- Supporting sections such as appendix, FAQ, legal, compliance, risk, analytics comments, operating notes, and support tables are first-class evidence.
+- The absence of a specific heading is not a problem if the needed logic is demonstrated elsewhere.
+- The presence of familiar headings is not a strength if the logic under them is weak.
+
+## Anti-overfitting guardrails
+
+Use any calibration example only for failure-mode discovery.
+
+- Do not optimize the review toward a single sample document.
+- Do not hardcode blocker patterns taken from one example.
+- Do not require specific names, figures, appendix structures, section labels, or threshold styles.
+- Do not assume strong documents must share the same outline.
+- Evaluate general principles: evidence quality, validation-method fitness, dependency completeness, consistency, and risk completeness.
 
 ## When to use
 
@@ -63,13 +78,13 @@ Default language for the response is Russian.
 
 ## Preflight: document completeness
 
-Before dispatching Layer 1 and Layer 2, the coordinator must verify that the user likely provided a full Gate 2 document rather than a fragment.
+Before dispatching Layer 1 and Layer 2, the coordinator must verify whether the user likely provided a full Gate 2 document rather than a fragment.
 
 Signals that the input may be incomplete:
 
 - only one or two sections are present
 - the text looks like an excerpt, screenshot transcription, or copied fragment
-- key parts of a Gate 2 defense are structurally missing
+- key parts of the `problem -> hypotheses -> solution -> roadmap -> metrics -> evidence -> risks` chain are structurally missing
 - the document has local claims, but there is no surrounding decision context
 
 Behavior:
@@ -78,6 +93,8 @@ Behavior:
 - if the user explicitly wants a fragment review anyway, allow a provisional assessment only
 - in fragment mode, do not present the verdict as full-document grade
 - in fragment mode, force `confidence: LOW`
+- if the core decision chain is missing, do not upgrade the fragment to a full-strength gate decision
+- if key logic is only implied, do not build it on the author's behalf
 - explicitly say that the result is partial and limited by incomplete input
 
 ## Workflow
@@ -93,7 +110,7 @@ If the user did not explicitly specify the review mode:
 If the input is a PDF file:
 
 - run `python3 scripts/pdf_to_md_docling.py <path-to-pdf>`
-- use the produced Markdown file from `../review-documents/` as the review input
+- use the produced Markdown file from `review-documents/` next to the source PDF as the review input
 - analyze the Markdown content, not the original PDF
 
 If `docling` is not installed or the conversion script cannot import it:
@@ -117,6 +134,13 @@ Coordinator requirements:
 - pass the same normalized Markdown to both Layer 1 and Layer 2
 - use one canonical block taxonomy across all stages
 - use one evidence standard across all stages
+- before any verdicting, build four mandatory internal reasoning artifacts:
+  - `Hypothesis ledger`: hypothesis, why it matters, validation method, expected result / threshold, actual observed result, author conclusion, reviewer conclusion, status
+  - `Evidence ladder`: classify central claims as hard evidence, experiment / pilot result, operational signal, customer feedback / survey / CSAT, benchmark / competitor reference, or narrative assumption
+  - `Dependency map`: milestone, prerequisites, status of each prerequisite, control, funded-scope status, blocker severity
+  - `Consistency matrix`: cross-check problem, segment, solution, validation, metrics, traction, roadmap, blockers, and legal / ops / risk constraints
+- treat appendix and supporting sections as valid sources for any of the four internal artifacts
+- keep these artifacts internal; they guide reasoning but are not printed in `standard`
 
 ### Step 1: Run Layer 1 worker
 
@@ -125,7 +149,7 @@ Read [layer-1-rubric.md](references/layer-1-rubric.md) and evaluate the top-leve
 Important:
 
 - the Gate 1 hypotheses presence check is part of Layer 1
-- if the document does not contain an explicit Gate 1 hypotheses block, that Layer 1 block must be `REJECT`
+- do not require an explicitly titled Gate 1 section if the hypothesis chain is reconstructable elsewhere
 - if a Layer 1 block verdict is `APPROVE`, do not output issues for that block
 - Layer 1 returns only `layer_1`
 - Layer 1 does not compute a final verdict
@@ -143,6 +167,7 @@ Important:
 - Layer 2 returns only `layer_2` and `layer_2_aggregate`
 - Layer 2 does not compute a final verdict
 - Layer 2 does not write a free-form summary
+- Layer 2 may reason internally in `PASS / PARTIAL / FAIL`, but external output must remain compatible with `YES / NO`
 
 ### Step 3: Run synthesizer
 
@@ -155,6 +180,8 @@ The synthesizer must:
 - deduplicate overlapping issues before writing final blockers
 - analyze meaningful differences between the two layers
 - use `merged_block_assessment` to explain how broad Layer 1 judgment and detailed Layer 2 evidence fit together
+- prefer supporting sections over optimistic narrative when they materially disagree
+- promote only blocker-grade `HIGH` issues and clearly decision-relevant `MEDIUM` issues to the final blockers list
 - avoid re-reviewing the document from scratch when the needed evidence already exists in the layer artifacts
 
 Use it in this order:
@@ -184,6 +211,8 @@ When evidence is weak:
 
 - do not silently fill gaps with assumptions
 - do not infer validation where the document only makes claims
+- do not treat future tests or planned validation as proof for the current gate
+- if target, fact, and conclusion do not align, downgrade consistency and evidence strength
 - downgrade to `NEED_EVIDENCE` or `REJECT` based on the verdict policy
 
 When the final verdict is `APPROVE`:
@@ -198,6 +227,8 @@ Never do the following:
 - do not invent causes beyond the data in the document
 - do not treat the presence of numbers as proof that the model is credible
 - do not treat a roadmap as proof that delivery is realistic
-- do not treat phrases like `we checked`, `on track`, or `done` as evidence without method, results, and conclusion
+- do not treat phrases like `we checked`, `on track`, `done`, `validated`, or `confirmed` as evidence without method, threshold, result, and conclusion
+- do not count customer quotes, survey sentiment, CSAT, or benchmark references as decisive proof for central business claims on their own
+- do not let evidence from an optional flow prove a different mandatory-flow thesis
 - do not output `APPROVE` only because every block contains some answer
 - do not retell the document section by section instead of evaluating it

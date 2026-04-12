@@ -24,7 +24,7 @@ For each block, assign exactly one merge status:
 
 - `CONFIRMED` when Layer 2 confirms the main Layer 1 judgment
 - `REFINED` when Layer 1 is directionally correct but Layer 2 adds important detail or sharper evidence
-- `DOWNGRADED` when Layer 1 was too optimistic and Layer 2 exposes a blocker-grade contradiction or evidence gap
+- `DOWNGRADED` when Layer 1 was too optimistic and Layer 2 exposes a blocker-grade contradiction, missing proof, or unresolved dependency
 - `CONFLICT` when the layers materially disagree and the difference must be explained explicitly
 
 `why_difference` is required for `DOWNGRADED` and `CONFLICT`.
@@ -35,8 +35,9 @@ Layer 2 may refine or override Layer 1 only when it introduces explicit evidence
 
 - a blocker-grade contradiction
 - missing proof for a key claim or conclusion
+- a validation method that does not test the actual thesis
 - a causal chain that cannot be restored without inference
-- an omission that makes the decision unsafe
+- an unresolved foundational dependency or readiness constraint
 
 Layer 2 must not override Layer 1 when:
 
@@ -53,6 +54,16 @@ This means:
 - Layer 1 may raise a cross-sectional blocker even if no single Layer 2 atomic question captures it directly
 - the synthesizer must preserve such an issue as `novel_from_l1` when it remains decision-relevant after merge
 - the synthesizer must not discard a Layer 1 issue solely because Layer 2 did not ask the exact same question
+
+## Supporting-section priority
+
+Supporting sections have the same evidentiary weight as the main narrative.
+
+Apply these rules:
+
+- if appendix, FAQ, legal, compliance, anti-fraud, moderation, analytics notes, support tables, or ops notes reveal unresolved blockers, treat that evidence as fully decision-relevant
+- if the main narrative says `ready`, `done`, or `validated`, but supporting sections materially contradict it, the merged interpretation must reflect the contradiction
+- when target, fact, and conclusion disagree, prefer the factual evidence over the narrative summary
 
 ## Deduplication rules
 
@@ -72,4 +83,5 @@ The synthesizer must:
 - preserve raw Layer 1 and Layer 2 verdicts as separate diagnostic outputs
 - use `merged_block_assessment` only for explanation, deduplication, and blocker promotion
 - compute the final verdict from the raw layer verdicts according to `verdict-policy.md`
+- promote only blocker-grade `HIGH` issues and clearly decision-relevant `MEDIUM` issues
 - avoid inventing new blocker causes that are absent from both the document evidence and the layer artifacts
