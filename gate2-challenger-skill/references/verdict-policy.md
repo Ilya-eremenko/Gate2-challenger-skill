@@ -43,12 +43,18 @@ Assign `REJECT` to a Layer 1 block when the document has a blocker-grade failure
 
 Examples:
 
-- the document does not contain an explicit Gate 1 hypotheses block
+- the document does not allow the reviewer to reconstruct a reliable `Gate 1 hypothesis -> expected result -> fact -> conclusion` chain
 - the segment -> pain -> solution logic is broken
 - the roadmap and metrics contradict the claimed impact mechanism
 - the traction logic is not reconstructable
 
 Assign `NEED_EVIDENCE` when the logic is directionally coherent but the proof is insufficient.
+
+For Gate 1 hypothesis coverage specifically:
+
+- do not require a separately titled Gate 1 section if the hypothesis chain is still explicit enough to reconstruct
+- prefer `NEED_EVIDENCE` over `REJECT` when the hypotheses are present but fragmented, partially incomplete, or supported by weak conclusions
+- prefer `REJECT` only when the hypotheses cannot be reliably restored from the document, or when their stated status materially contradicts the facts shown
 
 Assign `APPROVE` when the block is decision-ready and does not contain blocker-grade gaps.
 
@@ -81,6 +87,10 @@ Synthesize the final verdict from the two layer verdicts:
 - else if Layer 1 = `NEED_EVIDENCE` or Layer 2 = `NEED_EVIDENCE` -> final verdict = `NEED_EVIDENCE`
 - else -> final verdict = `APPROVE`
 
+Keep Layer 1 and Layer 2 raw verdicts intact as diagnostic results.
+
+The synthesizer may explain, merge, and promote issues through `merged_block_assessment`, but it must not retroactively rewrite the original layer verdicts.
+
 ## Promotion rule for final summary
 
 The final summary is stricter than the layer sections:
@@ -88,6 +98,15 @@ The final summary is stricter than the layer sections:
 - only blocker-grade issues may appear in `blockers`
 - non-blocking weaknesses must remain in Layer 1 / Layer 2 details
 - if final verdict = `APPROVE`, include only non-mandatory `critical_improvements`
+
+When blocker-grade issues are promoted after merge:
+
+- each final blocker should appear only once
+- each final blocker should identify its origin as one of:
+  - `covered_by_l2`
+  - `novel_from_l1`
+  - `confirmed_by_both`
+- promotion should use the merged interpretation of overlapping Layer 1 and Layer 2 issues, not duplicate raw issue text
 
 ## Confidence guidance
 

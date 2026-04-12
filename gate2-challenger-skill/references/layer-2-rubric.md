@@ -1,5 +1,7 @@
 # Layer 2 Rubric
 
+Layer 2 is the closed-world, detailed diagnostic pass.
+
 Layer 2 is atomic and diagnostic.
 
 For each atomic question:
@@ -10,6 +12,8 @@ For each atomic question:
 
 Then aggregate the atomic results back into one block verdict per dimension.
 
+Layer 2 is not meant to enumerate every imaginable risk in the document. Its role is to provide repeatable, evidence-rich detail for the explicit atomic questions below, and to refine or challenge Layer 1 through that evidence rather than replace Layer 1 on style alone.
+
 ## 1. Problem framing and significance
 
 - What is the overall business / product idea?
@@ -17,6 +21,8 @@ Then aggregate the atomic results back into one block verdict per dimension.
 - How will this product benefit Avito? Is there an estimate of the impact?
 - How does this product fit into Avito's strategy?
 - What hypotheses were defined at Gate 1, and what conclusions and results do we have for them?
+
+For this block, do not require a separate Gate 1 section if the document still makes the hypothesis chain reconstructable. Evaluate whether the reviewer can reliably restore `Gate 1 hypothesis -> expected result -> fact -> conclusion` from the material actually provided.
 
 ## 2. Solution quality and logic
 

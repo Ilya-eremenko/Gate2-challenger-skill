@@ -9,10 +9,10 @@ description: Use when reviewing a Gate 2 initiative defense document, product de
 
 Review a Gate 2 defense document in four passes:
 
-0. Input normalization: if the input is a PDF file, convert it to Markdown first
-1. Layer 1: decision-critical block review
-2. Layer 2: atomic question review
-3. Final synthesis: blocker-first verdict
+0. Coordinator: input normalization and preflight
+1. Layer 1 worker: decision-critical block review
+2. Layer 2 worker: atomic question review
+3. Synthesizer: blocker-first final verdict
 
 Core principle: make the decision from logic and evidence, not from document polish.
 
@@ -63,7 +63,7 @@ Default language for the response is Russian.
 
 ## Preflight: document completeness
 
-Before Layer 1, verify that the user likely provided a full Gate 2 document rather than a fragment.
+Before dispatching Layer 1 and Layer 2, the coordinator must verify that the user likely provided a full Gate 2 document rather than a fragment.
 
 Signals that the input may be incomplete:
 
@@ -82,7 +82,7 @@ Behavior:
 
 ## Workflow
 
-### Step 0: Normalize the input
+### Step 0: Coordinator normalization and preflight
 
 If the user did not explicitly specify the review mode:
 
@@ -110,7 +110,15 @@ If the input is pasted text:
 
 - analyze the pasted text directly
 
-### Step 1: Run Layer 1
+Coordinator requirements:
+
+- normalize the input exactly once
+- determine `full document` vs `fragment` exactly once
+- pass the same normalized Markdown to both Layer 1 and Layer 2
+- use one canonical block taxonomy across all stages
+- use one evidence standard across all stages
+
+### Step 1: Run Layer 1 worker
 
 Read [layer-1-rubric.md](references/layer-1-rubric.md) and evaluate the top-level blocks.
 
@@ -119,16 +127,35 @@ Important:
 - the Gate 1 hypotheses presence check is part of Layer 1
 - if the document does not contain an explicit Gate 1 hypotheses block, that Layer 1 block must be `REJECT`
 - if a Layer 1 block verdict is `APPROVE`, do not output issues for that block
+- Layer 1 returns only `layer_1`
+- Layer 1 does not compute a final verdict
+- Layer 1 does not write a free-form summary
+- Layer 1 may raise a novel cross-sectional blocker when the document-level logic breaks in a way that is not captured by any single Layer 2 atomic check
 
-### Step 2: Run Layer 2
+### Step 2: Run Layer 2 worker
 
 Read [layer-2-rubric.md](references/layer-2-rubric.md) and evaluate the atomic questions.
 
 Then aggregate the Layer 2 atomic results back into dimension-block verdicts.
 
-### Step 3: Apply verdict policy
+Important:
 
-Read [verdict-policy.md](references/verdict-policy.md).
+- Layer 2 returns only `layer_2` and `layer_2_aggregate`
+- Layer 2 does not compute a final verdict
+- Layer 2 does not write a free-form summary
+
+### Step 3: Run synthesizer
+
+Read [verdict-policy.md](references/verdict-policy.md) and [synthesis-contract.md](references/synthesis-contract.md).
+
+The synthesizer must:
+
+- read `layer_1`, `layer_2`, and `layer_2_aggregate` as structured intermediate artifacts
+- preserve raw Layer 1 and Layer 2 verdicts as diagnostic outputs
+- deduplicate overlapping issues before writing final blockers
+- analyze meaningful differences between the two layers
+- use `merged_block_assessment` to explain how broad Layer 1 judgment and detailed Layer 2 evidence fit together
+- avoid re-reviewing the document from scratch when the needed evidence already exists in the layer artifacts
 
 Use it in this order:
 
@@ -137,7 +164,9 @@ Use it in this order:
 3. assign atomic results in Layer 2
 4. aggregate Layer 2 atomic results to block verdicts
 5. aggregate Layer 2 to a layer verdict
-6. synthesize the final verdict
+6. merge Layer 1 and Layer 2 block interpretations using the synthesis contract
+7. synthesize the final verdict from the raw layer verdicts
+8. promote only blocker-grade merged issues to the final summary
 
 ### Step 4: Format the response
 
@@ -146,7 +175,7 @@ Read [output-contract.md](references/output-contract.md) and follow it exactly.
 Formatting rules:
 
 - `standard` / `summary` mode: output only final synthesis
-- `extended` / `detailed` mode: output final synthesis, then Layer 1, then Layer 2
+- `extended` / `detailed` mode: output final synthesis, then Layer 1, then Layer 2, then Layer 2 aggregate, then merged block assessment
 - `debug stages=on`: make Layer 1 and Layer 2 sections explicit even when the user asked for a compact answer
 
 ## Review discipline

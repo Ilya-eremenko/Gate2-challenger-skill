@@ -1,5 +1,7 @@
 # Layer 1 Rubric
 
+Layer 1 is the broad, open-world review of the document as a decision narrative.
+
 Layer 1 is block-level only. No atomic questions in the output.
 
 For each block:
@@ -7,6 +9,9 @@ For each block:
 - assign `APPROVE`, `NEED_EVIDENCE`, or `REJECT`
 - identify whether the block is a blocker
 - output up to 3 decision-relevant issues
+- prefer block-level, chain-level, and consistency-level issues over checklist-style detail
+- Layer 1 may raise a cross-sectional issue even when it does not map cleanly to one Layer 2 atomic question
+- Layer 1 should not duplicate Layer 2 atomic detail
 - if block verdict = `APPROVE`, do not output `top_issues`
 
 ## Blocks
@@ -20,18 +25,21 @@ Review:
 - whether the target segments are clear
 - whether business / product impact is explained
 - whether the document fits Avito strategy
-- whether Gate 1 hypotheses are explicitly present and confirmed
+- whether Gate 1 hypotheses are explicitly traceable and confirmed
 
-Hard rule:
+Decision rule:
 
-- if there is no explicit block describing Gate 1 hypotheses, this block must be `REJECT`
+- do not require a separate section titled around Gate 1 hypotheses
+- `APPROVE` when the document clearly lets you reconstruct `Gate 1 hypothesis -> expected result -> fact -> conclusion`
+- `NEED_EVIDENCE` when the Gate 1 hypotheses can be reconstructed, but they are fragmented, partially incomplete, or the conclusions are weakly supported
+- `REJECT` when the document does not let you reliably reconstruct what was being validated since Gate 1, or when the stated status of hypotheses materially contradicts the facts shown
 
 Look for:
 
 - missing or vague problem statement
 - mixed segments or mixed pains with no clear logic
 - no explicit statement of what changed since Gate 1
-- Gate 1 hypotheses mentioned only as narrative, without conclusions
+- Gate 1 hypotheses mentioned only as narrative, without a reliable `hypothesis -> result -> conclusion` chain
 
 ### 2. Solution quality and logic
 
