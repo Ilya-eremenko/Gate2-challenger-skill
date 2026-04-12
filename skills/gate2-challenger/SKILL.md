@@ -110,7 +110,7 @@ If the user did not explicitly specify the review mode:
 If the input is a PDF file:
 
 - run `python3 scripts/pdf_to_md_docling.py <path-to-pdf>`
-- use the produced Markdown file from `../review-documents/` as the review input
+- use the produced Markdown file from `review-documents/` next to the source PDF as the review input
 - analyze the Markdown content, not the original PDF
 
 If `docling` is not installed or the conversion script cannot import it:
