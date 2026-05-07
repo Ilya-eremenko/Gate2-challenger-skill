@@ -150,7 +150,8 @@ Important:
 
 - the Gate 1 hypotheses presence check is part of Layer 1
 - do not require an explicitly titled Gate 1 section if the hypothesis chain is reconstructable elsewhere
-- if a Layer 1 block verdict is `APPROVE`, do not output issues for that block
+- Layer 1 dimension statuses are `PASS`, `PARTIAL`, or `FAIL`
+- if a Layer 1 dimension status is `PASS`, output only non-blocking residual issues, or one `No material issue` record when there is no meaningful weakness
 - Layer 1 returns only `layer_1`
 - Layer 1 does not compute a final verdict
 - Layer 1 does not write a free-form summary
@@ -160,14 +161,16 @@ Important:
 
 Read [layer-2-rubric.md](references/layer-2-rubric.md) and evaluate the atomic questions.
 
-Then aggregate the Layer 2 atomic results back into dimension-block verdicts.
+Then aggregate the Layer 2 atomic results back into Atomic checks block statuses.
 
 Important:
 
-- Layer 2 returns only `layer_2` and `layer_2_aggregate`
+- Layer 2 returns only `layer_2`
+- Layer 2 Atomic checks block statuses are `PASS`, `PARTIAL`, or `FAIL`
+- Layer 2 atomic answers are `YES`, `PARTIAL`, or `NO`
 - Layer 2 does not compute a final verdict
 - Layer 2 does not write a free-form summary
-- Layer 2 may reason internally in `PASS / PARTIAL / FAIL`, but external output must remain compatible with `YES / NO`
+- the Atomic checks block status embedded in the `layer_2` heading is the Layer 2 aggregate for that block
 
 ### Step 3: Run synthesizer
 
@@ -175,8 +178,8 @@ Read [verdict-policy.md](references/verdict-policy.md) and [synthesis-contract.m
 
 The synthesizer must:
 
-- read `layer_1`, `layer_2`, and `layer_2_aggregate` as structured intermediate artifacts
-- preserve raw Layer 1 and Layer 2 verdicts as diagnostic outputs
+- read `layer_1` and `layer_2` as structured intermediate artifacts
+- preserve raw Layer 1 dimension statuses and Layer 2 Atomic checks block statuses as diagnostic outputs
 - deduplicate overlapping issues before writing final blockers
 - analyze meaningful differences between the two layers
 - use `merged_block_assessment` to explain how broad Layer 1 judgment and detailed Layer 2 evidence fit together
@@ -186,10 +189,10 @@ The synthesizer must:
 
 Use it in this order:
 
-1. assign block verdicts in Layer 1
+1. assign dimension statuses in Layer 1
 2. aggregate Layer 1 to a layer verdict
 3. assign atomic results in Layer 2
-4. aggregate Layer 2 atomic results to block verdicts
+4. aggregate Layer 2 atomic results to Atomic checks block statuses
 5. aggregate Layer 2 to a layer verdict
 6. merge Layer 1 and Layer 2 block interpretations using the synthesis contract
 7. synthesize the final verdict from the raw layer verdicts
@@ -202,7 +205,7 @@ Read [output-contract.md](references/output-contract.md) and follow it exactly.
 Formatting rules:
 
 - `standard` / `summary` mode: output only final synthesis
-- `extended` / `detailed` mode: output final synthesis, then Layer 1, then Layer 2, then Layer 2 aggregate, then merged block assessment
+- `extended` / `detailed` mode: output final synthesis, then normalized Layer 1, then normalized Layer 2, then merged block assessment
 - `debug stages=on`: make Layer 1 and Layer 2 sections explicit even when the user asked for a compact answer
 
 ## Review discipline

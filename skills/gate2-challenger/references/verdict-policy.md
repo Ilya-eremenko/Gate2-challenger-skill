@@ -1,12 +1,24 @@
 # Verdict Policy
 
-## Verdict vocabulary
+## Vocabulary
 
-Every block-level, layer-level, and final decision must use exactly one of:
+Final decisions and layer-level rollups use exactly one of:
 
 - `APPROVE`
 - `NEED_EVIDENCE`
 - `REJECT`
+
+Layer 1 dimensions and Layer 2 Atomic checks blocks use exactly one of:
+
+- `PASS`
+- `PARTIAL`
+- `FAIL`
+
+Layer 2 atomic answers use exactly one of:
+
+- `YES`
+- `PARTIAL`
+- `NO`
 
 ## Definitions
 
@@ -74,11 +86,11 @@ Rules:
 
 Only blocker-grade `HIGH` issues and clearly decision-relevant `MEDIUM` issues should be promoted into final blockers.
 
-## Layer 1 block policy
+## Layer 1 dimension policy
 
 Layer 1 is the primary decision-critical review.
 
-Assign `REJECT` to a Layer 1 block when the document has a blocker-grade failure in that block.
+Assign `FAIL` to a Layer 1 dimension when the document has a blocker-grade failure in that dimension.
 
 Examples:
 
@@ -87,35 +99,35 @@ Examples:
 - the roadmap depends on unresolved foundational dependencies
 - the traction logic is not reconstructable from evidence
 
-Assign `NEED_EVIDENCE` when the logic is directionally coherent but the proof is insufficient.
+Assign `PARTIAL` when the logic is directionally coherent but the proof is insufficient.
 
 For Gate 1 hypothesis coverage specifically:
 
 - do not require a separately titled Gate 1 section if the hypothesis chain is explicit enough to reconstruct elsewhere
-- prefer `NEED_EVIDENCE` over `REJECT` when the hypotheses are present but fragmented, partially incomplete, or supported only directionally
-- prefer `REJECT` when the hypotheses cannot be reliably restored, when the method does not test the thesis, or when the stated status materially contradicts the facts shown
+- prefer `PARTIAL` over `FAIL` when the hypotheses are present but fragmented, partially incomplete, or supported only directionally
+- prefer `FAIL` when the hypotheses cannot be reliably restored, when the method does not test the thesis, or when the stated status materially contradicts the facts shown
 
-Assign `APPROVE` when the block is decision-ready and does not contain blocker-grade gaps.
+Assign `PASS` when the dimension is decision-ready and does not contain blocker-grade gaps.
 
 ## Layer 2 atomic-to-block policy
 
-Layer 2 evaluates atomic questions as `YES` or `NO`, after reasoning internally in `PASS / PARTIAL / FAIL`, then aggregates them into one block verdict.
+Layer 2 evaluates atomic questions as `YES`, `PARTIAL`, or `NO`, after reasoning internally in `PASS / PARTIAL / FAIL`, then aggregates them into one Atomic checks block status.
 
-Assign the Layer 2 block verdict as follows:
+Assign the Layer 2 Atomic checks block status as follows:
 
-- `REJECT` if the atomic failures expose a blocker-grade contradiction, missing proof, broken validation method, or unresolved foundational dependency that would independently block approval
-- `NEED_EVIDENCE` if the block is mostly coherent but one or two decision-critical proof points remain incomplete
-- `APPROVE` if the atomic review does not reveal blocker-grade or material evidence gaps
+- `FAIL` if the atomic failures expose a blocker-grade contradiction, missing proof, broken validation method, or unresolved foundational dependency that would independently block approval
+- `PARTIAL` if the block is mostly coherent but one or two decision-critical proof points remain incomplete
+- `PASS` if the atomic review does not reveal blocker-grade or material evidence gaps
 
 Use judgment, but prefer consistency over generosity.
 
 ## Layer verdict aggregation
 
-Apply these rules separately to Layer 1 and Layer 2 using their block verdicts:
+Apply these rules separately to Layer 1 and Layer 2 using their dimension / Atomic checks block statuses:
 
-- if `REJECT` blocks are `2 or more` -> layer verdict = `REJECT`
-- if `REJECT` blocks are exactly `1` -> layer verdict = `NEED_EVIDENCE`
-- if `NEED_EVIDENCE` blocks are more than half of all blocks -> layer verdict = `NEED_EVIDENCE`
+- if `FAIL` blocks are `2 or more` -> layer verdict = `REJECT`
+- if `FAIL` blocks are exactly `1` -> layer verdict = `NEED_EVIDENCE`
+- if `PARTIAL` blocks are more than half of all blocks -> layer verdict = `NEED_EVIDENCE`
 - otherwise -> layer verdict = `APPROVE`
 
 ## Final verdict synthesis

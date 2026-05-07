@@ -2,16 +2,16 @@
 
 Layer 1 is the broad, open-world review of the document as a decision narrative.
 
-Layer 1 is block-level only. No atomic questions in the output.
+Layer 1 is dimension-level only. No atomic questions in the output.
 
 For each block:
 
-- assign `APPROVE`, `NEED_EVIDENCE`, or `REJECT`
+- assign `PASS`, `PARTIAL`, or `FAIL`
 - identify whether the block is a blocker
 - output up to 3 decision-relevant issues
-- prefer block-level, chain-level, and consistency-level issues over checklist-style detail
+- prefer dimension-level, chain-level, and consistency-level issues over checklist-style detail
 - ground judgments in the internal reasoning artifacts rather than in section presence
-- if block verdict = `APPROVE`, do not output `top_issues`
+- if block status = `PASS`, output only non-blocking residual issues, or one `No material issue` record when there is no meaningful weakness
 
 ## Mandatory internal artifacts before any Layer 1 verdict
 
@@ -107,9 +107,9 @@ Review:
 
 Decision rule:
 
-- `APPROVE` when the central problem, target segment, and Gate 1 hypothesis chain can be reconstructed without filling gaps by inference
-- `NEED_EVIDENCE` when the chain is mostly recoverable, but important links are fragmented, weakly evidenced, or only directionally supported
-- `REJECT` when the problem thesis, segment thesis, or Gate 1 hypothesis chain is not decision-safe to reconstruct
+- `PASS` when the central problem, target segment, and Gate 1 hypothesis chain can be reconstructed without filling gaps by inference
+- `PARTIAL` when the chain is mostly recoverable, but important links are fragmented, weakly evidenced, or only directionally supported
+- `FAIL` when the problem thesis, segment thesis, or Gate 1 hypothesis chain is not decision-safe to reconstruct
 
 Look for:
 

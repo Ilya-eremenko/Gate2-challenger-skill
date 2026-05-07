@@ -2,8 +2,6 @@
 
 ## Output modes
 
-The skill must ask for output mode if the user did not specify it.
-
 Accepted user-facing modes:
 
 - `standard`
@@ -21,28 +19,44 @@ The skill must also support:
 
 Internal reasoning artifacts such as the hypothesis ledger, evidence ladder, dependency map, and consistency matrix remain hidden unless the user explicitly asks for internal reasoning dumps. Their existence must not change the external output schema below.
 
+## Status vocabulary
+
+Final verdicts use:
+
+- `APPROVE`
+- `NEED_EVIDENCE`
+- `REJECT`
+
+Layer 1 dimensions and Layer 2 Atomic checks blocks use:
+
+- `PASS`
+- `PARTIAL`
+- `FAIL`
+
+Layer 2 atomic answers use:
+
+- `YES`
+- `PARTIAL`
+- `NO`
+
+Issue severity uses:
+
+- `HIGH`
+- `MEDIUM`
+- `LOW`
+
 ## Summary mode
 
 In `summary` mode, output only the final synthesis section.
 
-## Detailed mode
-
-In `detailed` mode, output:
-
-1. final synthesis
-2. Layer 1
-3. Layer 2
-4. Layer 2 aggregate
-5. merged block assessment
-
-## Final synthesis format
+### Final synthesis format
 
 ```text
 verdict: APPROVE | NEED_EVIDENCE | REJECT
 confidence: HIGH | MEDIUM | LOW
 blockers:
 - blocker_id: B<n>
-  block: <name>
+  block: <canonical block name>
   severity: HIGH | MEDIUM | LOW
   reason: <short blocker statement>
   origin: covered_by_l2 | novel_from_l1 | confirmed_by_both
@@ -51,7 +65,7 @@ blockers:
 
 critical_improvements:
 - improvement_id: I<n>
-  block: <name>
+  block: <canonical block name>
   suggestion: <non-blocking but high-value improvement>
   evidence:
     - <quote / section / fragment reference>
@@ -66,79 +80,89 @@ Rules:
 - do not include internal layer refs in the final synthesis; keep them only in diagnostic sections
 - when the review is fragmentary, keep the wording explicitly provisional and force `LOW` confidence
 
-## Layer 1 format
+## Detailed mode
+
+In `detailed` mode, output:
+
+1. final synthesis
+2. one `Input Doc` line
+3. normalized Layer 1
+4. normalized Layer 2
+5. merged block assessment
+
+If `debug stages = on`, keep Layer 1, Layer 2, and merged block assessment explicitly visible as separate sections even if the user asks for a compact diagnostic response.
+
+## Normalized Layer 1 format
+
+Layer 1 output must match the normalized benchmark format.
 
 ```text
-layer_1:
-- block: <name>
-  verdict: APPROVE | NEED_EVIDENCE | REJECT
-  blocker: YES | NO
-  top_issues:
-    - issue_id: L1-<block>-<n>
-      severity: HIGH | MEDIUM | LOW
-      issue_description: <short decision-relevant issue>
-      evidence:
-        - <quote / section / fragment reference>
+**Input Doc:** [INPUT_DOC_URL](INPUT_DOC_URL)
+
+## Layer 1
+
+verdict: APPROVE | NEED_EVIDENCE | REJECT
+dimension:
+
+### Problem framing and segments: PASS | PARTIAL | FAIL
+
+- id: 1
+  issue: <short decision-relevant issue>
+  evidence: <quote / section / fragment reference>
+  severity: HIGH | MEDIUM | LOW
 ```
 
 Rules:
 
-- no atomic questions
-- max 3 issues per block
+- print the `Input Doc` line once before `## Layer 1`
+- the `verdict` line in this section is the Layer 1 rollup verdict, not a second independent final verdict
+- use exactly seven dimensions in the canonical order
+- dimension status must be `PASS`, `PARTIAL`, or `FAIL`
+- max 3 issues per dimension
 - only decision-relevant issues
-- Layer 1 may raise a cross-sectional block-level issue when the decision narrative breaks across sections
-- if block verdict = `APPROVE`, omit `top_issues`
+- Layer 1 may raise a cross-sectional dimension-level issue when the decision narrative breaks across sections
+- if dimension status is `PASS`, output only non-blocking residual issues, or one `No material issue` record when there is no meaningful weakness
+- every issue must contain `id`, `issue`, `evidence`, and `severity`
 
-## Layer 2 format
+## Normalized Layer 2 format
 
-Atomic section:
-
-```text
-layer_2:
-- block: <name>
-  checks:
-    - question_id: L2-<block>-<n>
-      question: <full atomic question>
-      result: YES | NO
-      evidence:
-        - <quote / section / fragment reference>
-      issue: <required if result = NO>
-```
-
-Aggregated section:
+Layer 2 output must match the normalized benchmark format.
 
 ```text
-layer_2_aggregate:
-- block: <name>
-  verdict: APPROVE | NEED_EVIDENCE | REJECT
-  blocker: YES | NO
-  promoted_issues:
-    - ref: <question_id>
-      severity: HIGH | MEDIUM | LOW
-      issue_description: <short summary>
+## Layer 2
+
+### Atomic checks - Problem framing and segments: PASS | PARTIAL | FAIL
+
+- question: <full atomic question>
+  answer: YES | PARTIAL | NO
+  evidence: <quote / section / fragment reference>
+  issue: <gap, weakness, or "No material issue">
 ```
 
 Rules:
 
-- atomic checks are always `YES | NO`
-- internal `PASS / PARTIAL / FAIL` reasoning must be collapsed into `YES | NO` without changing the external schema
-- `issue` is required when `result = NO`
-- `promoted_issues` summarize the atomic issues that shaped the block verdict
+- use exactly seven Atomic checks blocks in the canonical order
+- Atomic checks block status must be `PASS`, `PARTIAL`, or `FAIL`
+- every atomic question must be present
+- every atomic answer must be `YES`, `PARTIAL`, or `NO`
+- `issue` is always required
+- use `No material issue` only when answer is `YES` and there is no meaningful weakness
+- the Atomic checks block status is the Layer 2 aggregate for that block; do not output a separate aggregate section
 
 ## Merged block assessment format
 
 ```text
 merged_block_assessment:
-- block: <name>
-  l1_verdict: APPROVE | NEED_EVIDENCE | REJECT
-  l2_verdict: APPROVE | NEED_EVIDENCE | REJECT
+- block: <canonical block name>
+  l1_status: PASS | PARTIAL | FAIL
+  l2_status: PASS | PARTIAL | FAIL
   agreement_status: CONFIRMED | REFINED | DOWNGRADED | CONFLICT
   merged_interpretation: <short resolved statement>
   why_difference: <required for DOWNGRADED | CONFLICT>
   blocker_origin: covered_by_l2 | novel_from_l1 | confirmed_by_both | none
   merged_sources:
     - layer: L1 | L2
-      ref: <issue_id | question_id>
+      ref: <issue id | question text>
 ```
 
 Rules:
@@ -146,8 +170,16 @@ Rules:
 - `agreement_status` is required for every block
 - `why_difference` is required when `agreement_status` is `DOWNGRADED` or `CONFLICT`
 - `merged_block_assessment` explains how broad Layer 1 judgment and detailed Layer 2 evidence were reconciled
-- `merged_block_assessment` does not replace the raw layer verdicts
+- `merged_block_assessment` does not replace the raw Layer 1 and Layer 2 outputs
 
-## Debug stages behavior
+## Canonical block names
 
-If `debug stages = on`, keep Layer 1, Layer 2, Layer 2 aggregate, and merged block assessment explicitly visible as separate sections even if the user asks for a more compact diagnostic response.
+Use exactly these seven block names in Layer 1, Layer 2, and merged block assessment:
+
+1. Problem framing and segments
+2. Solution quality and logic
+3. Scope of work and implementation plan
+4. Success criteria and metrics
+5. Traction model credibility
+6. Key assumptions and risks completeness
+7. Consistency

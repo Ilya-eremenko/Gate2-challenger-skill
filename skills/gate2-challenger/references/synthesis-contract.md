@@ -12,7 +12,7 @@ The synthesizer reads:
 
 - `layer_1`
 - `layer_2`
-- `layer_2_aggregate`
+- Layer 2 Atomic checks block statuses embedded in `layer_2`
 - the canonical block names shared across both layers
 - the fragment / full-document flag determined by the coordinator
 
@@ -22,7 +22,7 @@ The synthesizer must treat these layer artifacts as the primary evidence source 
 
 For each block, assign exactly one merge status:
 
-- `CONFIRMED` when Layer 2 confirms the main Layer 1 judgment
+- `CONFIRMED` when Layer 2 confirms the main Layer 1 status
 - `REFINED` when Layer 1 is directionally correct but Layer 2 adds important detail or sharper evidence
 - `DOWNGRADED` when Layer 1 was too optimistic and Layer 2 exposes a blocker-grade contradiction, missing proof, or unresolved dependency
 - `CONFLICT` when the layers materially disagree and the difference must be explained explicitly
@@ -80,7 +80,7 @@ Apply these rules:
 
 The synthesizer must:
 
-- preserve raw Layer 1 and Layer 2 verdicts as separate diagnostic outputs
+- preserve raw Layer 1 dimension statuses and Layer 2 Atomic checks block statuses as separate diagnostic outputs
 - use `merged_block_assessment` only for explanation, deduplication, and blocker promotion
 - compute the final verdict from the raw layer verdicts according to `verdict-policy.md`
 - promote only blocker-grade `HIGH` issues and clearly decision-relevant `MEDIUM` issues

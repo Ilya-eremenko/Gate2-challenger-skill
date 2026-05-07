@@ -7,14 +7,14 @@ Layer 2 is atomic and diagnostic.
 For each atomic question:
 
 - reason internally as `PASS`, `PARTIAL`, or `FAIL`
-- answer externally as `YES` or `NO`
+- answer externally as `YES`, `PARTIAL`, or `NO`
 - provide evidence
-- if `NO`, provide a short issue statement
+- always provide a short issue statement; use `No material issue` only when the answer is `YES` and there is no meaningful weakness
 
 Mapping rule:
 
 - `PASS` -> `YES`
-- `PARTIAL` -> `NO`
+- `PARTIAL` -> `PARTIAL`
 - `FAIL` -> `NO`
 
 For every atomic question, the reasoning must answer three things even if the output remains compact:
@@ -23,7 +23,7 @@ For every atomic question, the reasoning must answer three things even if the ou
 2. what evidence the conclusion depends on
 3. what decision-relevant consequence follows from `PASS`, `PARTIAL`, or `FAIL`
 
-Layer 2 is not meant to enumerate every imaginable risk in the document. Its role is to provide repeatable, evidence-rich detail for explicit weak links and to refine or challenge Layer 1 through that evidence rather than replace Layer 1 on style alone.
+Layer 2 is not meant to enumerate every imaginable risk in the document. Its role is to provide repeatable, evidence-rich detail for explicit weak links and to support later synthesis through evidence rather than replace Layer 1 on style alone.
 
 Global rules:
 
@@ -84,6 +84,12 @@ Global rules:
 
 ## Aggregation reminder
 
-Layer 2 block aggregation unit is the whole dimension bundle, not the individual atomic question.
+Layer 2 block aggregation unit is the whole Atomic checks block, not the individual atomic question.
 
-Do not count atomic failures directly as final blockers without first aggregating them back into the block verdict.
+Do not count atomic failures directly as final blockers without first aggregating them back into the Atomic checks block status.
+
+Use Layer 2 block statuses as:
+
+- `PASS` when the atomic checks show no blocker-grade or material evidence gaps
+- `PARTIAL` when the block is mostly coherent, but one or more decision-critical proof points remain incomplete
+- `FAIL` when the atomic failures expose a blocker-grade contradiction, missing proof, broken validation method, broken causal chain, or unresolved foundational dependency
