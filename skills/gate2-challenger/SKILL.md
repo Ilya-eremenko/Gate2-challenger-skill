@@ -16,6 +16,17 @@ Review a Gate 2 defense document in four passes:
 
 Core principle: make the decision from logic and evidence, not from document polish.
 
+## Execution model
+
+The four passes are separate responsibilities, not one blended review.
+
+- The main agent acts as Coordinator and Synthesizer.
+- Layer 1 worker and Layer 2 worker are independent evaluation tasks that must receive the same normalized Markdown, canonical block taxonomy, and evidence standard.
+- When subagent tools are available and runtime policy allows agent delegation, run Layer 1 worker and Layer 2 worker as separate parallel subagents by default.
+- If runtime policy requires explicit user permission for subagents, ask once before review: `Run Layer 1 and Layer 2 as parallel subagents?`
+- If subagents are unavailable or forbidden, execute the same Layer 1 and Layer 2 worker responsibilities locally, keep their artifacts separate, and state that local fallback was used.
+- Do not let Layer 1 read Layer 2 output, or Layer 2 read Layer 1 output. Only the Synthesizer reads both artifacts.
+
 ## Required evaluation rules
 
 Apply these rules in every review:
