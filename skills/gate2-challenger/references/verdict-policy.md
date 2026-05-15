@@ -63,6 +63,9 @@ Rules:
 - do not treat optional or opt-in behavior as proof of mandatory or scaled behavior when those are different claims
 - if the target is not met and the conclusion is stronger than the fact, treat it as an inconsistency
 - if the threshold is missing, a hypothesis may be observed but not fully validated
+- if some thresholds exist but the decision-critical claims lack thresholds, treat the threshold evidence as partial rather than validated
+- do not infer a Gate 1 validation threshold from later Gate 3 criteria; require the original expected result or threshold for that validation step
+- answer `YES` only for threshold sufficiency when thresholds exist for the decision-critical claims, not merely when some thresholds exist
 - a hypothesis cannot be treated as validated without `method + threshold + actual result + conclusion consistent with result`
 
 ## Evidence quality rules
@@ -71,12 +74,16 @@ Rules:
 - do not treat the existence of a pilot or launch as proof of PMF or rollout readiness by itself
 - do not treat customer quotes as sufficient proof for central business claims
 - when the evidence is only directional, the conclusion must also remain directional
+- if take rate, price, commission, subsidy, or monetization terms change across horizons, evidence for the current value does not validate the changed value
+- changed value assumptions require their own support; otherwise they remain directional or speculative
+- if equal or stable commission/take-rate economics are used to dismiss cannibalization risk, but the document later assumes a lower target commission, lower price, subsidy, or changed monetization term, record a contradiction rather than only an unsupported changed-value issue
 
 ## Completeness of blockers
 
 - appendix, FAQ, legal, compliance, anti-fraud, moderation, analytics comments, support tables, and operating notes are first-class evidence
 - if the main narrative says `ready`, `done`, or `blockers removed`, but supporting sections show unresolved dependencies, trust the supporting sections
 - legal, compliance, anti-fraud, moderation, operational tooling, and integration constraints can be blocker-grade even when they sit outside the main narrative
+- if cancellation, fraud, AML, regulator, or abuse break conditions use inconsistent thresholds across sections, name the specific threshold conflict
 
 ## Severity calibration
 
@@ -121,6 +128,12 @@ Assign the Layer 2 Atomic checks block status as follows:
 
 Use judgment, but prefer consistency over generosity.
 
+Layer 2 breadth calibration:
+
+- do not let high-recall diagnostic breadth alone force `REJECT`
+- repeated atomic failures from the same issue family count as one decision problem for verdict aggregation
+- when many Layer 2 failures are generic checklist weaknesses but the product logic is directionally coherent, prefer `NEED_EVIDENCE` unless there is a blocker that makes the current gate unsafe
+
 ## Layer verdict aggregation
 
 Apply these rules separately to Layer 1 and Layer 2 using their dimension / Atomic checks block statuses:
@@ -129,6 +142,10 @@ Apply these rules separately to Layer 1 and Layer 2 using their dimension / Atom
 - if `FAIL` blocks are exactly `1` -> layer verdict = `NEED_EVIDENCE`
 - if `PARTIAL` blocks are more than half of all blocks -> layer verdict = `NEED_EVIDENCE`
 - otherwise -> layer verdict = `APPROVE`
+
+When applying these thresholds, first consolidate repeated `FAIL` blocks that are driven by the same issue family; if the consolidated decision problem is removable by concrete evidence or validation and the rest of the logic is directional, the layer verdict may remain `NEED_EVIDENCE`.
+
+After duplicate-family consolidation, a final verdict may override raw layer `REJECT` to final `NEED_EVIDENCE` when failures are mostly evidence-remediable and the initiative is not structurally impossible or unsafe.
 
 ## Final verdict synthesis
 
@@ -156,6 +173,7 @@ Assign when:
 - the overall logic could still hold
 - but one or two key proof points are not yet closed
 - or there is a limited number of decision-critical blockers that can plausibly be removed by concrete evidence or validation
+- prefer `NEED_EVIDENCE` when the product logic is directionally coherent and the main weakness is missing proof, unclosed validation, or unproven scale readiness
 
 ### `REJECT`
 
@@ -169,6 +187,12 @@ Assign when any of the following is true:
 - the validation method misses the main thesis
 - the roadmap depends on unresolved foundational blockers
 - contradictions are systematic rather than local
+
+Reject calibration:
+
+- reserve `REJECT` for blockers that make the current gate unsafe even after feasible evidence collection
+- do not assign `REJECT` solely because the diagnostic layers found many plausible extra concerns
+- if the main issue family is evidence insufficiency and the initiative could be re-evaluated with concrete validation, prefer `NEED_EVIDENCE` over `REJECT`
 
 ## Promotion rule for final summary
 

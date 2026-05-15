@@ -63,6 +63,8 @@ Apply these rules:
 
 - if appendix, FAQ, legal, compliance, anti-fraud, moderation, analytics notes, support tables, or ops notes reveal unresolved blockers, treat that evidence as fully decision-relevant
 - if the main narrative says `ready`, `done`, or `validated`, but supporting sections materially contradict it, the merged interpretation must reflect the contradiction
+- compare main narrative confidence with supporting-section confidence; a material confidence mismatch is itself a consistency signal when the decision depends on the disputed claim
+- preserve the confidence mismatch in `merged_block_assessment` when supporting sections are materially more cautious than the main narrative
 - when target, fact, and conclusion disagree, prefer the factual evidence over the narrative summary
 
 ## Deduplication rules
@@ -83,5 +85,6 @@ The synthesizer must:
 - preserve raw Layer 1 dimension statuses and Layer 2 Atomic checks block statuses as separate diagnostic outputs
 - use `merged_block_assessment` only for explanation, deduplication, and blocker promotion
 - compute the final verdict from the raw layer verdicts according to `verdict-policy.md`
+- after duplicate-family consolidation, override raw layer `REJECT` to final `NEED_EVIDENCE` when failures are mostly evidence-remediable and the initiative is not structurally impossible or unsafe
 - promote only blocker-grade `HIGH` issues and clearly decision-relevant `MEDIUM` issues
 - avoid inventing new blocker causes that are absent from both the document evidence and the layer artifacts

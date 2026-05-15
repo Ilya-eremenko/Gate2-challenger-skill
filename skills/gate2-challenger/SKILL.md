@@ -150,6 +150,12 @@ Coordinator requirements:
   - `Evidence ladder`: classify central claims as hard evidence, experiment / pilot result, operational signal, customer feedback / survey / CSAT, benchmark / competitor reference, or narrative assumption
   - `Dependency map`: milestone, prerequisites, status of each prerequisite, control, funded-scope status, blocker severity
   - `Consistency matrix`: cross-check problem, segment, solution, validation, metrics, traction, roadmap, blockers, and legal / ops / risk constraints
+- when converting internal artifacts into Layer 1 and Layer 2 output:
+  - `Hypothesis ledger` must flag planning statements labeled as validation
+  - `Evidence ladder` must preserve evidence-type proportionality, especially when surveys, CSAT, quotes, or benchmarks support central business claims
+  - `Dependency map` must distinguish owner, funded scope, implemented control, and contingent external dependency
+  - `Consistency matrix` must include problem-definition drift and metric/topline reconciliation
+  - `Consistency matrix` must also include confidence mismatch between main narrative confidence and supporting-section confidence
 - treat appendix and supporting sections as valid sources for any of the four internal artifacts
 - keep these artifacts internal; they guide reasoning but are not printed in `standard`
 
@@ -174,6 +180,10 @@ Read [layer-2-rubric.md](references/layer-2-rubric.md) and evaluate the atomic q
 
 Then aggregate the Layer 2 atomic results back into Atomic checks block statuses.
 
+Before writing the Layer 2 output, assign a duplicate-family key before writing Layer 2 output for every non-`YES` atomic answer. Use stable semantic keys such as `dependency-readiness`, `proxy-validation`, `monetization-contradiction`, `cancellation-boundary`, `threshold-mismatch`, `model-reconstructability`, `segment-path-mixing`, and `risk-control-maturity`. Select the strongest representative issue per family inside each Atomic checks block; later atomic checks in the same family should reference that selected family in evidence instead of creating another standalone issue unless the local consequence is materially different.
+
+This family selection is mandatory: selected issue families are a pre-output control, not an optional writing style. Only the selected representative atomic answer gets full standalone issue text. Non-selected repeated atomic answers must use `same duplicate family; see <family>` and do not add a second local-angle issue sentence for the same family.
+
 Important:
 
 - Layer 2 returns only `layer_2`
@@ -195,6 +205,7 @@ The synthesizer must:
 - analyze meaningful differences between the two layers
 - use `merged_block_assessment` to explain how broad Layer 1 judgment and detailed Layer 2 evidence fit together
 - prefer supporting sections over optimistic narrative when they materially disagree
+- preserve a confidence mismatch when supporting sections are materially more cautious than the main narrative
 - promote only blocker-grade `HIGH` issues and clearly decision-relevant `MEDIUM` issues to the final blockers list
 - avoid re-reviewing the document from scratch when the needed evidence already exists in the layer artifacts
 

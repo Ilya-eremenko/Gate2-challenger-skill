@@ -4,3 +4,5 @@ Examples/
 UX Skill Example/
 __pycache__/
 *.pyc
+benchmark/
+skillbench/runs/

@@ -1,0 +1,747 @@
+import unittest
+from pathlib import Path
+
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+SKILL_PATH = REPO_ROOT / "skills" / "gate2-challenger" / "SKILL.md"
+LAYER_1_RUBRIC_PATH = (
+    REPO_ROOT / "skills" / "gate2-challenger" / "references" / "layer-1-rubric.md"
+)
+LAYER_2_RUBRIC_PATH = (
+    REPO_ROOT / "skills" / "gate2-challenger" / "references" / "layer-2-rubric.md"
+)
+OUTPUT_CONTRACT_PATH = (
+    REPO_ROOT / "skills" / "gate2-challenger" / "references" / "output-contract.md"
+)
+VERDICT_POLICY_PATH = (
+    REPO_ROOT / "skills" / "gate2-challenger" / "references" / "verdict-policy.md"
+)
+
+
+class Gate2ChallengerInstructionTests(unittest.TestCase):
+    def test_layer_1_requires_dimension_specific_non_duplicate_issues(self):
+        text = LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "dimension-specific",
+            "Do not restate the same blocker",
+            "primary block",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_user_journey_is_required_when_adoption_or_conversion_is_central(self):
+        combined = (
+            SKILL_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "MLP path",
+            "end-state path",
+            "adoption, conversion, mandatory usage",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_layer_2_contains_added_gate_2_weak_link_checks(self):
+        text = LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "quantified current-state problem",
+            "softer alternatives",
+            "approval boundary",
+            "Metric definitions, toplines, horizons, and baselines",
+            "Quotes, surveys, CSAT, and benchmarks",
+            "downside scenarios",
+            "Owners may be named",
+            "secured, in progress, contingent, or outside team control",
+            "problem definition drifts",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_internal_artifacts_feed_specific_output_checks(self):
+        text = SKILL_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "planning statements labeled as validation",
+            "evidence-type proportionality",
+            "owner, funded scope, implemented control, and contingent external dependency",
+            "problem-definition drift and metric/topline reconciliation",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_layer_1_keeps_detailed_subclaims_out_of_dimension_issues(self):
+        text = LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "detailed sub-claims belong in Layer 2",
+            "do not split one underlying blocker",
+            "same evidence pattern",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_segmentation_requires_size_pain_and_solution_mapping(self):
+        combined = (
+            LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "segment size",
+            "segment-specific pains",
+            "segment-specific solution mapping",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_metric_checks_cover_changed_monetization_terms(self):
+        combined = (
+            LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + VERDICT_POLICY_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "take rate, price, commission, subsidy, or monetization terms",
+            "changed value",
+            "current value",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_layer_1_preserves_specific_decision_test_not_umbrella_only(self):
+        combined = (
+            LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "specific decision test",
+            "umbrella diagnosis",
+            "unmet success criterion",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_layer_1_dedup_allows_repeat_only_for_distinct_decision_consequence(self):
+        combined = (
+            LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "distinct decision consequence",
+            "root cause",
+            "do not repeat it as a new issue",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_missing_user_journey_can_affect_solution_and_scope_separately(self):
+        text = LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "adoption logic untestable",
+            "scope/dependency readiness impossible to judge",
+            "record both consequences",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_threshold_yes_requires_decision_critical_thresholds(self):
+        combined = (
+            LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + VERDICT_POLICY_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "thresholds exist for the decision-critical claims",
+            "some thresholds exist",
+            "answer `YES` only",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_layer_1_bundles_l2_details_under_broad_decision_blockers(self):
+        combined = (
+            LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "bundle related Layer 2-level observations under a broader Layer 1 decision blocker",
+            "missed funnel thresholds",
+            "optional-pilot-to-mandatory-rollout leap",
+            "planning statements treated as validation",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_layer_1_names_segment_pain_solution_linkage(self):
+        text = LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "segment -> pain -> solution linkage",
+            "broad Layer 1 issue",
+            "roadmap or feature list is not tied to distinct segments and pains",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_layer_1_model_transparency_covers_core_drivers(self):
+        text = LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "model-transparency issue",
+            "GMV, revenue, cannibalization, retention, subsidies, take rate, or conversion ramp",
+            "validated drivers",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_layer_2_uses_local_angle_to_avoid_duplicate_atoms(self):
+        combined = (
+            LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "local angle only",
+            "avoid restating the same insight as separate standalone failures",
+            "same prerequisite gap, here specifically affecting test-vs-rollout gating",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_layer_1_defaults_to_one_or_two_issues_per_dimension(self):
+        combined = (
+            LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "Default to 1-2 Layer 1 issues per dimension",
+            "Use 3 issues only when there are three independent decision blockers",
+            "not evidence for each other",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_mlp_end_state_journey_uses_exact_missing_phrase(self):
+        combined = (
+            LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "MLP/end-state journey is missing or not evaluable",
+            "makes adoption behavior untestable",
+            "makes test-vs-rollout readiness impossible to judge",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_layer_2_scope_checks_resources_and_capacity(self):
+        text = LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "Are resources, ownership, delivery capacity, and horizontal dependencies secured for the work being approved now?",
+            "headcount, support, billing, legal, T&S, anti-fraud, API, and partner-team dependencies",
+            "assessed in Layer 2 even if they are already mentioned in Layer 1",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_layer_2_risk_visibility_control_and_centrality_are_separate(self):
+        text = LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "risk discovery/visibility",
+            "control maturity",
+            "centrality in the decision narrative",
+            "answer `PARTIAL`, not `YES` with `No material issue`",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_layer_2_duplicate_family_suppression_is_explicit(self):
+        text = OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "duplicate family",
+            "central closure not tested",
+            "end-state path/API gap",
+            "projected ramp not explained by validated inputs",
+            "10% evidence does not validate 15% monetization",
+            "mitigations are plans, not controls",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_solution_l1_links_segment_pain_solution_when_feature_inventory_is_used(self):
+        text = LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "if Solution quality is `FAIL`",
+            "segment -> pain -> solution linkage",
+            "feature inventory",
+            "business-control pain",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_solution_or_traction_l1_flags_missing_repeat_use_evidence(self):
+        text = LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "repeat use, retention, same-seller return behavior, or willingness-to-use-again",
+            "missing, weak, or contradicted by analytics",
+            "include a Layer 1 issue",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_traction_l1_prefers_one_reconstructability_issue_for_model_drivers(self):
+        combined = (
+            LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "Prefer one broad Layer 1 traction issue",
+            "model reconstructability",
+            "treat a changed 10% -> 15% monetization or take-rate assumption as evidence",
+            "unless it is the only material traction weakness",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_layer_2_duplicate_family_references_same_family_before_local_angle(self):
+        text = OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "same duplicate family; local angle:",
+            "do not create a fresh standalone issue",
+            "use that prefix before the block-specific consequence",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_layer_2_requires_materiality_before_partial_or_no(self):
+        combined = (
+            LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "answer `PARTIAL` or `NO` only when the issue changes approval safety, validation strength, or the block verdict",
+            "plausible nuance, generic completeness concern, or already-covered concern",
+            "answer `YES` with `No material issue` or use `same duplicate family; local angle:`",
+            "suppress non-central extras",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_success_metrics_must_prove_user_pain_resolution(self):
+        combined = (
+            LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "whether success criteria prove the stated user pains or value propositions were solved",
+            "funnel conversion, operational readiness, support load, or risk absence",
+            "not direct evidence that user pains were solved",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_solution_flags_overloaded_pains_and_use_cases(self):
+        combined = (
+            LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "materially different pains, use cases, or value propositions are combined into one solution story",
+            "same product path solves each one",
+            "user convenience, business monetization, transaction control, risk reduction, fraud or cancellation control, and strategic share growth",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_traction_checks_model_rows_against_formula_and_drivers(self):
+        combined = (
+            LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "formula, yearly rows, scenario rows, or driver decomposition",
+            "important rows reconcile with the formula and stated drivers",
+            "cannot be traced to drivers, baselines, or assumptions",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_monetization_cannibalization_conflicts_are_consistency_issues(self):
+        combined = (
+            LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + VERDICT_POLICY_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "equal or stable commission/take-rate economics",
+            "dismiss cannibalization risk",
+            "later assumes a lower target commission, lower price, subsidy, or changed monetization term",
+            "record a contradiction",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_rollout_aggressiveness_can_be_l1_traction_issue(self):
+        text = LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "adoption, GMV, revenue, or order ramp depends on rollout speed",
+            "faster than unresolved dependencies allow",
+            "record it as a Layer 1 Traction issue",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_threshold_specificity_cannot_use_future_gate_criteria_as_past_validation(self):
+        combined = (
+            LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + VERDICT_POLICY_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "do not infer a Gate 1 validation threshold from later Gate 3 criteria",
+            "original expected result or threshold for that validation step",
+            "cancellation, fraud, AML, regulator, or abuse break conditions use inconsistent thresholds",
+            "name the specific threshold conflict",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_layer_2_materiality_is_concise_but_not_silent(self):
+        combined = (
+            LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "every atomic question must still be answered against its own decision test",
+            "concrete evidence for a problem-bearing atomic check",
+            "record the issue even when the same family is also covered elsewhere",
+            "do not turn the issue into `YES` / `No material issue`",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_layer_2_explicit_weak_link_checks_are_not_suppressed_as_generic(self):
+        text = LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "explicit weak-link checks",
+            "target clarity, segment mapping, current-state significance, prioritization, softer alternatives",
+            "approval boundary, planning-vs-validation, metric reconciliation, changed monetization",
+            "downside scenarios, external dependency classification, problem drift, or supporting-section caution",
+            "must not suppress it as generic",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_layer_1_solution_flags_proxy_validation_not_full_transaction_behavior(self):
+        text = LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "interest, entry-point click, survey intent, or other proxy behavior",
+            "full paid, accepted, uncancelled transaction behavior",
+            "include a Solution Layer 1 issue",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_layer_1_keeps_l2_only_details_as_evidence_unless_dimension_verdict_changes(self):
+        combined = (
+            LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "user-pain success-metric gaps, row-level model reconciliation, and granular threshold details",
+            "stay in Layer 2 unless they independently change the dimension verdict",
+            "cite them as evidence under a broader Layer 1 blocker",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_monetization_cannibalization_contradiction_can_repeat_with_local_consequence(self):
+        combined = (
+            LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "monetization/cannibalization contradiction can appear in Traction and Consistency",
+            "Traction: model economics are unsupported or internally inconsistent",
+            "Consistency: risk defense contradicts target economics",
+            "use local-angle wording to avoid duplicate penalties",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_layer_2_standalone_issue_requires_not_stronger_nearby_duplicate(self):
+        combined = (
+            LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "answer every atomic check internally, but emit a standalone Layer 2 issue only when",
+            "not already represented by a stronger nearby issue",
+            "local consequence is materially different",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_layer_2_generic_weak_links_need_specific_decision_defect(self):
+        combined = (
+            LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "generic weak-link checks default to `YES` / `No material issue` unless",
+            "specific contradiction, threshold miss, formula gap, unresolved dependency, unsupported scaling leap, or inconsistent risk control",
+            "do not emit generic standalone issues for broad target clarity, segment mapping, projected upside, softer alternatives, or downside sensitivity",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_layer_1_promotes_pws_style_findings_when_they_change_dimension_verdict(self):
+        text = LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "promote to Layer 1 when they independently change the dimension verdict",
+            "overloaded pains/use cases",
+            "funnel/ops metrics do not measure solved user pain",
+            "unexplained model-row or formula mismatch",
+            "commission/cannibalization contradiction",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_pws_detail_anchors_preserve_specifics_for_partial_matches(self):
+        combined = (
+            LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "preserve exact threshold mechanics",
+            "specific row, year, driver, or formula detail",
+            "fraud and lower-commission mechanics",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_layer_2_output_budget_limits_distinct_issue_families_per_block(self):
+        combined = (
+            LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "Layer 2 output budget",
+            "emit at most the two strongest distinct issue families per Atomic checks block",
+            "additional atomic checks should reference the selected family in evidence rather than create another issue",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_layer_2_pre_output_duplicate_family_keys_are_required(self):
+        combined = (
+            SKILL_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "assign a duplicate-family key before writing Layer 2 output",
+            "dependency-readiness",
+            "proxy-validation",
+            "monetization-contradiction",
+            "cancellation-boundary",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_layer_1_specificity_prompts_cover_segment_success_and_model_rows(self):
+        text = LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "different segment readiness, rollout path, or blocker profile",
+            "success metrics mainly measure funnel or operational health",
+            "specific year, row, or model component cannot be reconciled",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_verdict_policy_distinguishes_reject_from_need_evidence_when_logic_is_directional(self):
+        text = VERDICT_POLICY_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "do not let high-recall diagnostic breadth alone force `REJECT`",
+            "prefer `NEED_EVIDENCE` when the product logic is directionally coherent",
+            "reserve `REJECT` for blockers that make the current gate unsafe even after feasible evidence collection",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_layer_2_selected_family_output_is_structural_not_advisory(self):
+        combined = (
+            SKILL_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "selected issue families are a pre-output control, not an optional writing style",
+            "only the selected representative atomic answer gets full standalone issue text",
+            "non-selected repeated atomic answers must use `same duplicate family; see <family>`",
+            "do not add a second local-angle issue sentence for the same family",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_layer_1_remaining_pws_like_misses_are_named_generally(self):
+        text = LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "buyer readiness is confirmed without an original threshold",
+            "too many distinct pains/use cases are combined into one solution narrative",
+            "one traction model row cannot be transparently reconciled with the formula",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_synthesis_can_override_raw_reject_to_need_evidence_after_family_consolidation(self):
+        synthesis_path = REPO_ROOT / "skills" / "gate2-challenger" / "references" / "synthesis-contract.md"
+        combined = (
+            VERDICT_POLICY_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + synthesis_path.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "after duplicate-family consolidation",
+            "override raw layer `REJECT` to final `NEED_EVIDENCE`",
+            "failures are mostly evidence-remediable",
+            "not structurally impossible or unsafe",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_synthesis_compares_main_narrative_confidence_to_supporting_sections(self):
+        synthesis_path = REPO_ROOT / "skills" / "gate2-challenger" / "references" / "synthesis-contract.md"
+        combined = SKILL_PATH.read_text(encoding="utf-8") + "\n" + synthesis_path.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "main narrative confidence",
+            "supporting-section confidence",
+            "confidence mismatch",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+
+if __name__ == "__main__":
+    unittest.main()
