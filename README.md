@@ -64,5 +64,7 @@ After copying, restart Claude Code or start a new session so the skill is discov
 
 - Keep the directory name `gate2-challenger`.
 - Copy the entire folder, not only `SKILL.md`.
+- Before running a review from a checkout, verify the skill is current with git:
+  `python3 skills/gate2-challenger/scripts/check_git_freshness.py`.
 - For PDF review mode, the helper script writes Markdown into a `review-documents/` folder next to the source PDF.
 - The PDF conversion helper requires `docling`.

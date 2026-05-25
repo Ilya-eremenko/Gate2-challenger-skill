@@ -33,6 +33,8 @@ Rules:
 - Use `review_mode: extended` and `debug stages: on`.
 - Run the `gate2-challenger` workflow as the evaluated object, including its Layer 1 worker, Layer 2 worker, and synthesizer.
 - Return the full extended output: final synthesis, normalized Layer 1, normalized Layer 2, and merged block assessment.
+- For benchmark scoring, only normalized Layer 1 and normalized Layer 2 from this extended output are admissible evaluator material.
+- The plain executive summary, structured final synthesis, and merged block assessment must not be sent to the Judge Agent and must not be used for scoring.
 - Do not propose prompt, skill, rubric, or judge changes.
 
 ### Judge Agent
@@ -41,8 +43,9 @@ Scores one evaluator output against the benchmark etalon.
 
 Rules:
 
-- Judge Agent receives evaluator output, etalon, and judge prompt.
+- Judge Agent receives only normalized Layer 1 and normalized Layer 2 extracted from the evaluator's extended output, plus etalon and judge prompt.
 - Compare only against the etalon and the judge prompt.
+- Ignore any executive summary, final synthesis, or merged block assessment if it appears in an evaluator artifact.
 - Return score, verdict, matched issues, missed issues, false positives, and explanation.
 - Do not propose changes to `gate2-challenger`, the judge prompt, or the benchmark.
 
@@ -78,13 +81,14 @@ For each benchmark case:
 2. Create `skillbench/runs/<run-id>/<case>/`.
 3. Send only the original document and evaluator settings to Evaluator Agent.
 4. Save evaluator output to `evaluator_result.md`.
-5. Send evaluator output, etalon, and judge prompt to Judge Agent.
-6. Save judge output to `judge_result.md`.
-7. Improvement Planner writes `improvement_plan.md`.
-8. Approval gate: ask the user whether to apply the plan, skip changes for this case, or stop the run.
-9. If approved, send only the approved plan and relevant files to Prompt/Skill Editor Agent.
-10. Save applied-change notes to `approved_changes.md` and `post_change_summary.md`.
-11. Continue to the next case sequentially.
+5. Extract only normalized Layer 1 and normalized Layer 2 from the extended evaluator output and save them to `evaluator_layers.md`.
+6. Send `evaluator_layers.md`, etalon, and judge prompt to Judge Agent.
+7. Save judge output to `judge_result.md`.
+8. Improvement Planner writes `improvement_plan.md` using `evaluator_layers.md` and `judge_result.md`; do not use executive summary or final synthesis as scoring evidence.
+9. Approval gate: ask the user whether to apply the plan, skip changes for this case, or stop the run.
+10. If approved, send only the approved plan and relevant files to Prompt/Skill Editor Agent.
+11. Save applied-change notes to `approved_changes.md` and `post_change_summary.md`.
+12. Continue to the next case sequentially.
 
 ## Approval gate
 
@@ -114,6 +118,7 @@ The default is to wait for user approval. If the user does not approve, do not e
 Write these files under `skillbench/runs/<run-id>/<case>/`:
 
 - `evaluator_result.md`: full extended `gate2-challenger` output.
+- `evaluator_layers.md`: normalized Layer 1 and normalized Layer 2 extracted from `evaluator_result.md`; this is the only evaluator artifact used by Judge Agent for scoring.
 - `judge_result.md`: judge score, verdict, matches, misses, false positives, and explanations.
 - `improvement_plan.md`: planned evaluator and judge improvements with anti-overfit reasoning.
 - `approved_changes.md`: user decision and approved scope.

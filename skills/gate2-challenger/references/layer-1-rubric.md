@@ -24,6 +24,18 @@ For each block:
 - Prefer one broad Layer 1 traction issue for model reconstructability across GMV, revenue, cannibalization, retention, subsidies, baseline, take rate, and conversion ramp; treat a changed 10% -> 15% monetization or take-rate assumption as evidence under that issue unless it is the only material traction weakness
 - preserve the specific decision test behind a broad blocker, such as a missing threshold, missing user journey, unmet success criterion, unreconciled topline, or unresolved prerequisite
 - do not replace the concrete failure with only an umbrella diagnosis
+- every issue must be self-contained for a reader who has not opened the source document: state what is wrong, why it matters for the gate decision, and what decision consequence follows
+- write `issue` and explanatory `evidence` in Russian by default; preserve English only for source section names, metric names, product names, exact quotes, schema keys, and status values
+- avoid mixed-language explanations such as `approval unsafe`, `proof gap`, `decision-ready`, or `blocker-grade`; use natural Russian wording instead
+- write each issue as a human-readable mini-argument: context, broken decision test, and gate consequence
+- prefer two compact sentences over one overloaded sentence when the issue contains both a proof gap and an approval consequence
+- readability is a presentation layer: do not create an extra Layer 1 issue, split a root cause, or upgrade severity only because the explanation can include more detail
+- when extra detail supports an already-selected Layer 1 blocker, put it in `evidence` instead of promoting it to another issue
+- readability and deduplication must not suppress distinct block consequences required by the rubric; the same root cause may appear in different blocks when the decision consequence is different
+- evidence must include the section or table name plus the exact values, thresholds, dates, user segments, or claims being compared
+- do not cite a section name without explaining what in that section proves the issue
+- when evidence is a contradiction, include both sides of the contradiction in the evidence field
+- evidence should connect the cited facts explicitly: source A says the target or claim, source B shows the result or dependency, and the final clause explains why that comparison proves the issue
 - ground judgments in the internal reasoning artifacts rather than in section presence
 - if block status = `PASS`, output only non-blocking residual issues, or one `No material issue` record when there is no meaningful weakness
 
@@ -162,6 +174,7 @@ Look for:
 - in Solution, state that this makes adoption behavior untestable
 - missing MLP or end-state journey that makes adoption logic untestable
 - when repeat use, retention, same-seller return behavior, or willingness-to-use-again is central to the thesis and the evidence is missing, weak, or contradicted by analytics, include a Layer 1 issue in Solution if it breaks adoption logic or in Traction if it breaks the model
+- when willingness-to-use-again or repeat-use evidence is weak or declining, preserve the direction and exact rates rather than citing only a generic retention or analytics concern
 - when validation only tests interest, entry-point click, survey intent, or other proxy behavior, but the thesis requires full paid, accepted, uncancelled transaction behavior, include a Solution Layer 1 issue
 - optional or opt-in evidence being used to justify mandatory or scaled behavior
 - future validation being used as if it already proved the thesis
@@ -208,6 +221,7 @@ Look for:
 - thresholds missing while conclusions sound definitive
 - funnel conversion, operational readiness, support load, or risk absence used as success proof when they are not direct evidence that user pains were solved
 - success metrics mainly measure funnel or operational health while the defense claims solved user pain or value proposition impact
+- when end-state ambition and gate criteria disagree, preserve both sides of the mismatch and the concrete threshold or allowance that creates it
 - missing original expected result or threshold for a validation step, especially when the document tries to infer a Gate 1 validation threshold from later Gate 3 criteria
 - actual results missing while the document claims validation
 - weak criteria being used to support a strong approval claim
@@ -234,6 +248,7 @@ Look for:
 - a specific year, row, or model component cannot be reconciled with the stated formula, baseline, driver, or scenario assumptions
 - one traction model row cannot be transparently reconciled with the formula, driver decomposition, or stated assumptions
 - one broad model-transparency issue when GMV, revenue, cannibalization, retention, subsidies, take rate, or conversion ramp cannot be traced to validated drivers
+- do not narrow a broad model-transparency issue to only conversion ramp or take rate when the document also has unreconciled GMV, revenue, cannibalization, retention, subsidy, baseline, or topline components
 - weak or declining repeat-use / willingness-to-use-again evidence when repeated transactions, retention, or same-seller return behavior materially drive the thesis
 - when repeat use, retention, same-seller return behavior, or willingness-to-use-again materially drives the model and the evidence is missing, weak, or contradicted by analytics, include a Layer 1 issue rather than treating the model as validated by first-use or opt-in signals
 - a conclusion stronger than the underlying evidence type allows

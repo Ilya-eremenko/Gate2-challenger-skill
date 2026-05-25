@@ -87,6 +87,27 @@ Mode mapping:
 
 Default language for the response is Russian.
 
+Language rule for all user-visible analysis:
+
+- Human-facing explanatory fields must be written in Russian by default.
+- This applies to `reason`, `suggestion`, `issue`, `evidence`, `merged_interpretation`, and `why_difference`.
+- Do not write mixed-language sentences such as `approval unsafe`, `proof gap`, `decision-ready`, or `blocker-grade` when a natural Russian phrase is available.
+- English is allowed only for schema keys, status values, canonical block names, metric names, section titles, product names, duplicate-family keys, and exact source quotes.
+- Use Russian explanations for duplicate-family labels: write the label only after a Russian sentence that explains the problem.
+
+Common analysis wording replacements:
+
+- `readiness` -> `готовность`
+- `approval boundary` -> `граница текущего решения`
+- `fakedoor` -> `фейкдор-тест` or `имитационный вход`
+- `target solution` -> `целевая версия решения`
+- `blockers` -> `блокирующие проблемы`
+- `scaled rollout` -> `масштабный запуск`
+- If an English term is a source quote or metric name, keep it in `evidence` but explain its meaning in Russian in the surrounding sentence.
+- Do not write full explanatory sentences in English inside human-facing fields.
+- Before returning the answer, scan `reason`, `issue`, `evidence`, `merged_interpretation`, and `why_difference` and rewrite any English explanatory sentence into Russian.
+- Questions may remain in English when they are canonical atomic checks, but their `issue` explanations must be Russian.
+
 ## Preflight: document completeness
 
 Before dispatching Layer 1 and Layer 2, the coordinator must verify whether the user likely provided a full Gate 2 document rather than a fragment.
@@ -111,6 +132,16 @@ Behavior:
 ## Workflow
 
 ### Step 0: Coordinator normalization and preflight
+
+#### Version freshness preflight
+
+Before starting a review, verify that the local `gate2-challenger` git checkout is up to date with its upstream.
+
+- Run `python3 scripts/check_git_freshness.py` when this skill package is inside the canonical git checkout.
+- If the installed skill is a copied package and not itself inside git, run `python3 scripts/check_git_freshness.py --repo /path/to/Gate2-challenger` from this package, or ask the user for the canonical checkout path.
+- The check must confirm that the git checkout is up to date with its upstream and that `skills/gate2-challenger` has no local modifications.
+- Do not start Layer 1 or Layer 2 until this preflight passes.
+- If the check cannot run because git, network fetch, or the canonical checkout is unavailable, stop and tell the user what must be updated. Continue only if the user explicitly says this is a local fallback or intentional benchmark run.
 
 If the user did not explicitly specify the review mode:
 
@@ -226,7 +257,9 @@ Read [output-contract.md](references/output-contract.md) and follow it exactly.
 
 Formatting rules:
 
-- `standard` / `summary` mode: output only final synthesis
+- `standard` / `summary` mode: output the plain executive summary first, then ask whether the user wants the expanded structured final synthesis with blockers and evidence
+- if the user says yes to the expanded summary, show the structured final synthesis and then ask whether the user wants the full layer-by-layer analysis
+- if the user says yes to the full analysis, show the `extended` / `detailed` output using the existing layer artifacts when available
 - `extended` / `detailed` mode: output final synthesis, then normalized Layer 1, then normalized Layer 2, then merged block assessment
 - `debug stages=on`: make Layer 1 and Layer 2 sections explicit even when the user asked for a compact answer
 

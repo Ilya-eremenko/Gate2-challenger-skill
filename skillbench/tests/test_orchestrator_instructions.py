@@ -22,6 +22,7 @@ class SkillbenchOrchestratorInstructionTests(unittest.TestCase):
             "Anti-overfit rules",
             "Artifacts",
             "evaluator_result.md",
+            "evaluator_layers.md",
             "judge_result.md",
             "improvement_plan.md",
             "approved_changes.md",
@@ -35,7 +36,20 @@ class SkillbenchOrchestratorInstructionTests(unittest.TestCase):
         text = SKILL_PATH.read_text(encoding="utf-8")
 
         self.assertIn("Evaluator Agent must not receive the etalon", text)
-        self.assertIn("Judge Agent receives evaluator output, etalon, and judge prompt", text)
+        self.assertIn("Judge Agent receives only normalized Layer 1 and normalized Layer 2", text)
+
+    def test_judge_uses_only_extended_layers_not_summary(self):
+        text = SKILL_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "only normalized Layer 1 and normalized Layer 2 from this extended output are admissible evaluator material",
+            "plain executive summary, structured final synthesis, and merged block assessment must not be sent to the Judge Agent",
+            "Extract only normalized Layer 1 and normalized Layer 2 from the extended evaluator output",
+            "do not use executive summary or final synthesis as scoring evidence",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
 
     def test_readme_documents_codex_local_and_api_modes(self):
         text = README_PATH.read_text(encoding="utf-8")

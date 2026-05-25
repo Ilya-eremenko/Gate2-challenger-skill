@@ -313,6 +313,36 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, text)
 
+    def test_summary_mode_defaults_to_executive_summary(self):
+        text = OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "Default `summary` output is a plain executive summary for a top-management reader",
+            "Хотите расширенную версию с блокерами и доказательствами?",
+            "Do not use schema keys such as `blockers`, `blocker_id`, `origin`, `severity`",
+            "what can be approved, what cannot be approved yet",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_summary_mode_progressively_reveals_structured_and_full_outputs(self):
+        combined = (
+            SKILL_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "ask whether the user wants the expanded structured final synthesis",
+            "Хотите полный разбор по слоям?",
+            "The structured final synthesis is the expanded summary format",
+            "reuse the already computed synthesis and layer artifacts",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
     def test_solution_l1_links_segment_pain_solution_when_feature_inventory_is_used(self):
         text = LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
 
@@ -729,6 +759,193 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, combined)
 
+    def test_selected_issues_are_self_contained_for_human_readers(self):
+        combined = (
+            LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "each selected representative issue must be self-contained for a reader who has not opened the source document",
+            "state what is wrong, why it matters for the gate decision, and what decision consequence follows",
+            "avoid label-only issue text such as `proxy-validation:` without a plain-language explanation",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_evidence_explains_context_not_only_section_reference(self):
+        combined = (
+            LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "evidence must include section or table name plus the exact values, thresholds, dates, user segments, or claims being compared",
+            "do not cite a section name without explaining what in that section proves the issue",
+            "when evidence is a contradiction, include both sides of the contradiction in the evidence field",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_issues_are_written_as_readable_mini_arguments(self):
+        combined = (
+            LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "write each issue as a human-readable mini-argument",
+            "prefer two compact sentences over one overloaded sentence",
+            "evidence should connect the cited facts explicitly",
+            "source A says the target or claim, source B shows the result or dependency",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_readability_does_not_expand_issue_set_or_verdict(self):
+        combined = (
+            LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "Readable issue text must not change the evaluator's decisions",
+            "use readability rules to explain already-selected issues, not to discover extra issues",
+            "do not add a new Layer 1 issue, Layer 2 standalone issue, final blocker, severity upgrade, or verdict upgrade",
+            "preserve duplicate-family and output-budget limits before applying the readability pass",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_explanatory_fields_default_to_plain_russian(self):
+        combined = (
+            SKILL_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "Human-facing explanatory fields must be written in Russian by default",
+            "`reason`, `suggestion`, `issue`, `evidence`, `merged_interpretation`, and `why_difference`",
+            "Do not write mixed-language sentences such as `approval unsafe`, `proof gap`, `decision-ready`, or `blocker-grade` when a natural Russian phrase is available",
+            "English is allowed only for schema keys, status values, canonical block names, metric names, section titles, product names, duplicate-family keys, and exact source quotes",
+            "Use Russian explanations for duplicate-family labels: write the label only after a Russian sentence that explains the problem",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_common_analysis_anglicisms_have_russian_replacements(self):
+        combined = (
+            SKILL_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "`readiness` -> `готовность`",
+            "`approval boundary` -> `граница текущего решения`",
+            "`fakedoor` -> `фейкдор-тест` or `имитационный вход`",
+            "`target solution` -> `целевая версия решения`",
+            "`blockers` -> `блокирующие проблемы`",
+            "`scaled rollout` -> `масштабный запуск`",
+            "If an English term is a source quote or metric name, keep it in `evidence` but explain its meaning in Russian in the surrounding sentence",
+            "Do not write full explanatory sentences in English inside human-facing fields",
+            "Before returning the answer, scan `reason`, `issue`, `evidence`, `merged_interpretation`, and `why_difference` and rewrite any English explanatory sentence into Russian",
+            "Questions may remain in English when they are canonical atomic checks, but their `issue` explanations must be Russian",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_strategic_fit_does_not_replace_softer_alternative_check(self):
+        text = LAYER_2_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "declared strategic fit or stakeholder approval is not enough for `YES`",
+            "mandatory adoption, closure, regulatory, churn, abuse, or resource risk",
+            "justified versus lower-risk alternatives",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_readability_dedup_preserves_distinct_block_consequences(self):
+        combined = (
+            LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "readability and deduplication must not suppress distinct block consequences required by the rubric",
+            "the same missing MLP/end-state journey can appear in Solution for adoption testability and in Scope for test-vs-rollout readiness",
+            "same root cause may appear in different blocks when the decision consequence is different",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_specific_readability_preserves_key_numeric_mismatches(self):
+        text = LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "preserve the direction and exact rates",
+            "preserve both sides of the mismatch and the concrete threshold or allowance",
+            "do not narrow a broad model-transparency issue to only conversion ramp or take rate",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_final_blockers_include_human_readable_proof_gap_and_consequence(self):
+        combined = (
+            OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + VERDICT_POLICY_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "final blocker reason must name the broken claim, the proof gap, and the approval consequence",
+            "blocker evidence must provide enough local context to understand criticality without opening the document",
+            "include the specific threshold miss, unresolved dependency, model assumption, or contradictory claim that makes the blocker material",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
+
+    def test_final_blocker_reason_and_evidence_are_mini_arguments(self):
+        text = OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "write final blocker `reason` as a readable mini-argument",
+            "first name the decision claim, then the missing or contradictory proof, then the gate consequence",
+            "write blocker `evidence` as a short proof chain with source context",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
     def test_synthesis_compares_main_narrative_confidence_to_supporting_sections(self):
         synthesis_path = REPO_ROOT / "skills" / "gate2-challenger" / "references" / "synthesis-contract.md"
         combined = SKILL_PATH.read_text(encoding="utf-8") + "\n" + synthesis_path.read_text(encoding="utf-8")
@@ -741,6 +958,20 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
         for phrase in required_phrases:
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, combined)
+
+    def test_preflight_requires_git_freshness_before_review(self):
+        text = SKILL_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "Version freshness preflight",
+            "scripts/check_git_freshness.py",
+            "git checkout is up to date with its upstream",
+            "Do not start Layer 1 or Layer 2",
+            "local fallback or intentional benchmark run",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
 
 
 if __name__ == "__main__":

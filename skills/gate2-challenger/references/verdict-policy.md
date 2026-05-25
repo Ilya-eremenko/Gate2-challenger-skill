@@ -205,6 +205,9 @@ The final summary is stricter than the layer sections:
 When blocker-grade issues are promoted after merge:
 
 - each final blocker should appear only once
+- final blocker reason must name the broken claim, the proof gap, and the approval consequence
+- blocker evidence must provide enough local context to understand criticality without opening the document
+- include the specific threshold miss, unresolved dependency, model assumption, or contradictory claim that makes the blocker material
 - each final blocker should identify its origin as one of:
   - `covered_by_l2`
   - `novel_from_l1`

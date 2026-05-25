@@ -45,11 +45,83 @@ Issue severity uses:
 - `MEDIUM`
 - `LOW`
 
+## Language policy
+
+Human-facing explanatory fields must be written in Russian by default.
+
+This applies to `reason`, `suggestion`, `issue`, `evidence`, `merged_interpretation`, and `why_difference`.
+
+Rules:
+
+- Do not write mixed-language sentences such as `approval unsafe`, `proof gap`, `decision-ready`, or `blocker-grade` when a natural Russian phrase is available.
+- English is allowed only for schema keys, status values, canonical block names, metric names, section titles, product names, duplicate-family keys, and exact source quotes.
+- Keep schema keys exactly as specified: `verdict`, `confidence`, `blockers`, `reason`, `evidence`, `issue`, `merged_block_assessment`, and status values remain unchanged.
+- Translate explanatory wording: use `решение об одобрении небезопасно` instead of `approval unsafe`, `пробел в доказательствах` instead of `proof gap`, `достаточно для решения` instead of `decision-ready`, and `блокирующая проблема` instead of `blocker-grade`.
+- Use Russian explanations for duplicate-family labels: write the label only after a Russian sentence that explains the problem.
+- If the source document uses English section names, metric names, product names, or quoted phrases, keep them exactly when needed for evidence.
+
+Common analysis wording replacements:
+
+- `readiness` -> `готовность`
+- `approval boundary` -> `граница текущего решения`
+- `fakedoor` -> `фейкдор-тест` or `имитационный вход`
+- `target solution` -> `целевая версия решения`
+- `blockers` -> `блокирующие проблемы`
+- `scaled rollout` -> `масштабный запуск`
+- If an English term is a source quote or metric name, keep it in `evidence` but explain its meaning in Russian in the surrounding sentence.
+- Do not write full explanatory sentences in English inside human-facing fields.
+- Before returning the answer, scan `reason`, `issue`, `evidence`, `merged_interpretation`, and `why_difference` and rewrite any English explanatory sentence into Russian.
+- Questions may remain in English when they are canonical atomic checks, but their `issue` explanations must be Russian.
+
 ## Summary mode
 
-In `summary` mode, output only the final synthesis section.
+In `summary` mode, use progressive disclosure by default.
+
+Default `summary` output is a plain executive summary for a top-management reader, not the structured synthesis schema.
+
+### Default executive summary format
+
+```text
+**Вердикт: <простое решение на русском>.**
+
+<1-2 коротких абзаца: что в инициативе сильного и почему она не отклоняется сразу / почему одобряется / почему отклоняется.>
+
+**Почему такой вердикт:**
+
+1. <простое объяснение главной причины>
+2. <простое объяснение второй причины>
+3. <простое объяснение третьей причины, если нужна>
+
+**Итоговая рекомендация:**
+
+<одно управленческое действие: одобрить / одобрить условно / запросить подтверждения / отклонить и почему>
+
+Хотите расширенную версию с блокерами и доказательствами?
+```
+
+Rules:
+
+- Write for a top-management reader who does not want to learn evaluation terminology.
+- Do not use schema keys such as `blockers`, `blocker_id`, `origin`, `severity`, `covered_by_l2`, or `merged_block_assessment`.
+- Do not expose canonical block names unless they are translated or explained in plain Russian.
+- Do not use English evaluation terms when a natural Russian phrase exists.
+- Explain the verdict in business language: what can be approved, what cannot be approved yet, what proof is missing, and what decision consequence follows.
+- Keep the default executive summary concise: usually 5-10 short paragraphs or bullets total.
+- End with exactly one follow-up question asking whether the user wants the expanded version with blockers and evidence.
+- If the review is fragmentary, explicitly say that the conclusion is provisional and limited by incomplete input.
+- If the user explicitly asked for the structured schema, or answers yes to the expanded-version question, output the structured final synthesis below.
+- After showing the structured final synthesis in response to a user yes, ask: `Хотите полный разбор по слоям?`
+- If the user answers yes to the full-analysis question, output the detailed mode: final synthesis, Input Doc, Layer 1, Layer 2, and merged block assessment.
+- Do not rerun the review only because the user asks for the expanded or full version; reuse the already computed synthesis and layer artifacts when they are available in the conversation.
+- If `debug stages=on`, skip the plain executive summary and use detailed mode with explicit Layer 1 and Layer 2 sections.
 
 ### Final synthesis format
+
+The structured final synthesis is the expanded summary format. Use it only when:
+
+- the user explicitly asks for a structured/technical output
+- the user answers yes to the default executive summary follow-up
+- `extended` / `detailed` output needs the final synthesis section before Layer 1 and Layer 2
 
 ```text
 verdict: APPROVE | NEED_EVIDENCE | REJECT
@@ -79,6 +151,12 @@ Rules:
 - `critical_improvements` are important but non-mandatory
 - do not include internal layer refs in the final synthesis; keep them only in diagnostic sections
 - when the review is fragmentary, keep the wording explicitly provisional and force `LOW` confidence
+- final blocker reason must name the broken claim, the proof gap, and the approval consequence
+- blocker evidence must provide enough local context to understand criticality without opening the document
+- include the specific threshold miss, unresolved dependency, model assumption, or contradictory claim that makes the blocker material
+- write final blocker `reason` as a readable mini-argument, not as a rubric label: first name the decision claim, then the missing or contradictory proof, then the gate consequence
+- write blocker `evidence` as a short proof chain with source context: `<section/table> says <claim or target>; <section/table> shows <fact/result>; therefore <why the gap is material>`
+- write `reason` and `evidence` explanations in Russian, except exact source text, metric names, product names, schema keys, and status values
 
 ## Detailed mode
 
@@ -91,6 +169,17 @@ In `detailed` mode, output:
 5. merged block assessment
 
 If `debug stages = on`, keep Layer 1, Layer 2, and merged block assessment explicitly visible as separate sections even if the user asks for a compact diagnostic response.
+
+## Readability is a presentation layer
+
+Readable issue text must not change the evaluator's decisions.
+
+- use readability rules to explain already-selected issues, not to discover extra issues
+- do not add a new Layer 1 issue, Layer 2 standalone issue, final blocker, severity upgrade, or verdict upgrade only because a longer explanation can be written
+- if a readable explanation reveals that two issues share the same root cause, consolidate them rather than split them
+- preserve duplicate-family and output-budget limits before applying the readability pass
+- when a detail belongs only as proof for a broader blocker, keep it in `evidence` instead of promoting it to a separate issue
+- this does not suppress distinct block consequences required by the rubric; for example, the same missing MLP/end-state journey can appear in Solution for adoption testability and in Scope for test-vs-rollout readiness
 
 ## Normalized Layer 1 format
 
@@ -124,6 +213,14 @@ Rules:
 - only decision-relevant issues
 - Layer 1 may raise a cross-sectional dimension-level issue when the decision narrative breaks across sections
 - every issue should preserve the specific decision test behind the problem instead of only an umbrella diagnosis
+- every issue must be self-contained for a reader who has not opened the source document
+- each issue must state what is wrong, why it matters for the gate decision, and what decision consequence follows
+- write `issue` and explanatory `evidence` in Russian, while preserving exact source labels, metric names, product names, and quoted text
+- prefer two compact sentences in `issue`: sentence 1 explains the broken decision test in plain language; sentence 2 explains why this changes approval safety
+- evidence must include section or table name plus the exact values, thresholds, dates, user segments, or claims being compared
+- do not cite a section name without explaining what in that section proves the issue
+- when evidence is a contradiction, include both sides of the contradiction in the evidence field
+- evidence should read like a mini-proof, for example: `FAQ 5 sets seller readiness threshold at 60% for B2C White, but reports 44% for Enterprise and 58% for C2C without a clean B2C White result; this is why the "confirmed" conclusion is not decision-safe`
 - use separate Layer 1 issues for the same root cause only when each issue has a distinct decision consequence; otherwise do not repeat it as a new issue
 - bundle related Layer 2-level observations under a broader Layer 1 decision blocker when they support one gate failure
 - keep missed funnel thresholds, buyer/seller activation misses, the optional-pilot-to-mandatory-rollout leap, planning statements treated as validation, and take-rate / monetization assumption changes as evidence under the broad Layer 1 issue unless each has a distinct decision consequence
@@ -167,6 +264,15 @@ Rules:
 - assign a duplicate-family key before writing Layer 2 output; examples include `dependency-readiness`, `proxy-validation`, `monetization-contradiction`, `cancellation-boundary`, `threshold-mismatch`, `model-reconstructability`, `segment-path-mixing`, and `risk-control-maturity`
 - selected issue families are a pre-output control, not an optional writing style
 - only the selected representative atomic answer gets full standalone issue text
+- each selected representative issue must be self-contained for a reader who has not opened the source document
+- selected representatives must state what is wrong, why it matters for the gate decision, and what decision consequence follows
+- avoid label-only issue text such as `proxy-validation:` without a plain-language explanation
+- if an issue uses a duplicate-family key, follow it with a plain-language explanation in the same sentence
+- prefer `issue` wording that explains the local decision test before the family name when the family label would be opaque to a human reader
+- write selected representative `issue` text in Russian; duplicate-family keys may remain in English only as compact labels after the Russian explanation
+- evidence must include section or table name plus the exact values, thresholds, dates, user segments, or claims being compared
+- do not cite a section name without explaining what in that section proves the issue
+- when evidence is a contradiction, include both sides of the contradiction in the evidence field
 - non-selected repeated atomic answers must use `same duplicate family; see <family>`
 - do not add a second local-angle issue sentence for the same family
 - every atomic question must still be answered against its own decision test

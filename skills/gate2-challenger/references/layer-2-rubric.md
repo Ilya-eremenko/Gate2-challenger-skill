@@ -37,6 +37,7 @@ Materiality threshold:
 - if there is concrete evidence for a problem-bearing atomic check, record the issue even when the same family is also covered elsewhere
 - when a problem-bearing atomic check repeats the same family, use `same duplicate family; local angle:` only when the local consequence is materially different; do not turn the issue into `YES` / `No material issue` if that would hide a real decision defect, but do not create a second standalone issue for the same defect
 - for explicit weak-link checks covering target clarity, segment mapping, current-state significance, prioritization, softer alternatives, approval boundary, planning-vs-validation, metric reconciliation, changed monetization, downside scenarios, external dependency classification, problem drift, or supporting-section caution, must not suppress it as generic when evidence shows a decision-relevant weakness
+- for softer-alternative checks, declared strategic fit or stakeholder approval is not enough for `YES` when the chosen path adds mandatory adoption, closure, regulatory, churn, abuse, or resource risk; answer against whether the high-risk path is justified versus lower-risk alternatives
 
 Layer 2 output budget:
 
@@ -46,6 +47,19 @@ Layer 2 output budget:
 - family consolidation should happen before formatting, not after the output is already written
 - selected issue families are a pre-output control, not an optional writing style
 - only the selected representative atomic answer gets full standalone issue text
+- each selected representative issue must be self-contained for a reader who has not opened the source document
+- selected representatives must state what is wrong, why it matters for the gate decision, and what decision consequence follows
+- avoid label-only issue text such as `proxy-validation:` without a plain-language explanation
+- write selected representative `issue` and explanatory `evidence` in Russian by default; preserve English only for source section names, metric names, product names, exact quotes, schema keys, status values, and duplicate-family keys
+- when using duplicate-family keys such as `proxy-validation` or `dependency-readiness`, first write a Russian explanation of the problem, then add the key only as a compact label if useful
+- if a duplicate-family key is useful, attach it to a plain-language explanation rather than leaving it as the issue itself
+- write selected representative issues as mini-arguments: context, broken atomic decision test, and gate consequence
+- readability is a presentation layer: do not create an extra standalone atomic issue, split a duplicate family, or upgrade a block status only because the explanation can include more detail
+- when extra detail supports an already-selected duplicate family, put it in `evidence` or `same duplicate family` wording instead of promoting it to another issue
+- evidence must include section or table name plus the exact values, thresholds, dates, user segments, or claims being compared
+- do not cite a section name without explaining what in that section proves the issue
+- when evidence is a contradiction, include both sides of the contradiction in the evidence field
+- evidence should connect the cited facts explicitly: source A says the target or claim, source B shows the result or dependency, and the final clause explains why that comparison proves the issue
 - non-selected repeated atomic answers must use `same duplicate family; see <family>`
 - do not add a second local-angle issue sentence for the same family
 
