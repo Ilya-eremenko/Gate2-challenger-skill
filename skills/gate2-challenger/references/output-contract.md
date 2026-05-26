@@ -77,50 +77,85 @@ Common analysis wording replacements:
 
 In `summary` mode, use progressive disclosure by default.
 
-Default `summary` output is a plain executive summary for a top-management reader, not the structured synthesis schema.
+Default `summary` output is an investment-committee style narrative assessment for a top-management reader, not the structured synthesis schema. It should read like a committee member's written opinion: decision first, then the case for that decision, short evidence, and practical recommendations.
 
-### Default executive summary format
+### Default investment committee summary format
 
 ```text
-**Вердикт: <простое решение на русском>.**
+## Оценка документа
 
-<1-2 коротких абзаца: что в инициативе сильного и почему она не отклоняется сразу / почему одобряется / почему отклоняется.>
+**Рекомендация: <простое решение на русском: одобрить / одобрить ограниченно / запросить доказательства / не одобрять полный план>.**
 
-**Почему такой вердикт:**
+<2-3 абзаца: что уже доказано в инициативе, почему это не отказ от направления, и чем текущий запрос шире доказанного base case. Если документ просит одобрить масштабирование, ресурсы, финансовый uplift или новый сценарий, явно отдели это от уже подтвержденного продукта.>
 
-1. <простое объяснение главной причины>
-2. <простое объяснение второй причины>
-3. <простое объяснение третьей причины, если нужна>
+## Почему оценка именно такая
 
-**Итоговая рекомендация:**
+1. **<причина простым управленческим языком>**
+<2-4 предложения: что именно не закрыто, почему это важно для решения, что может сломаться, если одобрить сейчас. Если используешь термин из документа, сразу объясни его по-русски.>
+Краткие доказательства:
+- <FAQ / Appendix / table>: <факт или цифра> -> <почему это подтверждает проблему>
+- <FAQ / Appendix / table>: <факт или цифра> -> <почему это важно для решения>
 
-<одно управленческое действие: одобрить / одобрить условно / запросить подтверждения / отклонить и почему>
+2. **<следующая причина>**
+<то же: объяснение + краткие доказательства>
 
-Хотите расширенную версию с блокерами и доказательствами?
+<Обычно 4-6 причин. Не добавляй причину без конкретного доказательства и последствий для решения.>
+
+## Рекомендация инвестиционного комитета
+
+**<Одно предложение: что именно можно одобрить сейчас и что нельзя одобрять без условий.>**
+
+Что можно одобрить сейчас:
+- <ограниченный следующий шаг / проверка / пилот / ресурс на валидацию>
+
+Что не стоит одобрять сейчас:
+- <полный rollout / полный uplift case / включение в базовый финансовый план без условий>
+
+## Что нужно улучшить в документе
+
+1. **<улучшение>**
+<практическое объяснение: что переписать, разделить, пересчитать или доказать>
+
+2. **<улучшение>**
+<практическое объяснение>
+
+## Итог
+
+<1 короткий абзац: итоговое управленческое решение и условие возврата на комитет.>
+
+Хотите короткую сводку с блокерами и доказательствами?
 ```
 
 Rules:
 
 - Write for a top-management reader who does not want to learn evaluation terminology.
+- Write as a professional investment committee assessment, not as a rubric report.
+- Decision first: the first substantive sentence must say what should be approved, not approved, or approved conditionally.
+- Separate the proven base case from the requested new growth / scaling / resource / financial-uplift case whenever the document mixes them.
 - Do not use schema keys such as `blockers`, `blocker_id`, `origin`, `severity`, `covered_by_l2`, or `merged_block_assessment`.
 - Do not expose canonical block names unless they are translated or explained in plain Russian.
 - Do not use English evaluation terms when a natural Russian phrase exists.
+- Do not leave opaque English or business shorthand unexplained. If the source uses terms such as `partner readiness`, `pre-scoring`, `credit bureau data`, `antifraud`, `legal approvals`, `uplift`, `rollout`, `base case`, `Scenario 3`, `fee elasticity`, `churn`, `PMF`, `BNPL`, `Classified`, or `go/no-go`, either translate them or explain them immediately in Russian.
+- Prefer this pattern for technical terms: `<source term> — <plain Russian explanation>`. Example: `pre-scoring — предварительная оценка пользователя до оформления кредита, которая должна предсказать вероятность одобрения`.
+- For every major reason, answer three questions in the text: what exactly is not closed, why it matters for the investment decision, and what could break if the committee approves now.
+- Use short proof chains under `Краткие доказательства`: cite the section, cite the concrete fact or number, then explain why the fact matters. Do not cite a section name alone.
 - Explain the verdict in business language: what can be approved, what cannot be approved yet, what proof is missing, and what decision consequence follows.
-- Keep the default executive summary concise: usually 5-10 short paragraphs or bullets total.
-- End with exactly one follow-up question asking whether the user wants the expanded version with blockers and evidence.
+- Keep the default summary substantive but readable: usually 900-1600 words for a full document, shorter only when the source is small or fragmentary.
+- Use a clear written style: remove filler, avoid repeated wording, prefer direct verbs, and rewrite awkward rubric phrasing into natural Russian. Do not add a separate tone-analysis section.
+- End with exactly one follow-up question asking whether the user wants the short blocker/evidence version.
 - If the review is fragmentary, explicitly say that the conclusion is provisional and limited by incomplete input.
-- If the user explicitly asked for the structured schema, or answers yes to the expanded-version question, output the structured final synthesis below.
+- If the user explicitly asked for the structured schema, or answers yes to the short blocker/evidence question, output the structured final synthesis below.
 - After showing the structured final synthesis in response to a user yes, ask: `Хотите полный разбор по слоям?`
 - If the user answers yes to the full-analysis question, output the detailed mode: final synthesis, Input Doc, Layer 1, Layer 2, and merged block assessment.
 - Do not rerun the review only because the user asks for the expanded or full version; reuse the already computed synthesis and layer artifacts when they are available in the conversation.
-- If `debug stages=on`, skip the plain executive summary and use detailed mode with explicit Layer 1 and Layer 2 sections.
+- If `debug stages=on`, skip the narrative summary and use detailed mode with explicit Layer 1 and Layer 2 sections.
 
 ### Final synthesis format
 
-The structured final synthesis is the expanded summary format. Use it only when:
+The structured final synthesis is the short blocker/evidence summary. Use it only when:
 
 - the user explicitly asks for a structured/technical output
-- the user answers yes to the default executive summary follow-up
+- the user answers yes to the default summary follow-up
 - `extended` / `detailed` output needs the final synthesis section before Layer 1 and Layer 2
 
 ```text
@@ -130,7 +165,7 @@ blockers:
 - blocker_id: B<n>
   block: <canonical block name>
   severity: HIGH | MEDIUM | LOW
-  reason: <short blocker statement>
+  reason: <readable blocker statement with the term, plain explanation, and decision consequence>
   origin: covered_by_l2 | novel_from_l1 | confirmed_by_both
   evidence:
     - <quote / section / fragment reference>
@@ -156,6 +191,8 @@ Rules:
 - include the specific threshold miss, unresolved dependency, model assumption, or contradictory claim that makes the blocker material
 - write final blocker `reason` as a readable mini-argument, not as a rubric label: first name the decision claim, then the missing or contradictory proof, then the gate consequence
 - write blocker `evidence` as a short proof chain with source context: `<section/table> says <claim or target>; <section/table> shows <fact/result>; therefore <why the gap is material>`
+- Expand unclear terms inside `reason`, not only in `evidence`. Bad: `depends on partner readiness and pre-scoring`. Good: `depends on whether banks and BNPL partners have confirmed launch terms, API integration, traffic capacity, and whether pre-scoring can reliably predict approval before the user sees an offer`.
+- Avoid label-only blocker reasons such as `dependency-readiness`, `proxy-validation`, `planning-vs-validation`, or `model-assumption-readiness`. These labels may remain only as internal duplicate-family keys, not as user-facing explanations.
 - write `reason` and `evidence` explanations in Russian, except exact source text, metric names, product names, schema keys, and status values
 
 ## Detailed mode
@@ -169,6 +206,16 @@ In `detailed` mode, output:
 5. merged block assessment
 
 If `debug stages = on`, keep Layer 1, Layer 2, and merged block assessment explicitly visible as separate sections even if the user asks for a compact diagnostic response.
+
+Detailed mode readability rules:
+
+- Treat detailed mode as the full human-readable analysis, not as a raw rubric dump.
+- Preserve the required statuses, canonical block names, questions, and schema fields, but make every `issue`, `evidence`, `merged_interpretation`, and `why_difference` understandable without knowing the rubric.
+- When a block uses a technical or source term, explain it the first time it appears in that block. For example, do not write only `partner readiness`; write that this means confirmed partner launch terms, API integration, traffic capacity, commercial terms, and operational ownership.
+- Do not leave compact diagnostic labels as the only explanation. Phrases like `same duplicate family; see proxy-validation` are acceptable only after the representative issue in the same block has already explained the underlying problem in Russian.
+- In Layer 1 and merged block assessment, prefer a short paragraph-level explanation of the block consequence over a terse label. The reader should understand what cannot be approved, what evidence is missing, and what should change in the document.
+- In Layer 2, keep the atomic questions, but make non-`YES` answers concrete: state which claim is being tested, what fact fails to prove it, and why that matters for the gate decision.
+- Use the same writing-quality pass as summary mode: remove filler, avoid repeated wording, replace awkward rubric phrases with clear Russian, and keep the tone professional and investment-committee oriented.
 
 ## Readability is a presentation layer
 

@@ -257,8 +257,8 @@ Read [output-contract.md](references/output-contract.md) and follow it exactly.
 
 Formatting rules:
 
-- `standard` / `summary` mode: output the plain executive summary first, then ask whether the user wants the expanded structured final synthesis with blockers and evidence
-- if the user says yes to the expanded summary, show the structured final synthesis and then ask whether the user wants the full layer-by-layer analysis
+- `standard` / `summary` mode: output the investment-committee style narrative summary first, then ask whether the user wants the short blocker/evidence version
+- if the user says yes to the short blocker/evidence version, show the structured final synthesis and then ask whether the user wants the full layer-by-layer analysis
 - if the user says yes to the full analysis, show the `extended` / `detailed` output using the existing layer artifacts when available
 - `extended` / `detailed` mode: output final synthesis, then normalized Layer 1, then normalized Layer 2, then merged block assessment
 - `debug stages=on`: make Layer 1 and Layer 2 sections explicit even when the user asked for a compact answer
