@@ -353,6 +353,47 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, combined)
 
+    def test_summary_restores_decision_context_without_domain_specific_questions(self):
+        text = OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "restore the decision context before listing reasons",
+            "what changed or what current fact makes the requested decision necessary",
+            "the author's causal logic from problem to proposed answer",
+            "which part is already proven and which part goes beyond proven evidence",
+            "Do not hardcode domain-specific recovery, regulation, partner, or pricing questions",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_summary_evidence_bullets_are_proof_chains(self):
+        text = OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "Every `Краткие доказательства` bullet must be a proof chain",
+            "`source -> fact -> interpretation -> decision consequence`",
+            "must not end with only a fact, number, quote, or section reference",
+            "explain why this evidence proves the problem",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_summary_runs_reader_comprehension_pass(self):
+        text = OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "Run a final reader-comprehension pass",
+            "would understand what happened without opening the document",
+            "every evidence bullet connects the fact to the decision risk",
+            "rewrite the answer before returning if the proof chain is unclear",
+            "do not add new issues during this pass",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
     def test_solution_l1_links_segment_pain_solution_when_feature_inventory_is_used(self):
         text = LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
 

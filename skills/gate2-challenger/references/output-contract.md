@@ -93,15 +93,15 @@ Default `summary` output is an investment-committee style narrative assessment f
 
 **Рекомендация: <простое решение на русском: одобрить / одобрить ограниченно / запросить доказательства / не одобрять полный план>.**
 
-<2-3 абзаца: что уже доказано в инициативе, почему это не отказ от направления, и чем текущий запрос шире доказанного base case. Если документ просит одобрить масштабирование, ресурсы, финансовый uplift или новый сценарий, явно отдели это от уже подтвержденного продукта.>
+<2-3 абзаца: восстанови контекст решения простым языком: что документ просит одобрить, какой текущий факт или изменение делает этот запрос нужным, какая логика автора связывает проблему с предлагаемым решением, что уже доказано, и чем текущий запрос шире доказанного base case. Если документ просит одобрить масштабирование, ресурсы, финансовый uplift или новый сценарий, явно отдели это от уже подтвержденного продукта.>
 
 ## Почему оценка именно такая
 
 1. **<причина простым управленческим языком>**
 <2-4 предложения: что именно не закрыто, почему это важно для решения, что может сломаться, если одобрить сейчас. Если используешь термин из документа, сразу объясни его по-русски.>
 Краткие доказательства:
-- <FAQ / Appendix / table>: <факт или цифра> -> <почему это подтверждает проблему>
-- <FAQ / Appendix / table>: <факт или цифра> -> <почему это важно для решения>
+- <FAQ / Appendix / table>: <факт или цифра> -> <что это означает> -> <почему это подтверждает проблему для решения>
+- <FAQ / Appendix / table>: <факт или цифра> -> <что это означает> -> <что может быть ошибочно одобрено без дополнительной проверки>
 
 2. **<следующая причина>**
 <то же: объяснение + краткие доказательства>
@@ -139,13 +139,20 @@ Rules:
 - Write as a professional investment committee assessment, not as a rubric report.
 - Decision first: the first substantive sentence must say what should be approved, not approved, or approved conditionally.
 - Separate the proven base case from the requested new growth / scaling / resource / financial-uplift case whenever the document mixes them.
+- In the opening assessment, restore the decision context before listing reasons.
+- Decision context means: what the document asks to approve, what changed or what current fact makes the requested decision necessary, the author's causal logic from problem to proposed answer, which part is already proven and which part goes beyond proven evidence.
+- Do not hardcode domain-specific recovery, regulation, partner, or pricing questions. Derive the context from the document's own problem statement, facts, trend changes, dependencies, and requested approval.
 - Do not use schema keys such as `blockers`, `blocker_id`, `origin`, `severity`, `covered_by_l2`, or `merged_block_assessment`.
 - Do not expose canonical block names unless they are translated or explained in plain Russian.
 - Do not use English evaluation terms when a natural Russian phrase exists.
 - Do not leave opaque English or business shorthand unexplained. If the source uses terms such as `partner readiness`, `pre-scoring`, `credit bureau data`, `antifraud`, `legal approvals`, `uplift`, `rollout`, `base case`, `Scenario 3`, `fee elasticity`, `churn`, `PMF`, `BNPL`, `Classified`, or `go/no-go`, either translate them or explain them immediately in Russian.
 - Prefer this pattern for technical terms: `<source term> — <plain Russian explanation>`. Example: `pre-scoring — предварительная оценка пользователя до оформления кредита, которая должна предсказать вероятность одобрения`.
 - For every major reason, answer three questions in the text: what exactly is not closed, why it matters for the investment decision, and what could break if the committee approves now.
-- Use short proof chains under `Краткие доказательства`: cite the section, cite the concrete fact or number, then explain why the fact matters. Do not cite a section name alone.
+- Every `Краткие доказательства` bullet must be a proof chain.
+- Use this proof-chain shape: `source -> fact -> interpretation -> decision consequence`.
+- A proof bullet must not end with only a fact, number, quote, or section reference.
+- Each proof bullet must explain why this evidence proves the problem, not merely show that the source contains a related number.
+- Use short proof chains under `Краткие доказательства`: cite the section, cite the concrete fact or number, interpret what it means, then explain why the fact matters for the committee decision. Do not cite a section name alone.
 - Explain the verdict in business language: what can be approved, what cannot be approved yet, what proof is missing, and what decision consequence follows.
 - Keep the default summary substantive but readable: usually 900-1600 words for a full document, shorter only when the source is small or fragmentary.
 - Use a clear written style: remove filler, avoid repeated wording, prefer direct verbs, and rewrite awkward rubric phrasing into natural Russian. Do not add a separate tone-analysis section.
@@ -156,6 +163,23 @@ Rules:
 - If the user answers yes to the full-analysis question, output the detailed mode: final synthesis, Input Doc, Layer 1, Layer 2, Layer 3, and merged block assessment.
 - Do not rerun the review only because the user asks for the expanded or full version; reuse the already computed synthesis and layer artifacts when they are available in the conversation.
 - If `debug stages=on`, skip the narrative summary and use detailed mode with explicit Layer 1, Layer 2, and Layer 3 sections.
+
+### Reader-comprehension pass
+
+Run a final reader-comprehension pass before returning `summary` output.
+
+Check that a top-management reader would understand what happened without opening the document:
+
+- the opening assessment explains the decision context before the issue list
+- every major reason connects the broken or unproven claim to the approval consequence
+- every evidence bullet connects the fact to the decision risk
+- technical terms, source metrics, and business shorthand are translated or explained at first use
+- proof bullets do not stop at a raw number, quote, or section name
+- the final recommendation states what can be approved now, what cannot be approved yet, and what evidence would change that
+
+If any item fails, rewrite the answer before returning if the proof chain is unclear, context is missing, or evidence reads like a detached citation.
+
+This is a presentation pass: do not add new issues during this pass, do not change severities, and do not upgrade or downgrade the verdict only because the wording became clearer.
 
 ### Final synthesis format
 
