@@ -77,8 +77,17 @@ These are examples, not required labels.
 - revenue and gross-profit visibility
 - platformization trap
 - single fragile assumption
+- prior IC commitment / baseline reset
+- material tax/accounting caveat not modeled as scenario
+- dominant partner or segment-quality substitution gap
 
 Use these examples to recognize similar patterns across any Gate 2 document. Do not require the exact pattern names, exact section labels, or exact source structure.
+
+For these examples:
+
+- `prior IC commitment / baseline reset` means the current case may be framed as growth while the document actually resets, misses, or rewrites a prior committee commitment; ask what failed in the previous case and whether the new ask fixes the cause or only replaces the headline.
+- `material tax/accounting caveat not modeled as scenario` means a finance, tax, legal, or accounting caveat is large enough to change EBITDA, FCF, margin, revenue classification, or approval scope, but appears only as a comment, footnote, placeholder, or future alignment item.
+- `dominant partner or segment-quality substitution gap` means a high-quality segment, partner, approval source, or margin source is deteriorating, exiting, or changing incentives, while the model replaces it with volume from a different quality mix without proving equivalent economics.
 
 ## Output shape
 

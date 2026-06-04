@@ -1047,6 +1047,18 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, text)
 
+    def test_layer_3_includes_committee_memory_and_segment_quality_examples(self):
+        text = LAYER_3_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "prior IC commitment / baseline reset",
+            "material tax/accounting caveat not modeled as scenario",
+            "dominant partner or segment-quality substitution gap",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
     def test_synthesis_can_promote_novel_layer_3_issues_only_with_evidence(self):
         combined = (
             SYNTHESIS_CONTRACT_PATH.read_text(encoding="utf-8")
