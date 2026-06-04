@@ -7,25 +7,26 @@ description: Use when reviewing a Gate 2 initiative defense document, product de
 
 ## Overview
 
-Review a Gate 2 defense document in four passes:
+Review a Gate 2 defense document in five passes:
 
 0. Coordinator: input normalization and preflight
 1. Layer 1 worker: decision-critical block review
 2. Layer 2 worker: atomic weak-link review
-3. Synthesizer: blocker-first final verdict
+3. Layer 3 worker: adversarial business and committee-risk review
+4. Synthesizer: blocker-first final verdict
 
 Core principle: make the decision from logic and evidence, not from document polish.
 
 ## Execution model
 
-The four passes are separate responsibilities, not one blended review.
+The five passes are separate responsibilities, not one blended review.
 
 - The main agent acts as Coordinator and Synthesizer.
-- Layer 1 worker and Layer 2 worker are independent evaluation tasks that must receive the same normalized Markdown, canonical block taxonomy, and evidence standard.
-- When subagent tools are available and runtime policy allows agent delegation, run Layer 1 worker and Layer 2 worker as separate parallel subagents by default.
-- If runtime policy requires explicit user permission for subagents, ask once before review: `Run Layer 1 and Layer 2 as parallel subagents?`
-- If subagents are unavailable or forbidden, execute the same Layer 1 and Layer 2 worker responsibilities locally, keep their artifacts separate, and state that local fallback was used.
-- Do not let Layer 1 read Layer 2 output, or Layer 2 read Layer 1 output. Only the Synthesizer reads both artifacts.
+- Layer 1 worker, Layer 2 worker, and Layer 3 worker are independent evaluation tasks that must receive the same normalized Markdown, canonical block taxonomy, and evidence standard.
+- When subagent tools are available and runtime policy allows agent delegation, run Layer 1 worker, Layer 2 worker, and Layer 3 worker as separate parallel subagents by default.
+- If runtime policy requires explicit user permission for subagents, ask once before review: `Run Layer 1, Layer 2, and Layer 3 as parallel subagents?`
+- If subagents are unavailable or forbidden, execute the same Layer 1, Layer 2, and Layer 3 worker responsibilities locally, keep their artifacts separate, and state that local fallback was used.
+- Do not let Layer 1 read Layer 2 or Layer 3 output, Layer 2 read Layer 1 or Layer 3 output, or Layer 3 read Layer 1 or Layer 2 output. Layer 3 must not read Layer 1 or Layer 2 output. Only the Synthesizer reads all three artifacts.
 
 ## Required evaluation rules
 
@@ -110,7 +111,7 @@ Common analysis wording replacements:
 
 ## Preflight: document completeness
 
-Before dispatching Layer 1 and Layer 2, the coordinator must verify whether the user likely provided a full Gate 2 document rather than a fragment.
+Before dispatching Layer 1, Layer 2, and Layer 3, the coordinator must verify whether the user likely provided a full Gate 2 document rather than a fragment.
 
 Signals that the input may be incomplete:
 
@@ -140,7 +141,7 @@ Before starting a review, verify that the local `gate2-challenger` git checkout 
 - Run `python3 scripts/check_git_freshness.py` when this skill package is inside the canonical git checkout.
 - If the installed skill is a copied package and not itself inside git, run `python3 scripts/check_git_freshness.py --repo /path/to/Gate2-challenger` from this package, or ask the user for the canonical checkout path.
 - The check must confirm that the git checkout is up to date with its upstream and that `skills/gate2-challenger` has no local modifications.
-- Do not start Layer 1 or Layer 2 until this preflight passes.
+- Do not start Layer 1 or Layer 2 until this preflight passes; the same preflight also blocks Layer 3.
 - If the check cannot run because git, network fetch, or the canonical checkout is unavailable, stop and tell the user what must be updated. Continue only if the user explicitly says this is a local fallback or intentional benchmark run.
 
 If the user did not explicitly specify the review mode:
@@ -173,7 +174,7 @@ Coordinator requirements:
 
 - normalize the input exactly once
 - determine `full document` vs `fragment` exactly once
-- pass the same normalized Markdown to both Layer 1 and Layer 2
+- pass the same normalized Markdown to Layer 1, Layer 2, and Layer 3
 - use one canonical block taxonomy across all stages
 - use one evidence standard across all stages
 - before any verdicting, build four mandatory internal reasoning artifacts:
@@ -181,7 +182,7 @@ Coordinator requirements:
   - `Evidence ladder`: classify central claims as hard evidence, experiment / pilot result, operational signal, customer feedback / survey / CSAT, benchmark / competitor reference, or narrative assumption
   - `Dependency map`: milestone, prerequisites, status of each prerequisite, control, funded-scope status, blocker severity
   - `Consistency matrix`: cross-check problem, segment, solution, validation, metrics, traction, roadmap, blockers, and legal / ops / risk constraints
-- when converting internal artifacts into Layer 1 and Layer 2 output:
+- when converting internal artifacts into Layer 1, Layer 2, and Layer 3 output:
   - `Hypothesis ledger` must flag planning statements labeled as validation
   - `Evidence ladder` must preserve evidence-type proportionality, especially when surveys, CSAT, quotes, or benchmarks support central business claims
   - `Dependency map` must distinguish owner, funded scope, implemented control, and contingent external dependency
@@ -224,17 +225,32 @@ Important:
 - Layer 2 does not write a free-form summary
 - the Atomic checks block status embedded in the `layer_2` heading is the Layer 2 aggregate for that block
 
-### Step 3: Run synthesizer
+### Step 3: Run Layer 3 worker
+
+Read [layer-3-adversarial-rubric.md](references/layer-3-adversarial-rubric.md) and evaluate adversarial business, financial, governance, incentive, operating-model, and committee-risk weak spots.
+
+Important:
+
+- Layer 3 returns only `layer_3`
+- Layer 3 must not read Layer 1 or Layer 2 output
+- Layer 3 is prompt-first and uses its lenses as examples, not as mandatory checklist rows
+- Layer 3 does not compute the final verdict
+- Layer 3 does not repeat Layer 1 or Layer 2 unless the adversarial lens changes the approval consequence
+- Layer 3 findings are promotable only when they are backed by concrete document evidence and explain why the concern changes what can be safely approved now
+
+### Step 4: Run synthesizer
 
 Read [verdict-policy.md](references/verdict-policy.md) and [synthesis-contract.md](references/synthesis-contract.md).
 
 The synthesizer must:
 
-- read `layer_1` and `layer_2` as structured intermediate artifacts
+- read `layer_1`, `layer_2`, and `layer_3` as structured intermediate artifacts
 - preserve raw Layer 1 dimension statuses and Layer 2 Atomic checks block statuses as diagnostic outputs
+- treat raw Layer 3 findings as diagnostic outputs, not as automatic final blockers
 - deduplicate overlapping issues before writing final blockers
-- analyze meaningful differences between the two layers
+- analyze meaningful differences between the three layers
 - use `merged_block_assessment` to explain how broad Layer 1 judgment and detailed Layer 2 evidence fit together
+- add Layer 3 findings only when they are novel, evidence-backed, and change the safe approval boundary
 - prefer supporting sections over optimistic narrative when they materially disagree
 - preserve a confidence mismatch when supporting sections are materially more cautious than the main narrative
 - promote only blocker-grade `HIGH` issues and clearly decision-relevant `MEDIUM` issues to the final blockers list
@@ -247,11 +263,12 @@ Use it in this order:
 3. assign atomic results in Layer 2
 4. aggregate Layer 2 atomic results to Atomic checks block statuses
 5. aggregate Layer 2 to a layer verdict
-6. merge Layer 1 and Layer 2 block interpretations using the synthesis contract
-7. synthesize the final verdict from the raw layer verdicts
-8. promote only blocker-grade merged issues to the final summary
+6. run Layer 3 adversarial review and return `layer_3`
+7. merge Layer 1, Layer 2, and Layer 3 interpretations using the synthesis contract
+8. synthesize the final verdict from the raw layer verdicts and promotable Layer 3 findings
+9. promote only blocker-grade merged issues and evidence-backed `novel_from_l3` findings to the final summary
 
-### Step 4: Format the response
+### Step 5: Format the response
 
 Read [output-contract.md](references/output-contract.md) and follow it exactly.
 
@@ -260,8 +277,8 @@ Formatting rules:
 - `standard` / `summary` mode: output the investment-committee style narrative summary first, then ask whether the user wants the short blocker/evidence version
 - if the user says yes to the short blocker/evidence version, show the structured final synthesis and then ask whether the user wants the full layer-by-layer analysis
 - if the user says yes to the full analysis, show the `extended` / `detailed` output using the existing layer artifacts when available
-- `extended` / `detailed` mode: output final synthesis, then normalized Layer 1, then normalized Layer 2, then merged block assessment
-- `debug stages=on`: make Layer 1 and Layer 2 sections explicit even when the user asked for a compact answer
+- `extended` / `detailed` mode: output final synthesis, then normalized Layer 1, then normalized Layer 2, then normalized Layer 3, then merged block assessment
+- `debug stages=on`: make Layer 1, Layer 2, and Layer 3 sections explicit even when the user asked for a compact answer
 
 ## Review discipline
 

@@ -2,9 +2,9 @@
 
 ## Purpose
 
-The synthesizer combines broad Layer 1 judgment with detailed Layer 2 evidence.
+The synthesizer combines broad Layer 1 judgment, detailed Layer 2 evidence, and Layer 3 adversarial committee-risk findings.
 
-It is not a third independent review pass. Its job is to merge, explain, deduplicate, and promote.
+It is not a fourth independent review pass. Its job is to merge, explain, deduplicate, and promote.
 
 ## Inputs
 
@@ -12,8 +12,9 @@ The synthesizer reads:
 
 - `layer_1`
 - `layer_2`
+- `layer_3`
 - Layer 2 Atomic checks block statuses embedded in `layer_2`
-- the canonical block names shared across both layers
+- the canonical block names shared across the layers
 - the fragment / full-document flag determined by the coordinator
 
 The synthesizer must treat these layer artifacts as the primary evidence source for merge decisions.
@@ -55,6 +56,18 @@ This means:
 - the synthesizer must preserve such an issue as `novel_from_l1` when it remains decision-relevant after merge
 - the synthesizer must not discard a Layer 1 issue solely because Layer 2 did not ask the exact same question
 
+## Preserving the value of Layer 3
+
+Layer 3 is a prompt-first adversarial review of business, governance, accounting, attribution, incentive, operating-model, and committee-risk weaknesses.
+
+This means:
+
+- Layer 3 may raise an issue as `novel_from_l3` when the issue is not already captured by Layer 1 or Layer 2
+- the synthesizer may promote `novel_from_l3` only when the finding has concrete document evidence and changes what can be safely approved now
+- the synthesizer must not promote a Layer 3 finding only because it is uncomfortable, plausible, or rhetorically strong
+- do not promote generic adversarial concerns that are not anchored in the document's own numbers, commitments, roadmap, stakeholder comments, economics, or evidence gaps
+- if a Layer 3 issue is useful but not decision-changing, keep it as a critical improvement or diagnostic note rather than a final blocker
+
 ## Supporting-section priority
 
 Supporting sections have the same evidentiary weight as the main narrative.
@@ -83,8 +96,10 @@ Apply these rules:
 The synthesizer must:
 
 - preserve raw Layer 1 dimension statuses and Layer 2 Atomic checks block statuses as separate diagnostic outputs
+- preserve raw `layer_3` findings as diagnostic outputs
 - use `merged_block_assessment` only for explanation, deduplication, and blocker promotion
 - compute the final verdict from the raw layer verdicts according to `verdict-policy.md`
 - after duplicate-family consolidation, override raw layer `REJECT` to final `NEED_EVIDENCE` when failures are mostly evidence-remediable and the initiative is not structurally impossible or unsafe
 - promote only blocker-grade `HIGH` issues and clearly decision-relevant `MEDIUM` issues
 - avoid inventing new blocker causes that are absent from both the document evidence and the layer artifacts
+- before promoting a Layer 3 issue, verify that its `promotion_test` explains the approval consequence rather than only naming an adversarial lens

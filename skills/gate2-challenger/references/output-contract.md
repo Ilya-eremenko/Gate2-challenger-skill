@@ -39,6 +39,11 @@ Layer 2 atomic answers use:
 - `PARTIAL`
 - `NO`
 
+Layer 3 returns `layer_3` with:
+
+- `verdict: APPROVE | NEED_EVIDENCE | REJECT`
+- `adversarial_findings`
+
 Issue severity uses:
 
 - `HIGH`
@@ -76,6 +81,8 @@ Common analysis wording replacements:
 ## Summary mode
 
 In `summary` mode, use progressive disclosure by default.
+
+Default `summary` output is a plain executive summary for a top-management reader.
 
 Default `summary` output is an investment-committee style narrative assessment for a top-management reader, not the structured synthesis schema. It should read like a committee member's written opinion: decision first, then the case for that decision, short evidence, and practical recommendations.
 
@@ -123,7 +130,7 @@ Default `summary` output is an investment-committee style narrative assessment f
 
 <1 короткий абзац: итоговое управленческое решение и условие возврата на комитет.>
 
-Хотите короткую сводку с блокерами и доказательствами?
+Хотите расширенную версию с блокерами и доказательствами?
 ```
 
 Rules:
@@ -142,15 +149,17 @@ Rules:
 - Explain the verdict in business language: what can be approved, what cannot be approved yet, what proof is missing, and what decision consequence follows.
 - Keep the default summary substantive but readable: usually 900-1600 words for a full document, shorter only when the source is small or fragmentary.
 - Use a clear written style: remove filler, avoid repeated wording, prefer direct verbs, and rewrite awkward rubric phrasing into natural Russian. Do not add a separate tone-analysis section.
-- End with exactly one follow-up question asking whether the user wants the short blocker/evidence version.
+- End with exactly one follow-up question: ask whether the user wants the expanded structured final synthesis.
 - If the review is fragmentary, explicitly say that the conclusion is provisional and limited by incomplete input.
-- If the user explicitly asked for the structured schema, or answers yes to the short blocker/evidence question, output the structured final synthesis below.
+- If the user explicitly asked for the structured schema, or answers yes to the expanded blocker/evidence question, output the structured final synthesis below.
 - After showing the structured final synthesis in response to a user yes, ask: `Хотите полный разбор по слоям?`
-- If the user answers yes to the full-analysis question, output the detailed mode: final synthesis, Input Doc, Layer 1, Layer 2, and merged block assessment.
+- If the user answers yes to the full-analysis question, output the detailed mode: final synthesis, Input Doc, Layer 1, Layer 2, Layer 3, and merged block assessment.
 - Do not rerun the review only because the user asks for the expanded or full version; reuse the already computed synthesis and layer artifacts when they are available in the conversation.
-- If `debug stages=on`, skip the narrative summary and use detailed mode with explicit Layer 1 and Layer 2 sections.
+- If `debug stages=on`, skip the narrative summary and use detailed mode with explicit Layer 1, Layer 2, and Layer 3 sections.
 
 ### Final synthesis format
+
+The structured final synthesis is the expanded summary format.
 
 The structured final synthesis is the short blocker/evidence summary. Use it only when:
 
@@ -166,7 +175,7 @@ blockers:
   block: <canonical block name>
   severity: HIGH | MEDIUM | LOW
   reason: <readable blocker statement with the term, plain explanation, and decision consequence>
-  origin: covered_by_l2 | novel_from_l1 | confirmed_by_both
+  origin: covered_by_l2 | novel_from_l1 | novel_from_l3 | confirmed_by_both
   evidence:
     - <quote / section / fragment reference>
 
@@ -191,6 +200,8 @@ Rules:
 - include the specific threshold miss, unresolved dependency, model assumption, or contradictory claim that makes the blocker material
 - write final blocker `reason` as a readable mini-argument, not as a rubric label: first name the decision claim, then the missing or contradictory proof, then the gate consequence
 - write blocker `evidence` as a short proof chain with source context: `<section/table> says <claim or target>; <section/table> shows <fact/result>; therefore <why the gap is material>`
+- use `origin: novel_from_l3` only when the Layer 3 finding has concrete document evidence, changes what can be safely approved now, and is not already covered by Layer 1 or Layer 2
+- do not promote generic adversarial concerns from Layer 3 into `blockers`
 - Expand unclear terms inside `reason`, not only in `evidence`. Bad: `depends on partner readiness and pre-scoring`. Good: `depends on whether banks and BNPL partners have confirmed launch terms, API integration, traffic capacity, and whether pre-scoring can reliably predict approval before the user sees an offer`.
 - Avoid label-only blocker reasons such as `dependency-readiness`, `proxy-validation`, `planning-vs-validation`, or `model-assumption-readiness`. These labels may remain only as internal duplicate-family keys, not as user-facing explanations.
 - write `reason` and `evidence` explanations in Russian, except exact source text, metric names, product names, schema keys, and status values
@@ -203,18 +214,20 @@ In `detailed` mode, output:
 2. one `Input Doc` line
 3. normalized Layer 1
 4. normalized Layer 2
-5. merged block assessment
+5. normalized Layer 3
+6. merged block assessment
 
-If `debug stages = on`, keep Layer 1, Layer 2, and merged block assessment explicitly visible as separate sections even if the user asks for a compact diagnostic response.
+If `debug stages = on`, keep Layer 1, Layer 2, Layer 3, and merged block assessment explicitly visible as separate sections even if the user asks for a compact diagnostic response.
 
 Detailed mode readability rules:
 
 - Treat detailed mode as the full human-readable analysis, not as a raw rubric dump.
-- Preserve the required statuses, canonical block names, questions, and schema fields, but make every `issue`, `evidence`, `merged_interpretation`, and `why_difference` understandable without knowing the rubric.
+- Preserve the required statuses, canonical block names, questions, and schema fields, but make every `issue`, `evidence`, `promotion_test`, `merged_interpretation`, and `why_difference` understandable without knowing the rubric.
 - When a block uses a technical or source term, explain it the first time it appears in that block. For example, do not write only `partner readiness`; write that this means confirmed partner launch terms, API integration, traffic capacity, commercial terms, and operational ownership.
 - Do not leave compact diagnostic labels as the only explanation. Phrases like `same duplicate family; see proxy-validation` are acceptable only after the representative issue in the same block has already explained the underlying problem in Russian.
 - In Layer 1 and merged block assessment, prefer a short paragraph-level explanation of the block consequence over a terse label. The reader should understand what cannot be approved, what evidence is missing, and what should change in the document.
 - In Layer 2, keep the atomic questions, but make non-`YES` answers concrete: state which claim is being tested, what fact fails to prove it, and why that matters for the gate decision.
+- In Layer 3, keep the adversarial lens names, but write each finding as a concrete mini-argument tied to document evidence and the committee decision.
 - Use the same writing-quality pass as summary mode: remove filler, avoid repeated wording, replace awkward rubric phrases with clear Russian, and keep the tone professional and investment-committee oriented.
 
 ## Readability is a presentation layer
@@ -333,6 +346,34 @@ Rules:
 - preserve exact threshold mechanics, the specific row, year, driver, or formula detail, and fraud and lower-commission mechanics when those details determine whether a match is partial or complete
 - the Atomic checks block status is the Layer 2 aggregate for that block; do not output a separate aggregate section
 
+## Normalized Layer 3 format
+
+Layer 3 output must match the normalized benchmark format.
+
+```text
+## Layer 3
+
+verdict: APPROVE | NEED_EVIDENCE | REJECT
+adversarial_findings:
+- id: A<n>
+  lens: <short lens name>
+  issue: <concrete adversarial issue>
+  evidence: <section / table / FAQ / appendix source plus exact fact>
+  severity: HIGH | MEDIUM | LOW
+  promotion_test: <why this changes what can be safely approved now, or why it should remain diagnostic>
+```
+
+Rules:
+
+- Layer 3 returns only `layer_3`
+- use the lens names as discovery prompts, not as a forced checklist
+- every `HIGH` or `MEDIUM` finding must cite concrete document evidence
+- `promotion_test` must explain the committee consequence in plain Russian
+- if the issue does not change what can be safely approved now, keep it diagnostic or move it to `critical_improvements`
+- do not promote generic adversarial concerns from Layer 3 into final blockers
+- avoid repeating a Layer 1 or Layer 2 issue unless the Layer 3 angle changes the decision consequence
+- write `issue`, `evidence`, and `promotion_test` in Russian by default, while preserving exact source names, product names, and metric labels
+
 ## Merged block assessment format
 
 ```text
@@ -343,9 +384,9 @@ merged_block_assessment:
   agreement_status: CONFIRMED | REFINED | DOWNGRADED | CONFLICT
   merged_interpretation: <short resolved statement>
   why_difference: <required for DOWNGRADED | CONFLICT>
-  blocker_origin: covered_by_l2 | novel_from_l1 | confirmed_by_both | none
+  blocker_origin: covered_by_l2 | novel_from_l1 | novel_from_l3 | confirmed_by_both | none
   merged_sources:
-    - layer: L1 | L2
+    - layer: L1 | L2 | L3
       ref: <issue id | question text>
 ```
 
@@ -353,8 +394,8 @@ Rules:
 
 - `agreement_status` is required for every block
 - `why_difference` is required when `agreement_status` is `DOWNGRADED` or `CONFLICT`
-- `merged_block_assessment` explains how broad Layer 1 judgment and detailed Layer 2 evidence were reconciled
-- `merged_block_assessment` does not replace the raw Layer 1 and Layer 2 outputs
+- `merged_block_assessment` explains how broad Layer 1 judgment, detailed Layer 2 evidence, and promotable Layer 3 findings were reconciled
+- `merged_block_assessment` does not replace the raw Layer 1, Layer 2, and Layer 3 outputs
 
 ## Canonical block names
 

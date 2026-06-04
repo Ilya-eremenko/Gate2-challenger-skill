@@ -20,6 +20,12 @@ Layer 2 atomic answers use exactly one of:
 - `PARTIAL`
 - `NO`
 
+Layer 3 returns `layer_3` with adversarial findings and a diagnostic verdict using:
+
+- `APPROVE`
+- `NEED_EVIDENCE`
+- `REJECT`
+
 ## Definitions
 
 ### What counts as a blocker
@@ -134,6 +140,18 @@ Layer 2 breadth calibration:
 - repeated atomic failures from the same issue family count as one decision problem for verdict aggregation
 - when many Layer 2 failures are generic checklist weaknesses but the product logic is directionally coherent, prefer `NEED_EVIDENCE` unless there is a blocker that makes the current gate unsafe
 
+## Layer 3 adversarial policy
+
+Layer 3 is a diagnostic adversarial pass. It may change the final verdict only when the finding has concrete document evidence and changes what can be safely approved now.
+
+Apply these rules:
+
+- promote a Layer 3 `HIGH` issue when it exposes a hidden approval boundary, governance gap, incremental economics problem, attribution problem, operating-model gap, or scope-creep problem that would make the current committee ask unsafe
+- promote a Layer 3 `MEDIUM` issue only when it materially changes approval conditions, not merely when it is an interesting challenge
+- keep Layer 3 `LOW` issues as critical improvements or diagnostic notes
+- do not promote generic adversarial concerns that are plausible but not anchored in the document's own evidence
+- do not let Layer 3 duplicate a Layer 1 or Layer 2 blocker as a second final blocker; merge it into the same promoted issue unless the decision consequence is materially different
+
 ## Layer verdict aggregation
 
 Apply these rules separately to Layer 1 and Layer 2 using their dimension / Atomic checks block statuses:
@@ -158,6 +176,7 @@ Assign only if all of the following are true:
 - the document is a full Gate 2 document rather than a fragment
 - Layer 1 = `APPROVE`
 - Layer 2 = `APPROVE`
+- Layer 3 has no promoted blocker-grade issue
 - the key logic chain is closed
 - central hypotheses are reflected and tested with suitable methods
 - evidence is sufficient for the main claims
@@ -173,6 +192,7 @@ Assign when:
 - the overall logic could still hold
 - but one or two key proof points are not yet closed
 - or there is a limited number of decision-critical blockers that can plausibly be removed by concrete evidence or validation
+- or Layer 3 surfaces an evidence-backed committee-risk issue that can be resolved by an incremental-only calculation, explicit approval boundary, stakeholder signoff, operating model, or attribution proof
 - prefer `NEED_EVIDENCE` when the product logic is directionally coherent and the main weakness is missing proof, unclosed validation, or unproven scale readiness
 
 ### `REJECT`
@@ -181,6 +201,7 @@ Assign when any of the following is true:
 
 - Layer 1 = `REJECT`
 - Layer 2 = `REJECT`
+- a promoted Layer 3 finding shows that the committee is being asked to approve a materially different business, economics, or risk profile than the document proves
 - the central logic is broken
 - key hypotheses are not represented or not actually tested
 - the evidence does not support the core claims
@@ -211,6 +232,7 @@ When blocker-grade issues are promoted after merge:
 - each final blocker should identify its origin as one of:
   - `covered_by_l2`
   - `novel_from_l1`
+  - `novel_from_l3`
   - `confirmed_by_both`
 - promotion should use the merged interpretation of overlapping Layer 1 and Layer 2 issues, not duplicate raw issue text
 

@@ -10,11 +10,21 @@ LAYER_1_RUBRIC_PATH = (
 LAYER_2_RUBRIC_PATH = (
     REPO_ROOT / "skills" / "gate2-challenger" / "references" / "layer-2-rubric.md"
 )
+LAYER_3_RUBRIC_PATH = (
+    REPO_ROOT
+    / "skills"
+    / "gate2-challenger"
+    / "references"
+    / "layer-3-adversarial-rubric.md"
+)
 OUTPUT_CONTRACT_PATH = (
     REPO_ROOT / "skills" / "gate2-challenger" / "references" / "output-contract.md"
 )
 VERDICT_POLICY_PATH = (
     REPO_ROOT / "skills" / "gate2-challenger" / "references" / "verdict-policy.md"
+)
+SYNTHESIS_CONTRACT_PATH = (
+    REPO_ROOT / "skills" / "gate2-challenger" / "references" / "synthesis-contract.md"
 )
 
 
@@ -972,6 +982,90 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
         for phrase in required_phrases:
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, text)
+
+    def test_workflow_runs_layer_3_adversarial_worker(self):
+        text = SKILL_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "Layer 3 worker: adversarial business and committee-risk review",
+            "Read [layer-3-adversarial-rubric.md](references/layer-3-adversarial-rubric.md)",
+            "Layer 3 must not read Layer 1 or Layer 2 output",
+            "Only the Synthesizer reads all three artifacts",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_layer_3_is_prompt_first_not_a_hard_checklist(self):
+        text = LAYER_3_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "prompt-first adversarial reviewer",
+            "not a hard checklist",
+            "Use the lenses below as examples and pressure prompts",
+            "do not force every lens to produce an issue",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_layer_3_contains_adversarial_business_lenses(self):
+        text = LAYER_3_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "Accounting / governance",
+            "Attribution",
+            "Incentives",
+            "Operational failure modes",
+            "Evidence laundering",
+            "Scenario gaming",
+            "Metric gaming / quality of growth",
+            "Hidden downside / compound risks",
+            "Organizational constraints",
+            "Stakeholder misalignment",
+            "Scope creep",
+            "Ask vs proof mismatch",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_layer_3_includes_devils_advocate_inspired_examples_without_wiki_dependency(self):
+        text = LAYER_3_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "extra or sustained resources while baseline evidence is weak",
+            "multi-product or multi-stream PMF asymmetry",
+            "output commits without committed input drivers",
+            "cumulative vs incremental masking",
+            "revenue and gross-profit visibility",
+            "platformization trap",
+            "single fragile assumption",
+            "These are examples, not required labels",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_synthesis_can_promote_novel_layer_3_issues_only_with_evidence(self):
+        combined = (
+            SYNTHESIS_CONTRACT_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + VERDICT_POLICY_PATH.read_text(encoding="utf-8")
+            + "\n"
+            + OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+        )
+
+        required_phrases = [
+            "layer_3",
+            "novel_from_l3",
+            "concrete document evidence",
+            "changes what can be safely approved now",
+            "do not promote generic adversarial concerns",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, combined)
 
 
 if __name__ == "__main__":
