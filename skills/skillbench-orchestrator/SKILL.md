@@ -31,9 +31,10 @@ Rules:
 
 - Evaluator Agent must not receive the etalon, judge prompt, previous judge result, or expected score.
 - Use `review_mode: extended` and `debug stages: on`.
-- Run the `gate2-challenger` workflow as the evaluated object, including its Layer 1 worker, Layer 2 worker, and synthesizer.
-- Return the full extended output: final synthesis, normalized Layer 1, normalized Layer 2, and merged block assessment.
+- Run the `gate2-challenger` workflow as the evaluated object, including its Layer 1 worker, Layer 2 worker, Layer 3 worker, and synthesizer.
+- Return the full extended output: final synthesis, normalized Layer 1, normalized Layer 2, normalized Layer 3, and merged block assessment.
 - For benchmark scoring, only normalized Layer 1 and normalized Layer 2 from this extended output are admissible evaluator material.
+- normalized Layer 3 is not admissible evaluator material for Judge Agent scoring until the benchmark etalon contains Layer 3.
 - The plain executive summary, structured final synthesis, and merged block assessment must not be sent to the Judge Agent and must not be used for scoring.
 - Do not propose prompt, skill, rubric, or judge changes.
 
@@ -44,6 +45,7 @@ Scores one evaluator output against the benchmark etalon.
 Rules:
 
 - Judge Agent receives only normalized Layer 1 and normalized Layer 2 extracted from the evaluator's extended output, plus etalon and judge prompt.
+- Judge Agent must not receive normalized Layer 3 for current L1/L2-only etalons.
 - Compare only against the etalon and the judge prompt.
 - Ignore any executive summary, final synthesis, or merged block assessment if it appears in an evaluator artifact.
 - Return score, verdict, matched issues, missed issues, false positives, and explanation.
@@ -56,6 +58,10 @@ The main Codex orchestrator owns this role.
 Rules:
 
 - Analyze evaluator output and judge result after each case.
+- Layer 3 can generate qualitative improvement proposals, not score improvements.
+- If an etalon issue is missed by Layer 1 / Layer 2 but found in Layer 3, record it as a qualitative improvement opportunity rather than giving Judge credit.
+- Do not change the score or Judge input because Layer 3 found an etalon issue.
+- Use `evaluator_layer_3.md` to inspect synthesis behavior, adversarial coverage, and qualitative changes that should improve future reviews.
 - Separate evaluator-quality issues from judge-measurement issues.
 - Write `improvement_plan.md` with proposed changes and anti-overfit reasoning.
 - Ask the user to approve the plan before any editor agent changes files.
@@ -82,13 +88,14 @@ For each benchmark case:
 3. Send only the original document and evaluator settings to Evaluator Agent.
 4. Save evaluator output to `evaluator_result.md`.
 5. Extract only normalized Layer 1 and normalized Layer 2 from the extended evaluator output and save them to `evaluator_layers.md`.
-6. Send `evaluator_layers.md`, etalon, and judge prompt to Judge Agent.
-7. Save judge output to `judge_result.md`.
-8. Improvement Planner writes `improvement_plan.md` using `evaluator_layers.md` and `judge_result.md`; do not use executive summary or final synthesis as scoring evidence.
-9. Approval gate: ask the user whether to apply the plan, skip changes for this case, or stop the run.
-10. If approved, send only the approved plan and relevant files to Prompt/Skill Editor Agent.
-11. Save applied-change notes to `approved_changes.md` and `post_change_summary.md`.
-12. Continue to the next case sequentially.
+6. Save normalized Layer 3 to `evaluator_layer_3.md`.
+7. Send `evaluator_layers.md`, etalon, and judge prompt to Judge Agent.
+8. Save judge output to `judge_result.md`.
+9. Improvement Planner writes `improvement_plan.md` using `evaluator_layers.md`, `evaluator_layer_3.md`, and `judge_result.md`; do not use executive summary or final synthesis as scoring evidence.
+10. Approval gate: ask the user whether to apply the plan, skip changes for this case, or stop the run.
+11. If approved, send only the approved plan and relevant files to Prompt/Skill Editor Agent.
+12. Save applied-change notes to `approved_changes.md` and `post_change_summary.md`.
+13. Continue to the next case sequentially.
 
 ## Approval gate
 
@@ -119,6 +126,7 @@ Write these files under `skillbench/runs/<run-id>/<case>/`:
 
 - `evaluator_result.md`: full extended `gate2-challenger` output.
 - `evaluator_layers.md`: normalized Layer 1 and normalized Layer 2 extracted from `evaluator_result.md`; this is the only evaluator artifact used by Judge Agent for scoring.
+- `evaluator_layer_3.md`: normalized Layer 3 extracted from `evaluator_result.md`; diagnostic benchmark material, not scoring material.
 - `judge_result.md`: judge score, verdict, matches, misses, false positives, and explanations.
 - `improvement_plan.md`: planned evaluator and judge improvements with anti-overfit reasoning.
 - `approved_changes.md`: user decision and approved scope.
@@ -143,6 +151,15 @@ Use this structure for `improvement_plan.md`:
 
 - Proposed change:
 - General quality reason:
+- Files:
+- Overfit risk:
+
+## Qualitative Layer 3 Improvements
+
+- L3 finding:
+- Etalon relation:
+- Why not score credit:
+- Proposed qualitative improvement:
 - Files:
 - Overfit risk:
 

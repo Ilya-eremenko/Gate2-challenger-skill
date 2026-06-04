@@ -51,6 +51,33 @@ class SkillbenchOrchestratorInstructionTests(unittest.TestCase):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, text)
 
+    def test_orchestrator_collects_layer_3_as_diagnostic_artifact(self):
+        text = SKILL_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "including its Layer 1 worker, Layer 2 worker, Layer 3 worker, and synthesizer",
+            "Return the full extended output: final synthesis, normalized Layer 1, normalized Layer 2, normalized Layer 3, and merged block assessment",
+            "Save normalized Layer 3 to `evaluator_layer_3.md`",
+            "`evaluator_layer_3.md`: normalized Layer 3 extracted from `evaluator_result.md`; diagnostic benchmark material, not scoring material",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_layer_3_drives_qualitative_improvements_not_score_credit(self):
+        text = SKILL_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "normalized Layer 3 is not admissible evaluator material for Judge Agent scoring until the benchmark etalon contains Layer 3",
+            "Judge Agent must not receive normalized Layer 3 for current L1/L2-only etalons",
+            "Layer 3 can generate qualitative improvement proposals, not score improvements",
+            "If an etalon issue is missed by Layer 1 / Layer 2 but found in Layer 3, record it as a qualitative improvement opportunity rather than giving Judge credit",
+            "Do not change the score or Judge input because Layer 3 found an etalon issue",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
     def test_readme_documents_codex_local_and_api_modes(self):
         text = README_PATH.read_text(encoding="utf-8")
 
