@@ -98,7 +98,7 @@ The synthesizer must:
 - preserve raw Layer 1 dimension statuses and Layer 2 Atomic checks block statuses as separate diagnostic outputs
 - preserve raw `layer_3` findings as diagnostic outputs
 - use `merged_block_assessment` only for explanation, deduplication, and blocker promotion
-- compute the final verdict from the raw layer verdicts according to `verdict-policy.md`
+- compute the final verdict from the raw layer verdicts according to `common-verdict-policy.md`
 - after duplicate-family consolidation, override raw layer `REJECT` to final `NEED_EVIDENCE` when failures are mostly evidence-remediable and the initiative is not structurally impossible or unsafe
 - promote only blocker-grade `HIGH` issues and clearly decision-relevant `MEDIUM` issues
 - avoid inventing new blocker causes that are absent from both the document evidence and the layer artifacts

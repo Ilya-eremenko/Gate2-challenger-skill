@@ -1,10 +1,10 @@
-# Gate2 Challenger Skill
+# Gate Challenger Skill
 
-This repository contains the canonical source for the `gate2-challenger` skill.
+This repository contains the canonical source for the `gate-challenger` skill.
 
 The installable skill package is:
 
-- [`skills/gate2-challenger`](/Users/iseremenko/Projects/Gate2-challenger/skills/gate2-challenger)
+- [`skills/gate-challenger`](/Users/iseremenko/Projects/Gate2-challenger/skills/gate-challenger)
 
 Copy the whole folder as-is. The package is self-contained and includes:
 
@@ -16,7 +16,7 @@ Copy the whole folder as-is. The package is self-contained and includes:
 
 ```text
 skills/
-  gate2-challenger/
+  gate-challenger/
     SKILL.md
     references/
     scripts/
@@ -28,14 +28,14 @@ Install as a personal skill:
 
 ```bash
 mkdir -p ~/.codex/skills
-cp -R /path/to/Gate2-challenger/skills/gate2-challenger ~/.codex/skills/
+cp -R /path/to/Gate2-challenger/skills/gate-challenger ~/.codex/skills/
 ```
 
 Example for this repository checkout:
 
 ```bash
 mkdir -p ~/.codex/skills
-cp -R /Users/iseremenko/Projects/Gate2-challenger/skills/gate2-challenger ~/.codex/skills/
+cp -R /Users/iseremenko/Projects/Gate2-challenger/skills/gate-challenger ~/.codex/skills/
 ```
 
 After copying, restart Codex or start a new session so the skill is discovered.
@@ -46,14 +46,14 @@ Install as a personal Claude Code skill:
 
 ```bash
 mkdir -p ~/.claude/skills
-cp -R /path/to/Gate2-challenger/skills/gate2-challenger ~/.claude/skills/
+cp -R /path/to/Gate2-challenger/skills/gate-challenger ~/.claude/skills/
 ```
 
 Example for this repository checkout:
 
 ```bash
 mkdir -p ~/.claude/skills
-cp -R /Users/iseremenko/Projects/Gate2-challenger/skills/gate2-challenger ~/.claude/skills/
+cp -R /Users/iseremenko/Projects/Gate2-challenger/skills/gate-challenger ~/.claude/skills/
 ```
 
 You can also install it as a project skill by copying the same folder into `.claude/skills/` inside a repository.
@@ -62,9 +62,9 @@ After copying, restart Claude Code or start a new session so the skill is discov
 
 ## Notes
 
-- Keep the directory name `gate2-challenger`.
+- Keep the directory name `gate-challenger`.
 - Copy the entire folder, not only `SKILL.md`.
 - Before running a review from a checkout, verify the skill is current with git:
-  `python3 skills/gate2-challenger/scripts/check_git_freshness.py`.
+  `python3 skills/gate-challenger/scripts/check_git_freshness.py`.
 - For PDF review mode, the helper script writes Markdown into a `review-documents/` folder next to the source PDF.
 - The PDF conversion helper requires `docling`.

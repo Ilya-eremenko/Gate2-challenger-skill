@@ -1,13 +1,13 @@
 ---
 name: skillbench-orchestrator
-description: Use when running a local Codex benchmark loop for improving the gate2-challenger skill with evaluator, judge, and editor subagents, while preserving benchmark integrity and anti-overfitting guardrails.
+description: Use when running a local Codex benchmark loop for improving the gate-challenger skill with evaluator, judge, and editor subagents, while preserving benchmark integrity and anti-overfitting guardrails.
 ---
 
 # Skillbench Orchestrator
 
 ## Purpose
 
-Run a local `codex-local` benchmark loop for improving `gate2-challenger`.
+Run a local `codex-local` benchmark loop for improving `gate-challenger`.
 
 This skill is an orchestration procedure for Codex. It is not a Python CLI mode. The Python `skillbench` package may list cases and inspect saved artifacts, but the Codex orchestrator is responsible for launching subagents, collecting outputs, writing improvement plans, and enforcing approval gates.
 
@@ -16,7 +16,7 @@ This skill is an orchestration procedure for Codex. It is not a Python CLI mode.
 - `benchmark_dir`: `benchmark`
 - `case_order`: all discovered cases, processed sequentially
 - `approval_gate`: on
-- `evaluator_skill`: `gate2-challenger`
+- `evaluator_skill`: `gate-challenger`
 - `review_mode`: `extended`
 - `debug_stages`: `on`
 - `runs_dir`: `skillbench/runs`
@@ -25,13 +25,13 @@ This skill is an orchestration procedure for Codex. It is not a Python CLI mode.
 
 ### Evaluator Agent
 
-Applies `gate2-challenger` to one original document.
+Applies `gate-challenger` to one original document.
 
 Rules:
 
 - Evaluator Agent must not receive the etalon, judge prompt, previous judge result, or expected score.
 - Use `review_mode: extended` and `debug stages: on`.
-- Run the `gate2-challenger` workflow as the evaluated object, including its Layer 1 worker, Layer 2 worker, Layer 3 worker, and synthesizer.
+- Run the `gate-challenger` workflow as the evaluated object, including its Layer 1 worker, Layer 2 worker, Layer 3 worker, and synthesizer.
 - Return the full extended output: final synthesis, normalized Layer 1, normalized Layer 2, normalized Layer 3, and merged block assessment.
 - For benchmark scoring, only normalized Layer 1 and normalized Layer 2 from this extended output are admissible evaluator material.
 - normalized Layer 3 is not admissible evaluator material for Judge Agent scoring until the benchmark etalon contains Layer 3.
@@ -49,7 +49,7 @@ Rules:
 - Compare only against the etalon and the judge prompt.
 - Ignore any executive summary, final synthesis, or merged block assessment if it appears in an evaluator artifact.
 - Return score, verdict, matched issues, missed issues, false positives, and explanation.
-- Do not propose changes to `gate2-challenger`, the judge prompt, or the benchmark.
+- Do not propose changes to `gate-challenger`, the judge prompt, or the benchmark.
 
 ### Improvement Planner
 
@@ -74,7 +74,7 @@ Applies an approved improvement plan.
 Rules:
 
 - Only run after explicit user approval of `improvement_plan.md`.
-- May edit `skills/gate2-challenger/SKILL.md`, `skills/gate2-challenger/references/`, and the judge prompt file referenced by the current run.
+- May edit `skills/gate-challenger/SKILL.md`, `skills/gate-challenger/references/`, and the judge prompt file referenced by the current run.
 - Do not edit benchmark originals or etalons unless the approved plan explicitly identifies a benchmark data defect.
 - Return `post_change_summary.md` with changed files, rationale, and verification notes.
 - Do not revert unrelated user changes.
@@ -113,7 +113,7 @@ The default is to wait for user approval. If the user does not approve, do not e
 ## Anti-overfit rules
 
 - Improve evaluator quality, not just judge score.
-- Do not teach `gate2-challenger` to memorize one etalon.
+- Do not teach `gate-challenger` to memorize one etalon.
 - Prefer general improvements to evidence handling, layer separation, rubric clarity, synthesis, and output contracts.
 - Judge prompt changes are allowed only for a measurement error: incorrect scoring, unjustified penalty, missed valid match, unstable application of its own rules, or ambiguous matching policy.
 - Never weaken the judge prompt merely because the evaluator got a low score.
@@ -124,7 +124,7 @@ The default is to wait for user approval. If the user does not approve, do not e
 
 Write these files under `skillbench/runs/<run-id>/<case>/`:
 
-- `evaluator_result.md`: full extended `gate2-challenger` output.
+- `evaluator_result.md`: full extended `gate-challenger` output.
 - `evaluator_layers.md`: normalized Layer 1 and normalized Layer 2 extracted from `evaluator_result.md`; this is the only evaluator artifact used by Judge Agent for scoring.
 - `evaluator_layer_3.md`: normalized Layer 3 extracted from `evaluator_result.md`; diagnostic benchmark material, not scoring material.
 - `judge_result.md`: judge score, verdict, matches, misses, false positives, and explanations.

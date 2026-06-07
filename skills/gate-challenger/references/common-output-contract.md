@@ -50,6 +50,26 @@ Issue severity uses:
 - `MEDIUM`
 - `LOW`
 
+## Stage-Aware Fields
+
+Every structured output must preserve the coordinator's stage routing result.
+
+Required stage fields:
+
+- `document_stage`: `GATE_2 | GATE_3 | UNKNOWN | FRAGMENT`
+- `stage_detection`: the compact routing evidence and conflicts from `stage-detection.md`
+- `approval_scope`: what can be safely approved now
+- `not_approved_scope`: what remains outside the current approval or is not yet proven
+- `next_gate_conditions`: the concrete evidence, milestones, go / no-go rules, or controls required before the next gate
+
+For Gate 3, map these fields explicitly in the final synthesis:
+
+- `approval_scope` may be rendered as `approved_scope`
+- `not_approved_scope` stays `not_approved_scope`
+- `next_gate_conditions` may be rendered as `gate_4_conditions`
+
+The approval scope must follow the detected stage. `APPROVE` never means broader scale, PMF, Gate 4 readiness, or baseline transfer unless the selected rubric says the document proved that exact scope.
+
 ## Language policy
 
 Human-facing explanatory fields must be written in Russian by default.
@@ -194,6 +214,14 @@ The structured final synthesis is the short blocker/evidence summary. Use it onl
 ```text
 verdict: APPROVE | NEED_EVIDENCE | REJECT
 confidence: HIGH | MEDIUM | LOW
+document_stage: GATE_2 | GATE_3 | UNKNOWN | FRAGMENT
+stage_detection:
+  stage_confidence: HIGH | MEDIUM | LOW
+  stage_evidence: [...]
+  stage_conflicts: [...]
+approval_scope: [...]
+not_approved_scope: [...]
+next_gate_conditions: [...]
 blockers:
 - blocker_id: B<n>
   block: <canonical block name>

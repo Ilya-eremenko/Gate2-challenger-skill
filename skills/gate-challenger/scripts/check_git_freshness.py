@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 
-DEFAULT_SKILL_PATH = Path("skills") / "gate2-challenger"
+DEFAULT_SKILL_PATH = Path("skills") / "gate-challenger"
 
 
 class GitFreshnessError(Exception):
@@ -18,20 +18,20 @@ class GitFreshnessError(Exception):
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Verify that the gate2-challenger skill checkout is current."
+        description="Verify that the gate-challenger skill checkout is current."
     )
     parser.add_argument(
         "--repo",
         help=(
-            "Path to the Gate2-challenger git checkout. Defaults to "
-            "$GATE2_CHALLENGER_REPO, then the checkout containing this script."
+            "Path to the Gate-challenger git checkout. Defaults to "
+            "$GATE_CHALLENGER_REPO, then $GATE2_CHALLENGER_REPO, then the checkout containing this script."
         ),
     )
     parser.add_argument(
         "--path",
         help=(
             "Path whose local modifications should be rejected. Defaults to "
-            "skills/gate2-challenger when it exists, otherwise the whole repo."
+            "skills/gate-challenger when it exists, otherwise the whole repo."
         ),
     )
     parser.add_argument(
@@ -70,7 +70,7 @@ def candidate_repo(args_repo: str | None) -> Path:
     if args_repo:
         return Path(args_repo).expanduser().resolve()
 
-    env_repo = os.environ.get("GATE2_CHALLENGER_REPO")
+    env_repo = os.environ.get("GATE_CHALLENGER_REPO") or os.environ.get("GATE2_CHALLENGER_REPO")
     if env_repo:
         return Path(env_repo).expanduser().resolve()
 
@@ -89,7 +89,7 @@ def resolve_repo_root(candidate: Path) -> Path:
             "Cannot verify git freshness because the skill is not inside a git "
             f"checkout: {candidate}\n"
             "Run this script with --repo /path/to/Gate2-challenger or set "
-            "GATE2_CHALLENGER_REPO.",
+            "GATE_CHALLENGER_REPO.",
             exit_code=2,
         )
     return Path(result.stdout.strip()).resolve()

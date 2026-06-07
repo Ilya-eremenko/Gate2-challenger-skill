@@ -173,7 +173,7 @@ Use the raw layer verdicts as hard inputs. Keep the raw layer verdicts intact as
 
 Assign only if all of the following are true:
 
-- the document is a full Gate 2 document rather than a fragment
+- the document is a full current-gate document rather than a fragment
 - Layer 1 = `APPROVE`
 - Layer 2 = `APPROVE`
 - Layer 3 has no promoted blocker-grade issue
@@ -244,7 +244,7 @@ Use:
 - `MEDIUM` when the document is full, but part of the central conclusion rests on weak evidence, unresolved dependencies, or material inconsistencies
 - `HIGH` only when the document is full, key hypotheses are testable and actually tested, major contradictions are absent, and blockers are immaterial
 
-If the user provided only a fragment rather than a full Gate 2 document:
+If the user provided only a fragment rather than a full current-gate document:
 
 - prefer refusing a full final verdict
 - if a fragment review is still requested, force `LOW` confidence

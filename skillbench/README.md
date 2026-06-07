@@ -12,7 +12,7 @@ In this mode, the current Codex orchestrator runs benchmark cases sequentially w
 
 ```text
 original document
-  -> Evaluator Agent running gate2-challenger in extended mode
+  -> Evaluator Agent running gate-challenger in extended mode
   -> Judge Agent using etalon + judge prompt
   -> Improvement Planner in the orchestrator
   -> approved Prompt/Skill Editor Agent changes

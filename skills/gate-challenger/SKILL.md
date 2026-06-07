@@ -1,19 +1,20 @@
 ---
-name: gate2-challenger
-description: Use when reviewing a Gate 2 initiative defense document, product defense memo, or approval package and you need a fast approval decision with blocker-focused reasoning instead of reading the full document line by line.
+name: gate-challenger
+description: Use when reviewing a Gate 2 or Gate 3 initiative defense document, product defense memo, investment committee package, or approval package and you need a fast stage-aware approval decision with blocker-focused reasoning.
 ---
 
-# Gate2-challenger
+# Gate Challenger
 
 ## Overview
 
-Review a Gate 2 defense document in five passes:
+Review a Gate 2 or Gate 3 defense document in six passes:
 
 0. Coordinator: input normalization and preflight
-1. Layer 1 worker: decision-critical block review
-2. Layer 2 worker: atomic weak-link review
-3. Layer 3 worker: adversarial business and committee-risk review
-4. Synthesizer: blocker-first final verdict
+1. Stage detector: determine `document_stage: GATE_2 | GATE_3 | UNKNOWN | FRAGMENT`
+2. Layer 1 worker: stage-specific decision-critical block review
+3. Layer 2 worker: stage-specific atomic weak-link review
+4. Layer 3 worker: adversarial business and committee-risk review using common and stage-specific lenses
+5. Synthesizer: blocker-first final verdict with approval scope
 
 Core principle: make the decision from logic and evidence, not from document polish.
 
@@ -56,11 +57,12 @@ Use any calibration example only for failure-mode discovery.
 
 Use this skill when the user asks for any of the following:
 
-- review a Gate 2 product defense
+- review a Gate 2 or Gate 3 product defense
 - decide approve / reject / need evidence
 - assess initiative defense quality quickly
 - find only the blockers in a strategy or defense document
-- evaluate whether Gate 1 hypotheses are reflected and confirmed
+- evaluate whether prior gate hypotheses, commitments, and success criteria are reflected and confirmed
+- determine whether production / MLP evidence supports continuation, scaling, PMF claims, Gate 4 readiness, or baseline transfer
 
 Do not use it for:
 
@@ -111,7 +113,7 @@ Common analysis wording replacements:
 
 ## Preflight: document completeness
 
-Before dispatching Layer 1, Layer 2, and Layer 3, the coordinator must verify whether the user likely provided a full Gate 2 document rather than a fragment.
+Before dispatching Layer 1, Layer 2, and Layer 3, the coordinator must verify whether the user likely provided a full gate defense document rather than a fragment.
 
 Signals that the input may be incomplete:
 
@@ -136,11 +138,11 @@ Behavior:
 
 #### Version freshness preflight
 
-Before starting a review, verify that the local `gate2-challenger` git checkout is up to date with its upstream.
+Before starting a review, verify that the local `gate-challenger` git checkout is up to date with its upstream.
 
 - Run `python3 scripts/check_git_freshness.py` when this skill package is inside the canonical git checkout.
 - If the installed skill is a copied package and not itself inside git, run `python3 scripts/check_git_freshness.py --repo /path/to/Gate2-challenger` from this package, or ask the user for the canonical checkout path.
-- The check must confirm that the git checkout is up to date with its upstream and that `skills/gate2-challenger` has no local modifications.
+- The check must confirm that the git checkout is up to date with its upstream and that `skills/gate-challenger` has no local modifications.
 - Do not start Layer 1 or Layer 2 until this preflight passes; the same preflight also blocks Layer 3.
 - If the check cannot run because git, network fetch, or the canonical checkout is unavailable, stop and tell the user what must be updated. Continue only if the user explicitly says this is a local fallback or intentional benchmark run.
 
@@ -174,8 +176,20 @@ Coordinator requirements:
 
 - normalize the input exactly once
 - determine `full document` vs `fragment` exactly once
-- pass the same normalized Markdown to Layer 1, Layer 2, and Layer 3
-- use one canonical block taxonomy across all stages
+- Read [stage-detection.md](references/stage-detection.md) and determine the stage exactly once before loading a stage-specific rubric
+- emit this internal routing record before any layer work:
+  - `document_stage: GATE_2 | GATE_3 | UNKNOWN | FRAGMENT`
+  - `stage_confidence: HIGH | MEDIUM | LOW`
+  - `stage_evidence`
+  - `stage_conflicts`
+  - `routing_decision: gate_2_rubric | gate_3_rubric | ask_user | fragment_review`
+- Do not start Layer 1, Layer 2, or Layer 3 until the stage is detected
+- if routing is ambiguous, ask the user whether to run Gate 2 or Gate 3 rubric instead of guessing
+- load the stage-specific rubric after routing:
+  - Gate 2 -> [gate-2-rubric.md](references/gate-2-rubric.md)
+  - Gate 3 -> [gate-3-rubric.md](references/gate-3-rubric.md)
+- pass the same normalized Markdown and same stage routing record to Layer 1, Layer 2, and Layer 3
+- use one canonical block taxonomy from the selected stage rubric
 - use one evidence standard across all stages
 - before any verdicting, build four mandatory internal reasoning artifacts:
   - `Hypothesis ledger`: hypothesis, why it matters, validation method, expected result / threshold, actual observed result, author conclusion, reviewer conclusion, status
@@ -193,12 +207,16 @@ Coordinator requirements:
 
 ### Step 1: Run Layer 1 worker
 
-Read [layer-1-rubric.md](references/layer-1-rubric.md) and evaluate the top-level blocks.
+Read the selected stage-specific rubric and evaluate the top-level Layer 1 blocks.
+
+- Gate 2 -> [gate-2-rubric.md](references/gate-2-rubric.md)
+- Gate 3 -> [gate-3-rubric.md](references/gate-3-rubric.md)
 
 Important:
 
-- the Gate 1 hypotheses presence check is part of Layer 1
-- do not require an explicitly titled Gate 1 section if the hypothesis chain is reconstructable elsewhere
+- for Gate 2, the Gate 1 hypotheses presence check is part of Layer 1
+- for Gate 3, the Gate 2 commitment and MLP progress chain is part of Layer 1
+- do not require an explicitly titled prior-gate section if the hypothesis / commitment chain is reconstructable elsewhere
 - Layer 1 dimension statuses are `PASS`, `PARTIAL`, or `FAIL`
 - if a Layer 1 dimension status is `PASS`, output only non-blocking residual issues, or one `No material issue` record when there is no meaningful weakness
 - Layer 1 returns only `layer_1`
@@ -208,11 +226,14 @@ Important:
 
 ### Step 2: Run Layer 2 worker
 
-Read [layer-2-rubric.md](references/layer-2-rubric.md) and evaluate the atomic questions.
+Read the selected stage-specific rubric and evaluate the Layer 2 atomic questions.
+
+- Gate 2 -> [gate-2-rubric.md](references/gate-2-rubric.md)
+- Gate 3 -> [gate-3-rubric.md](references/gate-3-rubric.md)
 
 Then aggregate the Layer 2 atomic results back into Atomic checks block statuses.
 
-Before writing the Layer 2 output, assign a duplicate-family key before writing Layer 2 output for every non-`YES` atomic answer. Use stable semantic keys such as `dependency-readiness`, `proxy-validation`, `monetization-contradiction`, `cancellation-boundary`, `threshold-mismatch`, `model-reconstructability`, `segment-path-mixing`, and `risk-control-maturity`. Select the strongest representative issue per family inside each Atomic checks block; later atomic checks in the same family should reference that selected family in evidence instead of creating another standalone issue unless the local consequence is materially different.
+Before writing the Layer 2 output, assign a duplicate-family key before writing Layer 2 output for every non-`YES` atomic answer. Use stable semantic keys such as `dependency-readiness`, `proxy-validation`, `monetization-contradiction`, `cancellation-boundary`, `threshold-mismatch`, `model-reconstructability`, `segment-path-mixing`, and `risk-control-maturity`. For Gate 3, also use stage-specific keys from [gate-3-rubric.md](references/gate-3-rubric.md), such as `customer-feedback-closure`, `support-scenario`, `pmf-overclaim`, `gate4-readiness`, `baseline-transfer`, and `approval-carry-forward`. Select the strongest representative issue per family inside each Atomic checks block; later atomic checks in the same family should reference that selected family in evidence instead of creating another standalone issue unless the local consequence is materially different.
 
 This family selection is mandatory: selected issue families are a pre-output control, not an optional writing style. Only the selected representative atomic answer gets full standalone issue text. Non-selected repeated atomic answers must use `same duplicate family; see <family>` and do not add a second local-angle issue sentence for the same family.
 
@@ -227,7 +248,9 @@ Important:
 
 ### Step 3: Run Layer 3 worker
 
-Read [layer-3-adversarial-rubric.md](references/layer-3-adversarial-rubric.md) and evaluate adversarial business, financial, governance, incentive, operating-model, and committee-risk weak spots.
+Read [common-adversarial-rubric.md](references/common-adversarial-rubric.md) and evaluate adversarial business, financial, governance, incentive, operating-model, and committee-risk weak spots.
+
+For Gate 3, also read the Gate 3 adversarial lenses in [gate-3-rubric.md](references/gate-3-rubric.md).
 
 Important:
 
@@ -240,7 +263,7 @@ Important:
 
 ### Step 4: Run synthesizer
 
-Read [verdict-policy.md](references/verdict-policy.md) and [synthesis-contract.md](references/synthesis-contract.md).
+Read [common-verdict-policy.md](references/common-verdict-policy.md) and [common-synthesis-contract.md](references/common-synthesis-contract.md).
 
 The synthesizer must:
 
@@ -270,7 +293,7 @@ Use it in this order:
 
 ### Step 5: Format the response
 
-Read [output-contract.md](references/output-contract.md) and follow it exactly.
+Read [common-output-contract.md](references/common-output-contract.md) and follow it exactly.
 
 Formatting rules:
 

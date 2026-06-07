@@ -3,32 +3,82 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-SKILL_PATH = REPO_ROOT / "skills" / "gate2-challenger" / "SKILL.md"
-LAYER_1_RUBRIC_PATH = (
-    REPO_ROOT / "skills" / "gate2-challenger" / "references" / "layer-1-rubric.md"
-)
-LAYER_2_RUBRIC_PATH = (
-    REPO_ROOT / "skills" / "gate2-challenger" / "references" / "layer-2-rubric.md"
-)
-LAYER_3_RUBRIC_PATH = (
-    REPO_ROOT
-    / "skills"
-    / "gate2-challenger"
-    / "references"
-    / "layer-3-adversarial-rubric.md"
-)
-OUTPUT_CONTRACT_PATH = (
-    REPO_ROOT / "skills" / "gate2-challenger" / "references" / "output-contract.md"
-)
-VERDICT_POLICY_PATH = (
-    REPO_ROOT / "skills" / "gate2-challenger" / "references" / "verdict-policy.md"
-)
-SYNTHESIS_CONTRACT_PATH = (
-    REPO_ROOT / "skills" / "gate2-challenger" / "references" / "synthesis-contract.md"
-)
+SKILL_DIR = REPO_ROOT / "skills" / "gate-challenger"
+SKILL_PATH = SKILL_DIR / "SKILL.md"
+LAYER_1_RUBRIC_PATH = SKILL_DIR / "references" / "gate-2-rubric.md"
+LAYER_2_RUBRIC_PATH = SKILL_DIR / "references" / "gate-2-rubric.md"
+LAYER_3_RUBRIC_PATH = SKILL_DIR / "references" / "common-adversarial-rubric.md"
+OUTPUT_CONTRACT_PATH = SKILL_DIR / "references" / "common-output-contract.md"
+VERDICT_POLICY_PATH = SKILL_DIR / "references" / "common-verdict-policy.md"
+SYNTHESIS_CONTRACT_PATH = SKILL_DIR / "references" / "common-synthesis-contract.md"
+GATE_3_RUBRIC_PATH = SKILL_DIR / "references" / "gate-3-rubric.md"
+STAGE_DETECTION_PATH = SKILL_DIR / "references" / "stage-detection.md"
 
 
 class Gate2ChallengerInstructionTests(unittest.TestCase):
+    def test_skill_is_renamed_to_gate_challenger_and_routes_by_stage(self):
+        text = SKILL_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "name: gate-challenger",
+            "document_stage: GATE_2 | GATE_3 | UNKNOWN | FRAGMENT",
+            "Read [stage-detection.md](references/stage-detection.md)",
+            "Gate 2 -> [gate-2-rubric.md](references/gate-2-rubric.md)",
+            "Gate 3 -> [gate-3-rubric.md](references/gate-3-rubric.md)",
+            "Do not start Layer 1, Layer 2, or Layer 3 until the stage is detected",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_stage_detection_has_gate_2_gate_3_and_ambiguity_rules(self):
+        text = STAGE_DETECTION_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "document_stage: GATE_2 | GATE_3 | UNKNOWN | FRAGMENT",
+            "routing_decision: gate_2_rubric | gate_3_rubric | ask_user | fragment_review",
+            "FAQ asks for estimated date and success criteria for Gate 3",
+            "FAQ asks about progress on last commitments / MLP",
+            "Green <= 10%, Yellow 10%-30%, Red > 30%",
+            "If title and body disagree, prefer body evidence and report the conflict",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_gate_3_rubric_contains_stage_specific_contract(self):
+        text = GATE_3_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "approved_scope",
+            "not_approved_scope",
+            "gate_4_conditions",
+            "Customer Experience Ledger",
+            "support scenario",
+            "Traction YTD deviation using Gate 3 thresholds",
+            "Approval Carry-Forward Risk",
+            "baseline transfer",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_common_output_contract_is_stage_aware(self):
+        text = OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "document_stage",
+            "stage_detection",
+            "approval_scope",
+            "not_approved_scope",
+            "next_gate_conditions",
+            "For Gate 3",
+            "`gate_4_conditions`",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
     def test_layer_1_requires_dimension_specific_non_duplicate_issues(self):
         text = LAYER_1_RUBRIC_PATH.read_text(encoding="utf-8")
 
@@ -793,7 +843,7 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
                 self.assertIn(phrase, text)
 
     def test_synthesis_can_override_raw_reject_to_need_evidence_after_family_consolidation(self):
-        synthesis_path = REPO_ROOT / "skills" / "gate2-challenger" / "references" / "synthesis-contract.md"
+        synthesis_path = SYNTHESIS_CONTRACT_PATH
         combined = (
             VERDICT_POLICY_PATH.read_text(encoding="utf-8")
             + "\n"
@@ -998,7 +1048,7 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
                 self.assertIn(phrase, text)
 
     def test_synthesis_compares_main_narrative_confidence_to_supporting_sections(self):
-        synthesis_path = REPO_ROOT / "skills" / "gate2-challenger" / "references" / "synthesis-contract.md"
+        synthesis_path = SYNTHESIS_CONTRACT_PATH
         combined = SKILL_PATH.read_text(encoding="utf-8") + "\n" + synthesis_path.read_text(encoding="utf-8")
 
         required_phrases = [
@@ -1029,7 +1079,7 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
 
         required_phrases = [
             "Layer 3 worker: adversarial business and committee-risk review",
-            "Read [layer-3-adversarial-rubric.md](references/layer-3-adversarial-rubric.md)",
+            "Read [common-adversarial-rubric.md](references/common-adversarial-rubric.md)",
             "Layer 3 must not read Layer 1 or Layer 2 output",
             "Only the Synthesizer reads all three artifacts",
         ]

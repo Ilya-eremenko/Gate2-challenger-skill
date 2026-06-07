@@ -11,7 +11,7 @@ from docling_core.types.doc import ImageRefMode
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 MODULE_PATH = (
-    REPO_ROOT / "skills" / "gate2-challenger" / "scripts" / "pdf_to_md_docling.py"
+    REPO_ROOT / "skills" / "gate-challenger" / "scripts" / "pdf_to_md_docling.py"
 )
 
 

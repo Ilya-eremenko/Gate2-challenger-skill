@@ -11,7 +11,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 MODULE_PATH = (
     REPO_ROOT
     / "skills"
-    / "gate2-challenger"
+    / "gate-challenger"
     / "scripts"
     / "check_git_freshness.py"
 )
@@ -38,14 +38,14 @@ def git(cwd, *args):
 
 def configure_identity(repo):
     git(repo, "config", "user.email", "tests@example.com")
-    git(repo, "config", "user.name", "Gate2 Tests")
+    git(repo, "config", "user.name", "Gate Challenger Tests")
 
 
 def commit_skill_change(repo, text):
-    skill_path = repo / "skills" / "gate2-challenger" / "SKILL.md"
+    skill_path = repo / "skills" / "gate-challenger" / "SKILL.md"
     skill_path.parent.mkdir(parents=True, exist_ok=True)
     skill_path.write_text(text, encoding="utf-8")
-    git(repo, "add", "skills/gate2-challenger/SKILL.md")
+    git(repo, "add", "skills/gate-challenger/SKILL.md")
     git(repo, "commit", "-m", "Update skill")
 
 
@@ -127,7 +127,7 @@ class CheckGitFreshnessTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as tmp_dir:
             repo, _remote = create_repo_with_remote(Path(tmp_dir))
-            skill_path = repo / "skills" / "gate2-challenger" / "SKILL.md"
+            skill_path = repo / "skills" / "gate-challenger" / "SKILL.md"
             skill_path.write_text("local edit\n", encoding="utf-8")
 
             exit_code, _stdout, stderr = run_main(
@@ -136,7 +136,7 @@ class CheckGitFreshnessTests(unittest.TestCase):
 
         self.assertNotEqual(0, exit_code)
         self.assertIn("local modifications", stderr)
-        self.assertIn("skills/gate2-challenger", stderr)
+        self.assertIn("skills/gate-challenger", stderr)
 
 
 if __name__ == "__main__":

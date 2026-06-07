@@ -81,7 +81,7 @@ These are examples, not required labels.
 - material tax/accounting caveat not modeled as scenario
 - dominant partner or segment-quality substitution gap
 
-Use these examples to recognize similar patterns across any Gate 2 document. Do not require the exact pattern names, exact section labels, or exact source structure.
+Use these examples to recognize similar patterns across any current-gate document. Do not require the exact pattern names, exact section labels, or exact source structure.
 
 For these examples:
 
