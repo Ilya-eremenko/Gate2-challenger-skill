@@ -5,13 +5,13 @@ Use this before loading any stage-specific rubric.
 Return this internal routing record:
 
 ```text
-document_stage: GATE_2 | GATE_3 | UNKNOWN | FRAGMENT
+document_stage: GATE_2 | STREAM_REVIEW_1 | GATE_3 | UNKNOWN | FRAGMENT
 stage_confidence: HIGH | MEDIUM | LOW
 stage_evidence:
 - <section/table/phrase proving the stage>
 stage_conflicts:
 - <signals that point to another stage, if any>
-routing_decision: gate_2_rubric | gate_3_rubric | ask_user | fragment_review
+routing_decision: gate_2_rubric | stream_review_1_rubric | gate_3_rubric | ask_user | fragment_review
 ```
 
 ## Gate 2 Signals
@@ -25,6 +25,21 @@ Prefer `GATE_2` when the body of the document shows several of these signals:
 - document focuses on Gate 1 continuity, planned traction, MLP / end-state scope, initial risks, and Gate 3 commitments
 - traction section asks for planned traction and changes compared to the Gate 1 draft traction model
 - the decision asks whether the initiative should receive investment to build or validate the MLP
+
+## 1st Stream Review Signals
+
+Prefer `STREAM_REVIEW_1` when the body of the document shows several of these signals:
+
+- title contains `Stream review 1` or `1st Stream Review`
+- current review is Current SR or Stream review 1
+- previous review is Previous SR, not Gate 1 or Gate 2
+- FAQ asks for the overall idea behind the stream
+- FAQ asks what specific issues are being solved, the development roadmap, and `progress by the moment`
+- FAQ asks for a development roadmap for 1+ year aligned with the Tech peer
+- FAQ asks for the success criteria and estimated date for the next SR
+- the document focuses on discovery results, validated product ideas, planned traction, resources, roadmap, and IC readiness
+- traction section asks for planned traction of the initiative and current plan / fact deviation using Green <=25%, Yellow:25%-50%, Red > 50%
+- the decision asks whether discovery has produced enough validated product ideas and evidence to continue the stream toward the next SR
 
 ## Gate 3 Signals
 
@@ -64,14 +79,15 @@ Ambiguity rules:
 
 - If title and body disagree, prefer body evidence and report the conflict.
 - If the current review and next-gate FAQ disagree, report the conflict.
-- If Gate 2 and Gate 3 signals are both present but the requested decision is unclear, use `routing_decision: ask_user`.
-- If stage remains uncertain after normalization, do not guess. Ask the user whether to run Gate 2 or Gate 3 rubric.
+- If Gate 2, 1st Stream Review, and Gate 3 signals overlap but the requested decision is unclear, use `routing_decision: ask_user`.
+- If stage remains uncertain after normalization, do not guess. Ask the user whether to run Gate 2, 1st Stream Review, or Gate 3 rubric.
 
 ## Routing Decision
 
 Use:
 
 - `gate_2_rubric` only when `document_stage: GATE_2`
+- `stream_review_1_rubric` only when `document_stage: STREAM_REVIEW_1`
 - `gate_3_rubric` only when `document_stage: GATE_3`
 - `fragment_review` when the input is incomplete and a full verdict would be unsafe
 - `ask_user` when the document is not fragmentary but the stage remains ambiguous

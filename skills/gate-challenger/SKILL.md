@@ -1,16 +1,16 @@
 ---
 name: gate-challenger
-description: Use when reviewing a Gate 2 or Gate 3 initiative defense document, product defense memo, investment committee package, or approval package and you need a fast stage-aware approval decision with blocker-focused reasoning.
+description: Use when reviewing a Gate 2, 1st Stream Review, or Gate 3 initiative defense document, product defense memo, investment committee package, or approval package and you need a fast stage-aware approval decision with blocker-focused reasoning.
 ---
 
 # Gate Challenger
 
 ## Overview
 
-Review a Gate 2 or Gate 3 defense document in six passes:
+Review a Gate 2, 1st Stream Review, or Gate 3 defense document in six passes:
 
 0. Coordinator: input normalization and preflight
-1. Stage detector: determine `document_stage: GATE_2 | GATE_3 | UNKNOWN | FRAGMENT`
+1. Stage detector: determine `document_stage: GATE_2 | STREAM_REVIEW_1 | GATE_3 | UNKNOWN | FRAGMENT`
 2. Layer 1 worker: stage-specific decision-critical block review
 3. Layer 2 worker: stage-specific atomic weak-link review
 4. Layer 3 worker: adversarial business and committee-risk review using common and stage-specific lenses
@@ -57,7 +57,7 @@ Use any calibration example only for failure-mode discovery.
 
 Use this skill when the user asks for any of the following:
 
-- review a Gate 2 or Gate 3 product defense
+- review a Gate 2, 1st Stream Review, or Gate 3 product defense
 - decide approve / reject / need evidence
 - assess initiative defense quality quickly
 - find only the blockers in a strategy or defense document
@@ -178,15 +178,16 @@ Coordinator requirements:
 - determine `full document` vs `fragment` exactly once
 - Read [stage-detection.md](references/stage-detection.md) and determine the stage exactly once before loading a stage-specific rubric
 - emit this internal routing record before any layer work:
-  - `document_stage: GATE_2 | GATE_3 | UNKNOWN | FRAGMENT`
+  - `document_stage: GATE_2 | STREAM_REVIEW_1 | GATE_3 | UNKNOWN | FRAGMENT`
   - `stage_confidence: HIGH | MEDIUM | LOW`
   - `stage_evidence`
   - `stage_conflicts`
-  - `routing_decision: gate_2_rubric | gate_3_rubric | ask_user | fragment_review`
+  - `routing_decision: gate_2_rubric | stream_review_1_rubric | gate_3_rubric | ask_user | fragment_review`
 - Do not start Layer 1, Layer 2, or Layer 3 until the stage is detected
-- if routing is ambiguous, ask the user whether to run Gate 2 or Gate 3 rubric instead of guessing
+- if routing is ambiguous, ask the user whether to run Gate 2, 1st Stream Review, or Gate 3 rubric instead of guessing
 - load the stage-specific rubric after routing:
   - Gate 2 -> [gate-2-rubric.md](references/gate-2-rubric.md)
+  - 1st Stream Review -> [stream-review-1-rubric.md](references/stream-review-1-rubric.md)
   - Gate 3 -> [gate-3-rubric.md](references/gate-3-rubric.md)
 - pass the same normalized Markdown and same stage routing record to Layer 1, Layer 2, and Layer 3
 - use one canonical block taxonomy from the selected stage rubric
@@ -210,11 +211,13 @@ Coordinator requirements:
 Read the selected stage-specific rubric and evaluate the top-level Layer 1 blocks.
 
 - Gate 2 -> [gate-2-rubric.md](references/gate-2-rubric.md)
+- 1st Stream Review -> [stream-review-1-rubric.md](references/stream-review-1-rubric.md)
 - Gate 3 -> [gate-3-rubric.md](references/gate-3-rubric.md)
 
 Important:
 
 - for Gate 2, the Gate 1 hypotheses presence check is part of Layer 1
+- for 1st Stream Review, the discovery results and validated product ideas chain is part of Layer 1
 - for Gate 3, the Gate 2 commitment and MLP progress chain is part of Layer 1
 - do not require an explicitly titled prior-gate section if the hypothesis / commitment chain is reconstructable elsewhere
 - Layer 1 dimension statuses are `PASS`, `PARTIAL`, or `FAIL`
@@ -229,11 +232,12 @@ Important:
 Read the selected stage-specific rubric and evaluate the Layer 2 atomic questions.
 
 - Gate 2 -> [gate-2-rubric.md](references/gate-2-rubric.md)
+- 1st Stream Review -> [stream-review-1-rubric.md](references/stream-review-1-rubric.md)
 - Gate 3 -> [gate-3-rubric.md](references/gate-3-rubric.md)
 
 Then aggregate the Layer 2 atomic results back into Atomic checks block statuses.
 
-Before writing the Layer 2 output, assign a duplicate-family key before writing Layer 2 output for every non-`YES` atomic answer. Use stable semantic keys such as `dependency-readiness`, `proxy-validation`, `monetization-contradiction`, `cancellation-boundary`, `threshold-mismatch`, `model-reconstructability`, `segment-path-mixing`, and `risk-control-maturity`. For Gate 3, also use stage-specific keys from [gate-3-rubric.md](references/gate-3-rubric.md), such as `customer-feedback-closure`, `support-scenario`, `pmf-overclaim`, `gate4-readiness`, `baseline-transfer`, and `approval-carry-forward`. Select the strongest representative issue per family inside each Atomic checks block; later atomic checks in the same family should reference that selected family in evidence instead of creating another standalone issue unless the local consequence is materially different.
+Before writing the Layer 2 output, assign a duplicate-family key before writing Layer 2 output for every non-`YES` atomic answer. Use stable semantic keys such as `dependency-readiness`, `proxy-validation`, `monetization-contradiction`, `cancellation-boundary`, `threshold-mismatch`, `model-reconstructability`, `segment-path-mixing`, and `risk-control-maturity`. For 1st Stream Review, also use stage-specific keys from [stream-review-1-rubric.md](references/stream-review-1-rubric.md), such as `stream-discovery-evidence`, `product-idea-validation`, `progress-vs-roadmap`, `resource-readiness`, `traffic-light-reflection`, and `next-sr-conditions`. For Gate 3, also use stage-specific keys from [gate-3-rubric.md](references/gate-3-rubric.md), such as `customer-feedback-closure`, `support-scenario`, `pmf-overclaim`, `gate4-readiness`, `baseline-transfer`, and `approval-carry-forward`. Select the strongest representative issue per family inside each Atomic checks block; later atomic checks in the same family should reference that selected family in evidence instead of creating another standalone issue unless the local consequence is materially different.
 
 This family selection is mandatory: selected issue families are a pre-output control, not an optional writing style. Only the selected representative atomic answer gets full standalone issue text. Non-selected repeated atomic answers must use `same duplicate family; see <family>` and do not add a second local-angle issue sentence for the same family.
 
@@ -249,6 +253,8 @@ Important:
 ### Step 3: Run Layer 3 worker
 
 Read [common-adversarial-rubric.md](references/common-adversarial-rubric.md) and evaluate adversarial business, financial, governance, incentive, operating-model, and committee-risk weak spots.
+
+For 1st Stream Review, also read the 1st Stream Review adversarial lenses in [stream-review-1-rubric.md](references/stream-review-1-rubric.md).
 
 For Gate 3, also read the Gate 3 adversarial lenses in [gate-3-rubric.md](references/gate-3-rubric.md).
 

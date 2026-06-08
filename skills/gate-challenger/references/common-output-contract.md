@@ -56,11 +56,17 @@ Every structured output must preserve the coordinator's stage routing result.
 
 Required stage fields:
 
-- `document_stage`: `GATE_2 | GATE_3 | UNKNOWN | FRAGMENT`
+- `document_stage`: `GATE_2 | STREAM_REVIEW_1 | GATE_3 | UNKNOWN | FRAGMENT`
 - `stage_detection`: the compact routing evidence and conflicts from `stage-detection.md`
 - `approval_scope`: what can be safely approved now
 - `not_approved_scope`: what remains outside the current approval or is not yet proven
 - `next_gate_conditions`: the concrete evidence, milestones, go / no-go rules, or controls required before the next gate
+
+For 1st Stream Review, map these fields explicitly in the final synthesis:
+
+- `approval_scope` is the stream scope, product ideas, resources, discovery continuation, or roadmap step that is safe to approve now
+- `not_approved_scope` is the scale, financial uplift, resource load, or product ambition not yet proven by discovery evidence
+- `next_gate_conditions` may be rendered as `next_sr_conditions`
 
 For Gate 3, map these fields explicitly in the final synthesis:
 
@@ -214,7 +220,7 @@ The structured final synthesis is the short blocker/evidence summary. Use it onl
 ```text
 verdict: APPROVE | NEED_EVIDENCE | REJECT
 confidence: HIGH | MEDIUM | LOW
-document_stage: GATE_2 | GATE_3 | UNKNOWN | FRAGMENT
+document_stage: GATE_2 | STREAM_REVIEW_1 | GATE_3 | UNKNOWN | FRAGMENT
 stage_detection:
   stage_confidence: HIGH | MEDIUM | LOW
   stage_evidence: [...]

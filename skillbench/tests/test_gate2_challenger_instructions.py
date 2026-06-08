@@ -12,6 +12,7 @@ OUTPUT_CONTRACT_PATH = SKILL_DIR / "references" / "common-output-contract.md"
 VERDICT_POLICY_PATH = SKILL_DIR / "references" / "common-verdict-policy.md"
 SYNTHESIS_CONTRACT_PATH = SKILL_DIR / "references" / "common-synthesis-contract.md"
 GATE_3_RUBRIC_PATH = SKILL_DIR / "references" / "gate-3-rubric.md"
+STREAM_REVIEW_1_RUBRIC_PATH = SKILL_DIR / "references" / "stream-review-1-rubric.md"
 STAGE_DETECTION_PATH = SKILL_DIR / "references" / "stage-detection.md"
 
 
@@ -21,9 +22,10 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
 
         required_phrases = [
             "name: gate-challenger",
-            "document_stage: GATE_2 | GATE_3 | UNKNOWN | FRAGMENT",
+            "document_stage: GATE_2 | STREAM_REVIEW_1 | GATE_3 | UNKNOWN | FRAGMENT",
             "Read [stage-detection.md](references/stage-detection.md)",
             "Gate 2 -> [gate-2-rubric.md](references/gate-2-rubric.md)",
+            "1st Stream Review -> [stream-review-1-rubric.md](references/stream-review-1-rubric.md)",
             "Gate 3 -> [gate-3-rubric.md](references/gate-3-rubric.md)",
             "Do not start Layer 1, Layer 2, or Layer 3 until the stage is detected",
         ]
@@ -31,16 +33,37 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, text)
 
-    def test_stage_detection_has_gate_2_gate_3_and_ambiguity_rules(self):
+    def test_stage_detection_has_gate_2_sr1_gate_3_and_ambiguity_rules(self):
         text = STAGE_DETECTION_PATH.read_text(encoding="utf-8")
 
         required_phrases = [
-            "document_stage: GATE_2 | GATE_3 | UNKNOWN | FRAGMENT",
-            "routing_decision: gate_2_rubric | gate_3_rubric | ask_user | fragment_review",
+            "document_stage: GATE_2 | STREAM_REVIEW_1 | GATE_3 | UNKNOWN | FRAGMENT",
+            "routing_decision: gate_2_rubric | stream_review_1_rubric | gate_3_rubric | ask_user | fragment_review",
             "FAQ asks for estimated date and success criteria for Gate 3",
+            "title contains `Stream review 1` or `1st Stream Review`",
+            "FAQ asks for the success criteria and estimated date for the next SR",
             "FAQ asks about progress on last commitments / MLP",
             "Green <= 10%, Yellow 10%-30%, Red > 30%",
             "If title and body disagree, prefer body evidence and report the conflict",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_stream_review_1_rubric_contains_stage_specific_contract(self):
+        text = STREAM_REVIEW_1_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "Use this rubric after the coordinator determines that the input is a 1st Stream Review / SR 1 initiative defense document.",
+            "discovery -> validated product ideas -> solution -> progress -> roadmap -> metrics -> traction -> resources -> risks -> next SR",
+            "Discovery Evidence Ledger",
+            "Validated Product Ideas Ledger",
+            "Progress, Roadmap, And Resource Map",
+            "Layer 1: 1st Stream Review Decision-Critical Dimensions",
+            "Layer 2: 1st Stream Review Atomic Checks",
+            "Do not require production / MLP evidence unless the document claims production progress, rollout readiness, or scale.",
+            "stream-discovery-evidence",
+            "next-sr-conditions",
         ]
         for phrase in required_phrases:
             with self.subTest(phrase=phrase):
@@ -72,6 +95,8 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
             "approval_scope",
             "not_approved_scope",
             "next_gate_conditions",
+            "For 1st Stream Review",
+            "`next_sr_conditions`",
             "For Gate 3",
             "`gate_4_conditions`",
         ]
