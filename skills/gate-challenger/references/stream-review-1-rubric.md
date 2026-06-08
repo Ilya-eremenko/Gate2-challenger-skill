@@ -28,7 +28,7 @@ Before scoring dimensions, identify exactly what the document asks the committee
 - horizontal or vertical cost allocation
 - conditions and commitments before the next SR
 
-Approval must be scoped. `APPROVE` for 1st Stream Review does not automatically mean production scale, PMF, Gate 3 / SR 2 readiness, or baseline transfer. It means the discovery-backed stream plan is safe within the approval scope shown by the document.
+Approval must be scoped. `APPROVE` for 1st Stream Review does not automatically mean production scale, PMF, 2+ Stream Review readiness, Gate 3 readiness, or baseline transfer. It means the discovery-backed stream plan is safe within the approval scope shown by the document.
 
 The final synthesis should explicitly separate:
 

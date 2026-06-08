@@ -2,7 +2,7 @@
 
 This repository contains the canonical source for the `gate-challenger` skill.
 
-It routes Gate 2, 1st Stream Review, and Gate 3 / SR 2 documents to stage-specific rubrics while sharing the same evidence, output, synthesis, and verdict contracts.
+It routes Gate 2, 1st Stream Review, 2+ Stream Review, and Gate 3 documents to stage-specific rubrics while sharing the same evidence, output, synthesis, and verdict contracts.
 
 The installable skill package is:
 

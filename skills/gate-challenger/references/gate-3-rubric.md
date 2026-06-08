@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Use this rubric after the coordinator determines that the input is a Gate 3 / SR 2 initiative defense document.
+Use this rubric after the coordinator determines that the input is a Gate 3 initiative defense document.
 
 Gate 3 answers a different decision question from Gate 2:
 
@@ -389,7 +389,7 @@ Use shared duplicate-family consolidation. Suggested Gate 3 duplicate-family key
 
 - Is the original product idea, problem, solution, USP, goals, strategic fit, and key output metrics clearly summarized?
 - Are Gate 2 / SR 1 commitments, hypotheses, success criteria, and expected MLP outcomes explicitly stated?
-- Is the Gate 3 / SR 2 decision request clear?
+- Is the Gate 3 decision request clear?
 - Does the document separate continuation, scale approval, PMF validation, Gate 4 readiness, and baseline transfer?
 - Are press release and executive-summary changes since Gate 2 explained by evidence?
 - Are changes since Gate 2 justified by new facts rather than narrative reframing?

@@ -13,6 +13,9 @@ VERDICT_POLICY_PATH = SKILL_DIR / "references" / "common-verdict-policy.md"
 SYNTHESIS_CONTRACT_PATH = SKILL_DIR / "references" / "common-synthesis-contract.md"
 GATE_3_RUBRIC_PATH = SKILL_DIR / "references" / "gate-3-rubric.md"
 STREAM_REVIEW_1_RUBRIC_PATH = SKILL_DIR / "references" / "stream-review-1-rubric.md"
+STREAM_REVIEW_2_PLUS_RUBRIC_PATH = (
+    SKILL_DIR / "references" / "stream-review-2-plus-rubric.md"
+)
 STAGE_DETECTION_PATH = SKILL_DIR / "references" / "stage-detection.md"
 
 
@@ -22,10 +25,11 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
 
         required_phrases = [
             "name: gate-challenger",
-            "document_stage: GATE_2 | STREAM_REVIEW_1 | GATE_3 | UNKNOWN | FRAGMENT",
+            "document_stage: GATE_2 | STREAM_REVIEW_1 | STREAM_REVIEW_2_PLUS | GATE_3 | UNKNOWN | FRAGMENT",
             "Read [stage-detection.md](references/stage-detection.md)",
             "Gate 2 -> [gate-2-rubric.md](references/gate-2-rubric.md)",
             "1st Stream Review -> [stream-review-1-rubric.md](references/stream-review-1-rubric.md)",
+            "2+ Stream Review -> [stream-review-2-plus-rubric.md](references/stream-review-2-plus-rubric.md)",
             "Gate 3 -> [gate-3-rubric.md](references/gate-3-rubric.md)",
             "Do not start Layer 1, Layer 2, or Layer 3 until the stage is detected",
         ]
@@ -37,14 +41,35 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
         text = STAGE_DETECTION_PATH.read_text(encoding="utf-8")
 
         required_phrases = [
-            "document_stage: GATE_2 | STREAM_REVIEW_1 | GATE_3 | UNKNOWN | FRAGMENT",
-            "routing_decision: gate_2_rubric | stream_review_1_rubric | gate_3_rubric | ask_user | fragment_review",
+            "document_stage: GATE_2 | STREAM_REVIEW_1 | STREAM_REVIEW_2_PLUS | GATE_3 | UNKNOWN | FRAGMENT",
+            "routing_decision: gate_2_rubric | stream_review_1_rubric | stream_review_2_plus_rubric | gate_3_rubric | ask_user | fragment_review",
             "FAQ asks for estimated date and success criteria for Gate 3",
             "title contains `Stream review 1` or `1st Stream Review`",
             "FAQ asks for the success criteria and estimated date for the next SR",
+            "title contains `Stream review 2+`, `2nd Stream Review`, or `SR 2+`",
+            "Green <=10%, Yellow:10%-20%, Red > 20%",
             "FAQ asks about progress on last commitments / MLP",
             "Green <= 10%, Yellow 10%-30%, Red > 30%",
             "If title and body disagree, prefer body evidence and report the conflict",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_stream_review_2_plus_rubric_contains_stage_specific_contract(self):
+        text = STREAM_REVIEW_2_PLUS_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "Use this rubric after the coordinator determines that the input is a 2+ Stream Review / 2nd Stream Review document.",
+            "previous SR -> commitments -> plan / fact -> learning -> backlog -> roadmap -> metrics -> traction -> resources -> risks -> next SR",
+            "Previous SR Commitment Ledger",
+            "Plan-Fact And Traction Deviation Ledger",
+            "Backlog And Roadmap Update Ledger",
+            "Layer 1: 2+ Stream Review Decision-Critical Dimensions",
+            "Layer 2: 2+ Stream Review Atomic Checks",
+            "Do not require PMF, Gate 4, baseline transfer, or production-scale evidence unless the document claims that scope.",
+            "plan-fact-reconciliation",
+            "cadence-justification",
         ]
         for phrase in required_phrases:
             with self.subTest(phrase=phrase):
