@@ -37,6 +37,20 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, text)
 
+    def test_skill_loads_only_selected_stage_rubric_after_routing(self):
+        text = SKILL_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "Context loading discipline",
+            "Do not read, preload, summarize, or skim any stage-specific rubric before the routing record is complete",
+            "After routing, read exactly one selected stage-specific rubric",
+            "Do not open the other stage rubrics for examples, calibration, duplicate-family keys, or adversarial lenses",
+            "Layer 3 uses the common adversarial rubric plus the same selected stage-specific rubric only",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
     def test_stage_detection_has_gate_2_sr1_gate_3_and_ambiguity_rules(self):
         text = STAGE_DETECTION_PATH.read_text(encoding="utf-8")
 

@@ -185,7 +185,12 @@ Coordinator requirements:
   - `routing_decision: gate_2_rubric | stream_review_1_rubric | stream_review_2_plus_rubric | gate_3_rubric | ask_user | fragment_review`
 - Do not start Layer 1, Layer 2, or Layer 3 until the stage is detected
 - if routing is ambiguous, ask the user whether to run Gate 2, 1st Stream Review, 2+ Stream Review, or Gate 3 rubric instead of guessing
-- load the stage-specific rubric after routing:
+- Context loading discipline:
+  - Do not read, preload, summarize, or skim any stage-specific rubric before the routing record is complete
+  - After routing, read exactly one selected stage-specific rubric
+  - Do not open the other stage rubrics for examples, calibration, duplicate-family keys, or adversarial lenses
+  - Layer 3 uses the common adversarial rubric plus the same selected stage-specific rubric only
+- load exactly one stage-specific rubric after routing:
   - Gate 2 -> [gate-2-rubric.md](references/gate-2-rubric.md)
   - 1st Stream Review -> [stream-review-1-rubric.md](references/stream-review-1-rubric.md)
   - 2+ Stream Review -> [stream-review-2-plus-rubric.md](references/stream-review-2-plus-rubric.md)
@@ -210,11 +215,7 @@ Coordinator requirements:
 ### Step 1: Run Layer 1 worker
 
 Read the selected stage-specific rubric and evaluate the top-level Layer 1 blocks.
-
-- Gate 2 -> [gate-2-rubric.md](references/gate-2-rubric.md)
-- 1st Stream Review -> [stream-review-1-rubric.md](references/stream-review-1-rubric.md)
-- 2+ Stream Review -> [stream-review-2-plus-rubric.md](references/stream-review-2-plus-rubric.md)
-- Gate 3 -> [gate-3-rubric.md](references/gate-3-rubric.md)
+Do not open any other stage-specific rubric during Layer 1.
 
 Important:
 
@@ -233,15 +234,11 @@ Important:
 ### Step 2: Run Layer 2 worker
 
 Read the selected stage-specific rubric and evaluate the Layer 2 atomic questions.
-
-- Gate 2 -> [gate-2-rubric.md](references/gate-2-rubric.md)
-- 1st Stream Review -> [stream-review-1-rubric.md](references/stream-review-1-rubric.md)
-- 2+ Stream Review -> [stream-review-2-plus-rubric.md](references/stream-review-2-plus-rubric.md)
-- Gate 3 -> [gate-3-rubric.md](references/gate-3-rubric.md)
+Do not open any other stage-specific rubric during Layer 2.
 
 Then aggregate the Layer 2 atomic results back into Atomic checks block statuses.
 
-Before writing the Layer 2 output, assign a duplicate-family key before writing Layer 2 output for every non-`YES` atomic answer. Use stable semantic keys such as `dependency-readiness`, `proxy-validation`, `monetization-contradiction`, `cancellation-boundary`, `threshold-mismatch`, `model-reconstructability`, `segment-path-mixing`, and `risk-control-maturity`. For 1st Stream Review, also use stage-specific keys from [stream-review-1-rubric.md](references/stream-review-1-rubric.md), such as `stream-discovery-evidence`, `product-idea-validation`, `progress-vs-roadmap`, `resource-readiness`, `traffic-light-reflection`, and `next-sr-conditions`. For 2+ Stream Review, also use stage-specific keys from [stream-review-2-plus-rubric.md](references/stream-review-2-plus-rubric.md), such as `previous-sr-continuity`, `plan-fact-reconciliation`, `commitment-closure`, `backlog-learning-link`, `traction-delta`, `finance-resource-fit`, `approval-carry-forward`, `next-sr-conditions`, and `cadence-justification`. For Gate 3, also use stage-specific keys from [gate-3-rubric.md](references/gate-3-rubric.md), such as `customer-feedback-closure`, `support-scenario`, `pmf-overclaim`, `gate4-readiness`, `baseline-transfer`, and `approval-carry-forward`. Select the strongest representative issue per family inside each Atomic checks block; later atomic checks in the same family should reference that selected family in evidence instead of creating another standalone issue unless the local consequence is materially different.
+Before writing the Layer 2 output, assign a duplicate-family key before writing Layer 2 output for every non-`YES` atomic answer. Use stable semantic keys such as `dependency-readiness`, `proxy-validation`, `monetization-contradiction`, `cancellation-boundary`, `threshold-mismatch`, `model-reconstructability`, `segment-path-mixing`, and `risk-control-maturity`. If the selected stage rubric defines stage-specific duplicate-family keys, use only the keys from that selected rubric; do not open another stage rubric to borrow keys. Select the strongest representative issue per family inside each Atomic checks block; later atomic checks in the same family should reference that selected family in evidence instead of creating another standalone issue unless the local consequence is materially different.
 
 This family selection is mandatory: selected issue families are a pre-output control, not an optional writing style. Only the selected representative atomic answer gets full standalone issue text. Non-selected repeated atomic answers must use `same duplicate family; see <family>` and do not add a second local-angle issue sentence for the same family.
 
@@ -257,12 +254,7 @@ Important:
 ### Step 3: Run Layer 3 worker
 
 Read [common-adversarial-rubric.md](references/common-adversarial-rubric.md) and evaluate adversarial business, financial, governance, incentive, operating-model, and committee-risk weak spots.
-
-For 1st Stream Review, also read the 1st Stream Review adversarial lenses in [stream-review-1-rubric.md](references/stream-review-1-rubric.md).
-
-For 2+ Stream Review, also read the 2+ Stream Review adversarial lenses in [stream-review-2-plus-rubric.md](references/stream-review-2-plus-rubric.md).
-
-For Gate 3, also read the Gate 3 adversarial lenses in [gate-3-rubric.md](references/gate-3-rubric.md).
+Then use only the adversarial lenses from the same selected stage-specific rubric already chosen by the routing record, if that selected rubric includes them. Do not open any other stage-specific rubric during Layer 3.
 
 Important:
 

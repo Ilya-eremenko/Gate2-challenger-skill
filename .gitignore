@@ -1,5 +1,7 @@
 .DS_Store
+.playwright-mcp/
 ../review-documents/
+review-documents/
 Examples/
 UX Skill Example/
 __pycache__/
