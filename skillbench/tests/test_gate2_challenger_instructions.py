@@ -84,6 +84,10 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
             "Do not require PMF, Gate 4, baseline transfer, or production-scale evidence unless the document claims that scope.",
             "plan-fact-reconciliation",
             "cadence-justification",
+            "stream-control spine",
+            "driver-focus",
+            "vision-metric-coupling",
+            "Plan-Fact Memory Break",
         ]
         for phrase in required_phrases:
             with self.subTest(phrase=phrase):
@@ -103,6 +107,10 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
             "Do not require production / MLP evidence unless the document claims production progress, rollout readiness, or scale.",
             "stream-discovery-evidence",
             "next-sr-conditions",
+            "stream-control spine",
+            "driver-focus",
+            "vision-metric-coupling",
+            "Discovery Memory Break",
         ]
         for phrase in required_phrases:
             with self.subTest(phrase=phrase):
@@ -120,6 +128,10 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
             "Traction YTD deviation using Gate 3 thresholds",
             "Approval Carry-Forward Risk",
             "baseline transfer",
+            "stream-control spine",
+            "driver-focus",
+            "vision-metric-coupling",
+            "Gate 2 Memory Break",
         ]
         for phrase in required_phrases:
             with self.subTest(phrase=phrase):
@@ -186,6 +198,9 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
             "Owners may be named",
             "secured, in progress, contingent, or outside team control",
             "problem definition drifts",
+            "Gate 1 Hypothesis Memory Break",
+            "decision spine",
+            "focused input drivers",
         ]
         for phrase in required_phrases:
             with self.subTest(phrase=phrase):
@@ -1180,6 +1195,9 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
             "Stakeholder misalignment",
             "Scope creep",
             "Ask vs proof mismatch",
+            "Strategic spine loss",
+            "Driver sprawl",
+            "Vision-metric decoupling",
         ]
         for phrase in required_phrases:
             with self.subTest(phrase=phrase):

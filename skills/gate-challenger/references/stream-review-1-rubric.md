@@ -126,9 +126,12 @@ Hard rules:
 
 Cross-check:
 
+- stream-control spine: product vision -> validated product ideas -> limited input drivers -> current discovery / progress facts -> next SR commitments
 - discovery -> validated product ideas -> solution -> progress -> roadmap -> metrics -> traction -> resources -> risks -> next SR
 - target segment and product idea
 - discovery fact and author conclusion
+- product vision and chosen input metrics
+- limited input-driver focus and the full traction model
 - roadmap and unresolved dependencies
 - traction model and resource ask
 - traffic-light concerns and main narrative confidence
@@ -137,6 +140,7 @@ Cross-check:
 Hard rule:
 
 - If target, fact, and conclusion disagree, reduce the consistency judgment even when each section is individually well written.
+- Strong local detail does not compensate for a missing stream-control spine. If the reviewer cannot reconstruct the high-level product logic, validated product ideas, limited input drivers, current evidence, and next SR commitments as one chain, reduce the consistency judgment.
 
 ## Layer 1: 1st Stream Review Decision-Critical Dimensions
 
@@ -156,6 +160,7 @@ Review whether the stream's discovery thesis is decision-ready.
 `PASS` when:
 
 - target segments, pains, segment size where relevant, and intended behavior changes are reconstructable
+- the high-level product vision is reconstructable before reading detailed product ideas or roadmap sections
 - discovery questions / hypotheses are visible
 - validated, partially validated, invalidated, and still-open hypotheses are separated
 - the stream ambition fits the demonstrated problem significance
@@ -167,6 +172,7 @@ Review whether the stream's discovery thesis is decision-ready.
 Look for:
 
 - broad stream idea with no segment-specific pain
+- detailed product vision without a clear helicopter view of the stream's product bet, target segment, and value mechanism
 - discovery methods named without results, thresholds, or limitations
 - invalidated hypotheses hidden while their roadmap or traction consequence remains
 - evidence from one segment or use case stretched to another
@@ -227,16 +233,19 @@ Review whether success criteria prove the stream's decision claims.
 - success criteria are explicit for each decision-critical problem or product idea
 - thresholds are present where the document claims validation
 - actual discovery or progress results are compared with expected results
+- a limited set of decision-driving input metrics is identified and tied to the product vision
 - input metrics explain output metrics
 - FAQ 8 defines the next SR date, commitments, and hypotheses to validate
 
-`PARTIAL` when metrics are measurable but only partially tied to the stream's core decision question.
+`PARTIAL` when metrics are measurable but only partially tied to the stream's core decision question, product vision, or next SR accountability.
 
 `FAIL` when success criteria measure activity, funnel health, or operational readiness while the document claims validated product value or business impact.
 
 Look for:
 
 - validation claims without thresholds
+- too many traction drivers or input metrics without a small set of levers the team will actually manage before the next SR
+- input metrics that are measurable but not clearly connected to the product vision or output metric
 - plan statements or roadmap commitments counted as evidence
 - success metrics that do not test whether the user pain was reduced
 - plan / fact, baseline, metric definitions, or horizons not reconciled
@@ -249,6 +258,7 @@ Review whether the expected stream impact is reconstructable and financially coh
 `PASS` when:
 
 - planned traction can be reconstructed from input metrics, output metrics, baselines, horizons, and drivers
+- the traction model separates the few decision-driving input metrics from supporting diagnostics or appendix detail
 - Analytics semaphore, Traction YTD deviation, InvCo / FBP validation, and vertical support are reflected in the decision logic
 - financial summary, Increment / ToBe case, cost allocation, Kismet triggers, and resource assumptions are consistent with the stream scope
 - model assumptions are classified by evidence strength
@@ -260,6 +270,7 @@ Review whether the expected stream impact is reconstructable and financially coh
 Look for:
 
 - unexplained step-changes in adoption, revenue, GMV, margin, cost, HC, or output metrics
+- large traction tables that do not identify the limited input drivers behind next-period impact
 - changed plan values without evidence-backed reasons
 - yellow / red validation signals absent from the main narrative
 - cost allocation not linked to future impact
@@ -294,10 +305,11 @@ Look for:
 Review whether the full SR 1 story is coherent:
 
 ```text
+product vision -> validated product ideas -> limited input drivers -> current discovery / progress facts -> next SR commitments
 discovery -> validated product ideas -> solution -> progress -> roadmap -> metrics -> traction -> resources -> risks -> next SR
 ```
 
-`PASS` when the chain can be restored without major inference and the IC ask is aligned with the proof boundary.
+`PASS` when the stream-control spine and the full SR 1 chain can be restored without major inference and the IC ask is aligned with the proof boundary.
 
 `PARTIAL` when the story is mostly coherent but has weakly linked or fragmented pieces.
 
@@ -305,7 +317,9 @@ discovery -> validated product ideas -> solution -> progress -> roadmap -> metri
 
 Look for:
 
+- detailed local answers without a compact, committee-readable helicopter view
 - stream idea drift between FAQ 1, FAQ 2, traction, finance, and risks
+- product vision, input metrics, and next SR work describing different theories of impact
 - validated discovery evidence narrower than the requested approval
 - roadmap not aligned with traction model, resources, or traffic-light concerns
 - supporting sections materially more cautious than the executive summary
@@ -315,11 +329,12 @@ Look for:
 
 Layer 2 is the closed-world diagnostic pass. Answer every atomic question as `YES`, `PARTIAL`, or `NO`, then aggregate back to Atomic checks block statuses using the common verdict policy.
 
-Use SR 1 duplicate-family keys when useful: `stream-discovery-evidence`, `product-idea-validation`, `progress-vs-roadmap`, `resource-readiness`, `traffic-light-reflection`, `next-sr-conditions`, `scope-proof-boundary`, and `plan-fact-reconciliation`.
+Use SR 1 duplicate-family keys when useful: `stream-discovery-evidence`, `product-idea-validation`, `progress-vs-roadmap`, `resource-readiness`, `traffic-light-reflection`, `next-sr-conditions`, `scope-proof-boundary`, `plan-fact-reconciliation`, `stream-control-spine`, `driver-focus`, `vision-metric-coupling`, and `discovery-memory`.
 
 ### 1. Discovery framing and evidence
 
 - Can the reviewer identify the target segment, pain, and intended behavior change without restoring missing logic by inference?
+- Can the discovery summary be connected to selected product ideas, focused input drivers, and the next SR ask as one concise stream-control story?
 - Are discovery questions, methods, sample / period, expected result or threshold, actual result, and conclusion shown for the decision-critical claims?
 - Are validated, partially validated, invalidated, and still-open hypotheses separated?
 - Are invalidated hypotheses reflected in roadmap, traction, scope, or risk decisions?
@@ -359,12 +374,15 @@ Use SR 1 duplicate-family keys when useful: `stream-discovery-evidence`, `produc
 - When a threshold exists, do actual results meet it?
 - Are planning statements, scope declarations, and roadmap commitments kept separate from validation?
 - Are input metrics, output metrics, baselines, horizons, and plan / fact reconciled?
+- Does the document identify a limited set of key input metrics or drivers the team will manage before the next SR?
+- Are the chosen input metrics explicitly connected to the product vision and output metric?
 - Does FAQ 8 define next SR date, commitments, hypotheses to validate, and go / no-go criteria?
 
 ### 5. Traction, finance, and traffic lights
 
 - Can expected impact be reconstructed from concrete drivers and evidence rather than topline assertion?
 - Do important model rows reconcile with formulas, baselines, driver decomposition, scenario rows, and horizons?
+- Does the traction model explain why the selected input drivers, not the full metric catalog, are the levers for next-period impact?
 - Are current-period plan / fact values and Traction YTD deviation reconciled with the traffic-light color?
 - Are Analytics semaphore, InvCo / FBP validation, Tech solution validation, and vertical support conclusions reflected in the main narrative?
 - If traffic-light lines are yellow or red, are details, comments, links, and decision consequences provided in FAQ 6 and the main case?
@@ -386,6 +404,7 @@ Use SR 1 duplicate-family keys when useful: `stream-discovery-evidence`, `produc
 ### 7. Consistency
 
 - Can the reviewer restore a continuous chain of `discovery -> validated product ideas -> solution -> progress -> roadmap -> metrics -> traction -> resources -> risks -> next SR` without major logical jumps?
+- Can the reviewer also restore the stream-control spine of `product vision -> validated product ideas -> limited input drivers -> current discovery / progress facts -> next SR commitments` without major logical jumps?
 - Does the problem definition stay stable from FAQ 1 through FAQ 2, traction, finance, and risks?
 - Do target, fact, and conclusion stay aligned across sections?
 - Do ambition, metrics, roadmap, resources, and risks describe the same stream scope?
@@ -399,6 +418,10 @@ Layer 3 should use these as stage-specific pressure prompts in addition to the c
 ### Discovery laundering
 
 Check whether interviews, survey intent, stakeholder optimism, or prototype feedback are converted into validated product ideas, roadmap confidence, or financial uplift without thresholds and comparable behavior.
+
+### Discovery Memory Break
+
+Check whether discovery evidence, invalidated or still-open hypotheses, selected product ideas, focused input drivers, and next SR commitments are presented as separate facts rather than one continuous accountability chain.
 
 ### Stream scope creep
 

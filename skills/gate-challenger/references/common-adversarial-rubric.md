@@ -66,6 +66,18 @@ Check whether the committee is asked to approve one product boundary, but the ro
 
 Check exactly what the committee is asked to approve now, and whether the evidence proves that version rather than a narrower pilot, base product, different segment, lower-risk flow, or smaller financial case.
 
+### Strategic spine loss
+
+Check whether the document contains detailed sections, feature plans, traction rows, and appendices, but never gives a compact committee-readable chain from product bet to target segment, evidence, focused input drivers, output metric, approval ask, and next conditions.
+
+### Driver sprawl
+
+Check whether traction is large and numerically rich, but the team does not identify the small set of input metrics or drivers it can actually manage in the next period or gate stage, making ownership and focus unclear.
+
+### Vision-metric decoupling
+
+Check whether the chosen input metrics are measurable but do not follow from the product vision, target user need, or value mechanism, so the document could hit the metric plan without proving the stated thesis.
+
 ## Devil's-advocate-inspired examples
 
 These are examples, not required labels.

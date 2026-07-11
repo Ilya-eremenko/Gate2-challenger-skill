@@ -132,11 +132,14 @@ Hard rules:
 
 Cross-check:
 
+- stream-control spine: product vision -> limited input drivers -> current plan / fact -> learning -> next-period commitments
 - previous SR -> commitments -> plan / fact -> learning -> backlog -> roadmap -> metrics -> traction -> resources -> risks -> next SR
 - previous SR promise and current status
 - current fact and author conclusion
 - backlog update and plan / fact evidence
 - roadmap and unresolved dependencies
+- product vision and chosen input metrics
+- limited input-driver focus and the full traction model
 - traction changes and finance / resource ask
 - traffic-light concerns and main narrative confidence
 - skipped approvals and actual context changes
@@ -145,6 +148,7 @@ Cross-check:
 Hard rule:
 
 - If target, fact, and conclusion disagree, reduce the consistency judgment even when each section is individually well written.
+- Strong local detail does not compensate for a missing stream-control spine. If the reviewer cannot reconstruct the high-level product logic, the limited input drivers being managed, the current plan / fact result, and the next-period commitments as one chain, reduce the consistency judgment.
 
 ## Layer 1: 2+ Stream Review Decision-Critical Dimensions
 
@@ -208,6 +212,7 @@ Review whether the updated backlog and 1+ year roadmap follow from current-perio
 `PASS` when:
 
 - stream idea, target segments, user needs, features, timelines, and metric impact are updated where facts require it
+- the high-level product vision is reconstructable before reading detailed feature descriptions
 - current progress is separated from future roadmap
 - backlog changes are connected to plan / fact evidence, customer or operational learning, or validated hypotheses
 - roadmap stages are linked to user value / capabilities and output metrics
@@ -220,6 +225,7 @@ Review whether the updated backlog and 1+ year roadmap follow from current-perio
 Look for:
 
 - no explanation of what changed versus previous SR
+- detailed product vision without a clear helicopter view of the stream's product bet, target segment, and value mechanism
 - roadmap faster than dependency readiness allows
 - features not tied to user need or metric impact
 - Tech peer alignment missing where roadmap feasibility depends on it
@@ -233,16 +239,19 @@ Review whether current success criteria and next SR commitments are measurable e
 - success criteria are explicit for each decision-critical issue or roadmap item
 - thresholds exist where the document claims validation or plan closure
 - actual results are compared with thresholds
+- a limited set of decision-driving input metrics is identified and tied to the product vision
 - input metrics explain output metrics
 - FAQ 8 defines next SR date, commitments, hypotheses, owners, thresholds, and go / no-go rules
 
-`PARTIAL` when metrics are measurable but only partially tied to the stream decision or next SR accountability.
+`PARTIAL` when metrics are measurable but only partially tied to the stream decision, product vision, or next SR accountability.
 
 `FAIL` when success criteria measure activity, roadmap completion, or operational readiness while the document claims product value, business impact, or plan closure.
 
 Look for:
 
 - validation claims without thresholds
+- too many traction drivers or input metrics without a small set of levers the team will actually manage next period
+- input metrics that are measurable but not clearly connected to the product vision or output metric
 - plan statements counted as evidence
 - next SR commitments too vague to be checked later
 - no escalation trigger when deviation is material
@@ -254,6 +263,7 @@ Review whether the updated stream impact and finance case are credible after cur
 `PASS` when:
 
 - planned traction can be reconstructed from input metrics, output metrics, baselines, horizons, formulas, and drivers
+- the traction model separates the few decision-driving input metrics from supporting diagnostics or appendix detail
 - current plan / fact, Traction YTD deviation, traffic-light color, Analytics semaphore, InvCo / FBP validation, and Vertical support are reflected in the decision logic
 - financial summary, Increment / ToBe case, cost allocation, Kismet triggers, and resources are consistent with the approved stream scope
 - changed planned values use `metric / previous plan / current plan / reason for change`
@@ -265,6 +275,7 @@ Review whether the updated stream impact and finance case are credible after cur
 Look for:
 
 - unexplained step-changes in adoption, revenue, GMV, margin, costs, HC, support load, or output metrics
+- large traction tables that do not identify the limited input drivers behind next-period impact
 - yellow / red validation signals absent from the main narrative
 - cost allocation not linked to future impact or 3Sigma
 - resource ask not connected to next-period commitments
@@ -298,10 +309,11 @@ Look for:
 Review whether the full 2+ SR story is coherent:
 
 ```text
+product vision -> limited input drivers -> current plan / fact -> learning -> next-period commitments
 previous SR -> commitments -> plan / fact -> learning -> backlog -> roadmap -> metrics -> traction -> resources -> risks -> next SR
 ```
 
-`PASS` when the chain can be restored without major inference and the IC ask is aligned with the proof boundary.
+`PASS` when the stream-control spine and the full SR chain can be restored without major inference and the IC ask is aligned with the proof boundary.
 
 `PARTIAL` when the story is mostly coherent but has weakly linked or fragmented pieces.
 
@@ -309,7 +321,9 @@ previous SR -> commitments -> plan / fact -> learning -> backlog -> roadmap -> m
 
 Look for:
 
+- detailed local answers without a compact, committee-readable helicopter view
 - executive summary more confident than FAQ 3, FAQ 6, FAQ 7, finance, or validation comments
+- product vision, input metrics, and next-period work describing different theories of impact
 - plan / fact evidence narrower than requested approval
 - roadmap not aligned with traction model, resources, or traffic-light concerns
 - next SR commitments not connected to remaining hypotheses and current deviations
@@ -318,11 +332,12 @@ Look for:
 
 Layer 2 is the closed-world diagnostic pass. Answer every atomic question as `YES`, `PARTIAL`, or `NO`, then aggregate back to Atomic checks block statuses using the common verdict policy.
 
-Use 2+ SR duplicate-family keys when useful: `previous-sr-continuity`, `plan-fact-reconciliation`, `commitment-closure`, `backlog-learning-link`, `roadmap-readiness`, `traction-delta`, `traffic-light-reflection`, `finance-resource-fit`, `approval-carry-forward`, `next-sr-conditions`, `cadence-justification`, and `scope-proof-boundary`.
+Use 2+ SR duplicate-family keys when useful: `previous-sr-continuity`, `plan-fact-reconciliation`, `commitment-closure`, `backlog-learning-link`, `roadmap-readiness`, `traction-delta`, `traffic-light-reflection`, `finance-resource-fit`, `approval-carry-forward`, `next-sr-conditions`, `cadence-justification`, `scope-proof-boundary`, `stream-control-spine`, `driver-focus`, `vision-metric-coupling`, and `plan-fact-memory`.
 
 ### 1. Previous SR Continuity And Current Decision Boundary
 
 - Are previous SR commitments, expected results, owners, and dates explicitly stated or reconstructable?
+- Can the current-period summary be connected to the previous SR and the next-period ask as one concise stream-control story?
 - Is the current IC request clear: new request, additional request, no request, or financial monitoring?
 - Does the document separate what can be approved now from what remains future evidence?
 - Are changes since the previous SR justified by facts rather than narrative reframing?
@@ -334,6 +349,7 @@ Use 2+ SR duplicate-family keys when useful: `previous-sr-continuity`, `plan-fac
 
 - Are all decision-critical previous SR commitments tracked as delivered, partially delivered, missed, or changed?
 - Are plan and fact shown for the target input and output metrics of the current period?
+- Does the plan / fact view preserve continuity of metrics and work from the previous SR into the next SR plan?
 - Are deviation calculations, periods, baselines, and thresholds clear enough to verify the traffic-light color?
 - Are missed or changed commitments explained with specific decision-relevant reasons?
 - Are deviations reflected in backlog, roadmap, traction, resources, risks, or next SR commitments?
@@ -343,6 +359,7 @@ Use 2+ SR duplicate-family keys when useful: `previous-sr-continuity`, `plan-fac
 ### 3. Product Learning, Backlog, And Roadmap Update
 
 - Is it clear what changed in stream idea, target segments, user needs, features, or value proposition since the previous SR?
+- Can the reviewer reconstruct the high-level product vision before reading detailed feature-level plans?
 - Is each material backlog change tied to plan / fact evidence, customer learning, operational learning, or validated hypotheses?
 - Does each central roadmap item identify user segment, need, feature, timeline, and impact on metrics?
 - Is the 1+ year roadmap focused on user value and capabilities delivered, not just feature inventory?
@@ -359,6 +376,8 @@ Use 2+ SR duplicate-family keys when useful: `previous-sr-continuity`, `plan-fac
 - When a threshold exists, do actual results meet it?
 - Are planning statements, scope declarations, and roadmap commitments kept separate from validation?
 - Are input metrics, output metrics, baselines, horizons, and plan / fact reconciled?
+- Does the document identify a limited set of key input metrics or drivers the team will manage next period?
+- Are the chosen input metrics explicitly connected to the product vision and output metric?
 - Does FAQ 8 define next SR date, commitments, hypotheses to validate, owners, thresholds, and go / no-go criteria?
 - Are monitoring triggers or escalation rules defined when deviation or risk is material?
 
@@ -366,6 +385,7 @@ Use 2+ SR duplicate-family keys when useful: `previous-sr-continuity`, `plan-fac
 
 - Can expected impact be reconstructed from concrete drivers and evidence rather than topline assertion?
 - Do important model rows reconcile with formulas, baselines, driver decomposition, scenario rows, and horizons?
+- Does the traction model explain why the selected input drivers, not the full metric catalog, are the levers for next-period impact?
 - Are current-period plan / fact values and Traction YTD deviation reconciled with the traffic-light color?
 - Does the document apply 2+ SR thresholds: Green <=10%, Yellow:10%-20%, Red > 20%?
 - Are Analytics semaphore, InvCo / FBP validation, Tech solution validation, and Vertical support conclusions reflected in the main narrative?
@@ -392,6 +412,7 @@ Use 2+ SR duplicate-family keys when useful: `previous-sr-continuity`, `plan-fac
 ### 7. Consistency And Evidence Proportionality
 
 - Can the reviewer restore a continuous chain of `previous SR -> commitments -> plan / fact -> learning -> backlog -> roadmap -> metrics -> traction -> resources -> risks -> next SR` without major logical jumps?
+- Can the reviewer also restore the stream-control spine of `product vision -> limited input drivers -> current plan / fact -> learning -> next-period commitments` without major logical jumps?
 - Does the stream problem definition stay stable from FAQ 1 through FAQ 2, traction, finance, and risks?
 - Do target, fact, and conclusion stay aligned across sections?
 - Do ambition, metrics, roadmap, resources, and risks describe the same stream scope?
@@ -406,6 +427,10 @@ Layer 3 should use these as stage-specific pressure prompts in addition to the c
 ### Plan-Fact Laundering
 
 Check whether missed commitments, underperformance, delayed roadmap items, or changed plan values are reframed as learning without showing the actual plan / fact consequence.
+
+### Plan-Fact Memory Break
+
+Check whether plan / fact from the previous period, changed input metrics, changed roadmap work, and next SR commitments are presented as separate facts rather than one continuous accountability chain.
 
 ### Backlog Momentum Bias
 
@@ -440,7 +465,9 @@ Assign `APPROVE` only when:
 - the 2+ SR document is complete
 - previous SR commitments are reconstructable
 - plan / fact results support the requested approval scope
+- the stream-control spine is reconstructable: product vision, focused input drivers, current plan / fact, learning, and next-period commitments fit together
 - deviations and changed planned values are evidence-backed and reflected in backlog, traction, resources, risks, and next SR conditions
+- input metrics are focused enough for next-period management and explicitly connected to the product vision and output metric
 - traction, finance, resources, and traffic lights are internally consistent
 - approval carry-forward is valid or refreshed where material context changed
 - next SR commitments and cadence are concrete enough for accountability
@@ -450,13 +477,14 @@ Assign `NEED_EVIDENCE` when:
 
 - the stream remains directionally viable
 - the requested approval scope can be narrowed safely
-- one or two proof points remain open, such as plan / fact reconciliation, traffic-light explanation, resource support, approval carry-forward, or next SR conditions
+- one or two proof points remain open, such as plan / fact reconciliation, driver focus, vision-metric coupling, traffic-light explanation, resource support, approval carry-forward, or next SR conditions
 - the missing evidence is concrete and plausibly obtainable before the next SR or before additional resources are consumed
 
 Assign `REJECT` when:
 
 - previous SR commitments were materially missed or rewritten without evidence
 - plan / fact results do not support the requested continuation, resources, or financial monitoring
+- the document cannot connect product vision, input drivers, plan / fact results, and next-period commitments well enough to define what continuation means
 - traction or financial case is structurally unsupported or contradicts current-period facts
 - roadmap depends on unresolved foundational blockers
 - cross-functional, legal, finance, support, or technical constraints make the requested next-period approval unsafe

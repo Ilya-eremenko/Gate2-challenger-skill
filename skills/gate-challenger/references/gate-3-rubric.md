@@ -113,11 +113,13 @@ For each material business or financial change since Gate 2, capture:
 - Gate 2 plan
 - current plan
 - actual production result where available
+- focused input driver or production behavior that explains the change
 - reason for change
 - evidence type behind the change
 - impact on Increment and ToBe cases
 - impact on cost allocation, HC, support scenario, and Kismet triggers
 - whether the model distinguishes validated assumptions, directional evidence, expert assumptions, and open hypotheses
+- whether the few decision-driving production inputs are separated from supporting diagnostics or appendix detail
 
 Hard rules:
 
@@ -158,6 +160,7 @@ Review whether the document preserves a reliable chain from Gate 2 to Gate 3.
 `PASS` when:
 
 - Gate 2 product idea, problem, solution, USP, strategic fit, goals, commitments, hypotheses, success criteria, and expected MLP outcomes are reconstructable
+- the high-level product thesis and the focused input drivers behind the Gate 3 ask are reconstructable
 - the Gate 3 ask is explicit
 - continuation, scale, PMF, Gate 4, and baseline transfer are not blurred
 - changes since Gate 2 are explained by evidence
@@ -169,6 +172,7 @@ Review whether the document preserves a reliable chain from Gate 2 to Gate 3.
 Look for:
 
 - Gate 2 commitments rewritten without evidence
+- detailed product or launch history without a clear helicopter view of what product thesis was proven and which drivers now matter
 - PMF or scale language stronger than the MLP evidence allows
 - hidden approval of a broader product, segment, risk profile, or economics than the document proves
 - press release or executive-summary drift versus Gate 2 appendices
@@ -204,6 +208,7 @@ Review whether production behavior supports the product and business claims.
 - key user journeys have production funnel metrics
 - behavioral metrics are shown where relevant: adoption, conversion, retention, repeat usage, frequency, liquidity, cancellation, churn, supply, demand, approval rate, fraud rate, support load, or other relevant metrics
 - output metrics, input metrics, proxy metrics, and counter-metrics are defined and connected to the impact mechanism
+- a limited set of decision-driving production input metrics is identified and tied to the product thesis
 - metrics show whether the original user pain was reduced
 
 `PARTIAL` when metrics are useful but mostly directional, incomplete for key journeys, or only partially tied to the original pain.
@@ -214,6 +219,8 @@ Look for:
 
 - funnel health treated as proof that the user pain is solved
 - output growth without input driver evidence
+- too many production metrics without a small set of levers the team will actually manage on the path to scale, Gate 4, or baseline transfer
+- input metrics that are measurable but not clearly connected to the product thesis, user pain, or output metric
 - counter-metrics missing from a risk-bearing rollout
 - negative signals excluded from the decision narrative
 - observed first use used as proof of retention or repeat behavior
@@ -248,6 +255,7 @@ Review whether the team learned from MLP facts and updated the solution honestly
 
 - the document identifies what worked, what did not work, and why
 - post-MLP segment -> pain -> solution -> metric linkage is explicit
+- the updated high-level product thesis is clear before detailed fixes or roadmap items
 - MLP, scaling version, target-state product, and out-of-scope areas are separated
 - new hypotheses have validation method, threshold, timeline, and owner
 - the impact mechanism from fixes / scaling steps to input and output metrics is explicit
@@ -259,6 +267,7 @@ Review whether the team learned from MLP facts and updated the solution honestly
 Look for:
 
 - feature list replacing learning synthesis
+- detailed post-MLP changes without a compact synthesis of the product bet, focused drivers, and remaining proof points
 - MLP evidence used to support a different behavior, segment, or risk profile
 - future validation described as current proof
 - no owner or threshold for new hypotheses
@@ -300,6 +309,7 @@ Review whether the updated business case is credible after launch.
 - changes use the format `metric / previous plan / current plan / reason for change`
 - changes are grounded in MLP facts, production metrics, customer feedback, or clearly labeled assumptions
 - expected impact can be reconstructed from input drivers, rollout timing, adoption lag, and learning period
+- the traction model separates the few decision-driving production input metrics from supporting diagnostics or appendix detail
 - support scenario is included and reconciled with scale, customer experience, support load, HC, and costs
 - Increment and ToBe cases are separated
 - revenue attribution and BRF / TRF / LTM treatment are clear where relevant
@@ -312,6 +322,7 @@ Review whether the updated business case is credible after launch.
 Look for:
 
 - sharp jumps in adoption, conversion, retention, take rate, supply, GMV, revenue, margin, costs, or support load without validated drivers
+- large traction or production-metric tables that do not identify the limited input drivers behind next-stage impact
 - positive ToBe masking weak Increment
 - cost allocation not matching future impact or 3Sigma card
 - yellow / red Traction YTD deviation not reflected in the decision logic
@@ -348,6 +359,8 @@ Review whether the document's facts and conclusions stay aligned.
 `PASS` when the reviewer can restore a continuous chain:
 
 ```text
+product thesis -> focused input drivers -> Gate 2 commitments -> MLP facts ->
+learning -> scaling / Gate 4 conditions
 Gate 2 commitments -> MLP launch -> production facts -> customer feedback ->
 insights -> product changes -> roadmap -> PMF / Gate 4 -> traction ->
 finance -> resources -> risks -> approval scope
@@ -360,7 +373,9 @@ finance -> resources -> risks -> approval scope
 Look for:
 
 - supporting sections more cautious than the executive summary
+- detailed local answers without a compact, committee-readable scale thesis
 - actual facts, thresholds, and conclusions misaligned
+- product thesis, input metrics, roadmap, and Gate 4 / baseline conditions describing different theories of impact
 - MLP facts supporting only a narrow scope while the ask implies broad scale
 - traction promise exceeding roadmap and rollout timing
 - PMF or baseline transfer claimed from evidence that supports only continued discovery
@@ -384,10 +399,15 @@ Use shared duplicate-family consolidation. Suggested Gate 3 duplicate-family key
 - `traffic-light-reconciliation`
 - `approval-carry-forward`
 - `vertical-support`
+- `stream-control-spine`
+- `driver-focus`
+- `vision-metric-coupling`
+- `gate2-memory`
 
 ### 1. Gate 2 Continuity And Gate 3 Decision Boundary
 
 - Is the original product idea, problem, solution, USP, goals, strategic fit, and key output metrics clearly summarized?
+- Can the Gate 3 ask be summarized as `product thesis -> focused input drivers -> MLP evidence -> learning -> scale / Gate 4 conditions` without major inference?
 - Are Gate 2 / SR 1 commitments, hypotheses, success criteria, and expected MLP outcomes explicitly stated?
 - Is the Gate 3 decision request clear?
 - Does the document separate continuation, scale approval, PMF validation, Gate 4 readiness, and baseline transfer?
@@ -409,6 +429,8 @@ Use shared duplicate-family consolidation. Suggested Gate 3 duplicate-family key
 - Are production funnel metrics shown for key user journeys?
 - Are behavioral metrics reported where applicable: adoption, conversion, retention, repeat usage, frequency, liquidity, cancellation, churn, approval quality, fraud, or support load?
 - Are output metrics, input metrics, proxy metrics, and counter-metrics defined and connected to the product logic?
+- Does the document identify a limited set of production input metrics or drivers the team will manage on the path to scale, Gate 4, or baseline transfer?
+- Are the chosen input metrics explicitly connected to the product thesis, user pain, and output metric?
 - Do metrics show that the original user pain was reduced?
 - Are negative signals included in the decision narrative?
 - Are metric definitions, baselines, horizons, thresholds, and toplines reconciled?
@@ -428,6 +450,7 @@ Use shared duplicate-family consolidation. Suggested Gate 3 duplicate-family key
 
 - Is there a clear segment -> pain -> solution -> metric linkage after MLP launch?
 - Did the team identify which parts of the solution worked, which did not, and why?
+- Can the updated product thesis be reconstructed before reading detailed fix lists or roadmap items?
 - Are MLP version, scaling version, target-state product, and out-of-scope areas separated?
 - Are new hypotheses explicitly formulated?
 - Does each new hypothesis have a validation method, success threshold, timeline, and owner?
@@ -455,6 +478,7 @@ Use shared duplicate-family consolidation. Suggested Gate 3 duplicate-family key
 - Are changed planned values shown as `metric / previous plan / current plan / reason for change`?
 - Are changes driven by MLP evidence, production metrics, customer feedback, or clearly labeled assumptions?
 - Can expected impact be reconstructed from observed input metrics and roadmap levers?
+- Does the traction model explain why the selected input drivers, not the full metric catalog, are the levers for next-stage impact?
 - Are sharp jumps in adoption, conversion, retention, take rate, supply, GMV, revenue, margin, costs, or support load explained by validated drivers?
 - Does the model account for learning period, adoption lag, rollout constraints, and operational ramp-up?
 - Does the model distinguish validated assumptions, directional evidence, expert assumptions, and open hypotheses?
@@ -483,6 +507,7 @@ Use shared duplicate-family consolidation. Suggested Gate 3 duplicate-family key
 ### 9. Consistency And Evidence Proportionality
 
 - Can the full Gate 3 chain be restored without major logical jumps?
+- Can the reviewer also restore the stream-control spine of `product thesis -> focused input drivers -> Gate 2 commitments -> MLP facts -> learning -> scaling / Gate 4 conditions` without major logical jumps?
 - Do problem statement, post-MLP solution, target segments, and roadmap stay aligned?
 - Do MLP facts support the claimed scaling ambition?
 - Do success criteria, customer feedback, and traction match the described impact mechanism?
@@ -499,6 +524,10 @@ Layer 3 should use the shared adversarial output shape, but add these Gate 3-spe
 ### MLP Evidence Laundering
 
 Check whether a narrow MLP, optional behavior, survey, fake-door, small cohort, or early production signal is converted into a broad scale, PMF, baseline, or financial approval claim.
+
+### Gate 2 Memory Break
+
+Check whether Gate 2 commitments, MLP facts, changed input metrics, post-MLP learning, and Gate 4 / baseline conditions are presented as separate facts rather than one continuous accountability chain.
 
 ### Ask Versus Proven Scope
 
@@ -541,6 +570,7 @@ Assign `APPROVE` only when:
 - the Gate 3 document is complete
 - the Gate 2 commitment chain is reconstructable
 - production / MLP evidence supports the requested approval scope
+- the stream-control spine is reconstructable: product thesis, focused input drivers, MLP evidence, learning, and Gate 4 / baseline conditions fit together
 - customer experience evidence is sufficient for the requested scale
 - traction and financial deltas are evidence-backed and internally consistent
 - support scenario and cross-functional readiness match the roadmap
@@ -551,13 +581,14 @@ Assign `NEED_EVIDENCE` when:
 
 - the initiative remains directionally viable
 - the requested approval scope can be narrowed safely
-- one or two proof points remain open, such as customer feedback closure, PMF thresholds, scale readiness, support scenario, traffic-light reconciliation, or financial delta support
+- one or two proof points remain open, such as customer feedback closure, PMF thresholds, driver focus, vision-metric coupling, scale readiness, support scenario, traffic-light reconciliation, or financial delta support
 - the missing evidence is concrete and plausibly obtainable before scale, Gate 4, or baseline transfer
 
 Assign `REJECT` when:
 
 - the MLP / production evidence does not support the core continuation or scale thesis
 - Gate 2 commitments were materially missed or rewritten without evidence
+- the document cannot connect product thesis, input drivers, MLP facts, learning, and Gate 4 / baseline conditions well enough to define what continuation or scale means
 - PMF, Gate 4, or baseline transfer is claimed without proof
 - traction or financial case is structurally unsupported or contradicts production facts
 - roadmap depends on unresolved foundational blockers

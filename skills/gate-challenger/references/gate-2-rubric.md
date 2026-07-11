@@ -100,6 +100,7 @@ Cross-check:
 - problem and target segment
 - segment pain and proposed solution
 - segment size, segment-specific pains, and segment-specific solution mapping
+- decision spine: product bet -> target segment -> Gate 1 hypotheses -> current evidence -> focused input drivers -> output metric -> approval scope
 - hypotheses and validation results
 - solution and success metrics
 - roadmap and unresolved blockers
@@ -110,6 +111,7 @@ Cross-check:
 Hard rule:
 
 - mismatch between target, fact, and conclusion must reduce the consistency judgment
+- strong local detail does not compensate for a missing decision spine. If the reviewer cannot reconstruct the product bet, target segment, Gate 1 hypothesis evidence, focused input drivers, output metric, and approval scope as one chain, reduce the consistency judgment.
 
 ## Global rules
 
@@ -131,11 +133,12 @@ Review:
 - whether segment size, segment-specific pains, and segment-specific solution mapping are explicit when the document relies on broad user groups
 - whether the `segment -> pain -> expected behavior change` logic is explicit
 - whether the decision-critical Gate 1 hypotheses are reconstructable
+- whether the high-level product bet is understandable before reading detailed solution or roadmap sections
 - whether the document's ambition fits the demonstrated problem significance
 
 Decision rule:
 
-- `PASS` when the central problem, target segment, segment size where decision-relevant, and Gate 1 hypothesis chain can be reconstructed without filling gaps by inference
+- `PASS` when the central problem, target segment, segment size where decision-relevant, high-level product bet, and Gate 1 hypothesis chain can be reconstructed without filling gaps by inference
 - `PARTIAL` when the chain is mostly recoverable, but important links are fragmented, weakly evidenced, or only directionally supported
 - `FAIL` when the problem thesis, segment thesis, or Gate 1 hypothesis chain is not decision-safe to reconstruct
 
@@ -143,6 +146,7 @@ Look for:
 
 - mixed segments or mixed pains with no clear logic
 - broad labels such as buyers, sellers, customers, partners, or users without segment-by-segment size, pain, and solution logic where segment behavior matters
+- detailed product narrative without a compact helicopter view of the product bet, target segment, and behavior change
 - one audience label covering segments with different segment readiness, rollout path, or blocker profile
 - buyer readiness is confirmed without an original threshold or without a method-result-conclusion chain for the buyer behavior being approved
 - evidence from one segment being used to justify another segment
@@ -211,6 +215,7 @@ Review:
 - whether thresholds are tied to the actual decision question
 - whether actual results are shown and matched to the threshold
 - whether the solution -> input metrics -> output metrics linkage is credible
+- whether a limited set of decision-driving input or proxy metrics is identified and tied to the product bet
 - whether success criteria prove the stated user pains or value propositions were solved
 - whether the success criteria are strong enough for the stated end-state ambition
 - preserve exact threshold mechanics when threshold mismatches, missing original expected results, or conflicting break conditions drive the judgment
@@ -218,6 +223,8 @@ Review:
 Look for:
 
 - metrics with no causal story
+- too many input or proxy metrics without a small set of levers the team will actually manage before the next gate
+- input metrics that are measurable but not clearly connected to the product bet, user pain, or output metric
 - thresholds missing while conclusions sound definitive
 - funnel conversion, operational readiness, support load, or risk absence used as success proof when they are not direct evidence that user pains were solved
 - success metrics mainly measure funnel or operational health while the defense claims solved user pain or value proposition impact
@@ -232,6 +239,7 @@ Review:
 
 - whether the expected impact can be reconstructed from evidence rather than topline aspiration
 - whether the team can realistically influence the drivers in the model
+- whether the model separates the few decision-driving input drivers from supporting diagnostics or appendix detail
 - whether horizons, baseline, cannibalization, subsidy, and retention assumptions are coherent
 - whether rollout and learning lag are reflected in the model
 - whether formula, yearly rows, scenario rows, or driver decomposition reconcile with each other
@@ -241,6 +249,7 @@ Review:
 Look for:
 
 - unexplained jumps
+- large traction tables that do not identify the focused input drivers behind expected impact
 - traction beyond roadmap capacity
 - adoption, GMV, revenue, or order ramp depends on rollout speed that is faster than unresolved dependencies allow; record it as a Layer 1 Traction issue
 - assumptions used in the model but absent from scope or validation
@@ -276,7 +285,7 @@ Look for:
 Review:
 
 - whether the full chain stays coherent:
-  `segment -> pain -> hypotheses -> solution -> roadmap -> metrics -> impact -> risks`
+  `product bet -> segment -> pain -> hypotheses -> solution -> focused input drivers -> output metrics -> roadmap -> impact -> risks`
 - whether target, fact, and conclusion stay aligned
 - whether business claims are consistent with legal / ops / risk constraints
 - whether the end-state ambition matches the actual success criteria and dependency state
@@ -284,7 +293,9 @@ Review:
 Look for:
 
 - changing target segments across sections
+- detailed local answers without a compact, committee-readable decision spine
 - scope conflicting with roadmap
+- product bet, input metrics, and approval scope describing different theories of impact
 - metrics contradicting the impact story
 - traction contradicting rollout timing or blocker status
 - equal or stable commission/take-rate economics used to dismiss cannibalization risk while a later target model assumes a lower target commission, lower price, subsidy, or changed monetization term; record a contradiction
@@ -393,6 +404,7 @@ Global rules:
 ## 1. Problem framing and significance
 
 - Can the reviewer identify the target segment, pain, and intended behavior change without restoring missing logic by inference?
+- Can the reviewer restore the Gate 2 decision spine as `product bet -> target segment -> Gate 1 hypotheses -> current evidence -> approval ask` without major inference?
 - Are segment size, segment-specific pains, and segment-specific solution mapping clear when the document uses broad user groups?
 - Is significance grounded in a quantified current-state problem rather than mainly in projected upside?
 - If several problem statements coexist, are they prioritized rather than blended into one vague rationale?
@@ -435,6 +447,8 @@ Scope resource rule:
 - When a threshold exists, do the actual observed results meet it?
 - Are planning statements, scope declarations, or roadmap commitments kept separate from validation?
 - Are output claims supported by input or proxy metrics that plausibly explain how the result was achieved?
+- Does the document identify a limited set of key input or proxy metrics the team will manage before the next gate?
+- Are the chosen input metrics explicitly connected to the product bet, user pain, and output metric?
 - Are Metric definitions, toplines, horizons, and baselines reconciled before they support the decision?
 - If take rate, price, commission, subsidy, or monetization terms change across horizons, is there evidence for the changed value rather than only evidence for the current value?
 - Are the success criteria strong enough for the stated end-state ambition?
@@ -450,6 +464,7 @@ Threshold answer rule:
 
 - Can the expected impact be reconstructed from concrete drivers and evidence rather than from topline assertion?
 - When a model has a formula, yearly rows, scenario rows, or driver decomposition, do important rows reconcile with the formula and stated drivers?
+- Does the traction model explain why the selected input drivers, not the full metric catalog, are the levers behind expected impact?
 - Are horizons, adoption lag, and learning periods consistent with the roadmap and rollout plan?
 - Does the model rely on aggressive step-changes, unsupported baselines, or assumptions outside funded scope?
 - Does the model treat evidence for a current value as proof for a changed value in take rate, price, commission, subsidy, or monetization terms?
@@ -477,7 +492,7 @@ Risk answer rule:
 
 ## 7. Consistency
 
-- Can the reviewer restore a continuous chain of `segment -> pain -> hypotheses -> solution -> roadmap -> metrics -> impact` without major logical jumps?
+- Can the reviewer restore a continuous chain of `product bet -> segment -> pain -> hypotheses -> solution -> focused input drivers -> output metrics -> roadmap -> impact` without major logical jumps?
 - Check whether the problem definition drifts across the document, or stays stable from pain to solution to monetization and risk logic.
 - Do target, fact, and conclusion stay aligned across sections?
 - Do ambition, metrics, roadmap, traction, and risks describe the same end-state, or do they pull in different directions?
@@ -500,3 +515,11 @@ Use Layer 2 block statuses as:
 - `PASS` when the atomic checks show no blocker-grade or material evidence gaps
 - `PARTIAL` when the block is mostly coherent, but one or more decision-critical proof points remain incomplete
 - `FAIL` when the atomic failures expose a blocker-grade contradiction, missing proof, broken validation method, broken causal chain, or unresolved foundational dependency
+
+## Gate 2 Adversarial Lenses
+
+Layer 3 should use these as Gate 2-specific pressure prompts in addition to the common adversarial rubric. They are examples, not mandatory labels.
+
+### Gate 1 Hypothesis Memory Break
+
+Check whether Gate 1 hypotheses, expected results, actual evidence, and the current Gate 2 approval ask are presented as separate facts rather than one continuous accountability chain.
