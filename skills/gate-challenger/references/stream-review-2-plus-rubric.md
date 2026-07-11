@@ -302,6 +302,7 @@ Look for:
 - old approvals reused despite changed context, expenses, costs, product decisions, or business decisions
 - external dependencies not classified
 - mitigations that only restate the risk
+- live customer, operational, financial, safety, security, legal, or fraud exposure while material controls remain planned, untested, ownerless, or without release / stop thresholds; connect this gap to the approval scope and the gate for further rollout
 - no scenario where the traction, roadmap, or stream thesis stops holding
 
 ### 7. Consistency And Evidence Proportionality
@@ -333,6 +334,17 @@ Look for:
 Layer 2 is the closed-world diagnostic pass. Answer every atomic question as `YES`, `PARTIAL`, or `NO`, then aggregate back to Atomic checks block statuses using the common verdict policy.
 
 Use 2+ SR duplicate-family keys when useful: `previous-sr-continuity`, `plan-fact-reconciliation`, `commitment-closure`, `backlog-learning-link`, `roadmap-readiness`, `traction-delta`, `traffic-light-reflection`, `finance-resource-fit`, `approval-carry-forward`, `next-sr-conditions`, `cadence-justification`, `scope-proof-boundary`, `stream-control-spine`, `driver-focus`, `vision-metric-coupling`, and `plan-fact-memory`.
+
+### Interpretation rules for independent decision tests
+
+- Answer each atomic question from evidence for that question's own decision test. A failure on a neighboring question must not automatically change this answer.
+- Judge the clarity of the IC request category separately from consistency of the resource quantities or delivery capacity behind that request.
+- Judge whether the document identifies a limited set of managed input drivers separately from whether the impact formulas, baselines, and horizons are reconstructable.
+- Judge whether the stated traffic-light thresholds are correct separately from whether those thresholds are correctly applied to plan / fact data.
+- Judge stability of the current problem definition across the current document separately from traceability to the previous SR.
+- Use `PARTIAL` when the decision-relevant structure or evidence is present but incomplete, weakly linked, or only partly reconciled. Preserve the concrete evidence that is present; do not upgrade the gap to `NO` merely because an adjacent test fails.
+- Use `NO` when the capability or evidence required by this atomic question is absent, directly contradicted, or otherwise fails the question's own decision test. Do not use `NO` as a generic severity label for a partially evidenced answer.
+- For conditional questions, use `YES` / `No material issue` only when the triggering condition is clearly not present. If a roughly half-year interval is stated or implied, treat the semiannual-cadence check as triggered even when the cadence label is ambiguous; if low-risk status or absence of material deviation is not proven, preserve that gap as `PARTIAL` or `NO` according to the direct evidence.
 
 ### 1. Previous SR Continuity And Current Decision Boundary
 
@@ -455,6 +467,10 @@ Check whether the document asks for additional resources, HC, budget, or cross-f
 ### Next SR Ambiguity
 
 Check whether the document avoids concrete next SR commitments, thresholds, owners, go / no-go rules, or failure scenarios, leaving the next committee unable to judge whether this SR's commitments were met.
+
+### Live Exposure vs Control Maturity
+
+Check whether rollout or another material exposure is already live while the controls needed to contain safety, security, fraud, legal, financial, or operational risk are only planned, untested, lack owners, or lack effectiveness and release / stop thresholds. Connect the finding to what can safely continue now and what expansion must wait for validated controls.
 
 ## Final 2+ Stream Review Verdict Calibration
 

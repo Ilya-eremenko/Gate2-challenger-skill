@@ -82,6 +82,8 @@ For Gate 3, map these fields explicitly in the final synthesis:
 
 The approval scope must follow the detected stage. `APPROVE` never means broader scale, PMF, Gate 4 readiness, or baseline transfer unless the selected rubric says the document proved that exact scope.
 
+Reconstruct the effective approval request from the whole document. Compare the header and formal request with the strategy commitments, resource and capacity requirements, financial case, roadmap, and conditions implied elsewhere. When those differ, `approval_scope` and `not_approved_scope` must reflect the effective ask and identify the mismatch rather than inheriting the narrower label.
+
 ## Language policy
 
 Human-facing explanatory fields must be written in Russian by default.
@@ -171,6 +173,9 @@ Rules:
 - Write as a professional investment committee assessment, not as a rubric report.
 - Decision first: the first substantive sentence must say what should be approved, not approved, or approved conditionally.
 - Separate the proven base case from the requested new growth / scaling / resource / financial-uplift case whenever the document mixes them.
+- When the decision depends on resources or capacity, test coverage across the relevant horizon and whether the claimed effect persists after capacity is changed, reduced, reallocated, or ends.
+- When the decision depends on future impact, make adoption ramp, effect persistence or decay, and material downside assumptions visible in the assessment.
+- When approval is conditional, state observable rollback or stop conditions and how they change the next-gate or resource decision.
 - In the opening assessment, restore the decision context before listing reasons.
 - Decision context means: what the document asks to approve, what changed or what current fact makes the requested decision necessary, the author's causal logic from problem to proposed answer, which part is already proven and which part goes beyond proven evidence.
 - Do not hardcode domain-specific recovery, regulation, partner, or pricing questions. Derive the context from the document's own problem statement, facts, trend changes, dependencies, and requested approval.
@@ -336,7 +341,14 @@ Rules:
 - Use 3 issues only when there are three independent decision blockers that are not evidence for each other
 - only decision-relevant issues
 - Layer 1 may raise a cross-sectional dimension-level issue when the decision narrative breaks across sections
+- before emitting Layer 1, build an internal root-cause registry: assign each candidate issue a stable semantic family, one primary dimension-home, supporting evidence, and its distinct committee-decision consequences
+- place the full issue in its primary dimension-home; repeat that family in another dimension only when it has an independently decision-relevant local consequence there, and make the different consequence explicit
+- run a pre-output atomization pass on every `issue`: keep multiple facts, symptoms, thresholds, and examples in `evidence` when they prove one decision problem; split independent problems when they lead to different approval, scope, resource, sequencing, or control decisions
+- the registry is a soft semantic control, not an issue-count target: never suppress distinct committee consequences merely because they share a cause or because a shorter output would score more precisely
 - every issue should preserve the specific decision test behind the problem instead of only an umbrella diagnosis
+- for scope, resource, traction, or risk issues, test the whole approval claim across the relevant horizon: compare available capacity with the period being approved, check whether the claimed effect persists after resource changes, and inspect adoption, decay, and downside assumptions where they drive the result
+- compare the header or formal request with the effective strategy, resource, capacity, and financial ask; if they differ, explain which broader commitment the committee would actually approve
+- where continued approval depends on future evidence, check for observable rollback or stop conditions and connect them to the next-gate and resource consequence
 - every issue must be self-contained for a reader who has not opened the source document
 - each issue must state what is wrong, why it matters for the gate decision, and what decision consequence follows
 - write `issue` and explanatory `evidence` in Russian, while preserving exact source labels, metric names, product names, and quoted text
@@ -346,6 +358,7 @@ Rules:
 - when evidence is a contradiction, include both sides of the contradiction in the evidence field
 - evidence should read like a mini-proof, for example: `FAQ 5 sets seller readiness threshold at 60% for B2C White, but reports 44% for Enterprise and 58% for C2C without a clean B2C White result; this is why the "confirmed" conclusion is not decision-safe`
 - use separate Layer 1 issues for the same root cause only when each issue has a distinct decision consequence; otherwise do not repeat it as a new issue
+- treat horizon coverage, effect persistence, adoption / decay / downside assumptions, header-vs-ask mismatch, and rollback details as evidence for one broader root issue unless a detail creates a separate consequence for the committee decision
 - bundle related Layer 2-level observations under a broader Layer 1 decision blocker when they support one gate failure
 - keep missed funnel thresholds, buyer/seller activation misses, the optional-pilot-to-mandatory-rollout leap, planning statements treated as validation, and take-rate / monetization assumption changes as evidence under the broad Layer 1 issue unless each has a distinct decision consequence
 - Prefer one broad Layer 1 traction issue for model reconstructability; treat a changed 10% -> 15% monetization or take-rate assumption as evidence under that issue unless it is the only material traction weakness
@@ -357,6 +370,14 @@ Rules:
 ## Normalized Layer 2 format
 
 Layer 2 output must match the normalized benchmark format.
+
+Before returning Layer 2, run a structural completeness preflight:
+
+1. Extract the ordered list of Atomic checks blocks and full atomic question texts from the one stage-specific rubric selected by the routing record.
+2. Extract the ordered list of emitted Layer 2 blocks and question texts.
+3. Require exact one-to-one equality of block boundaries, block order, question order, and question text; derive the expected list from the selected rubric and never use a hardcoded question count.
+4. Verify that every matched question has exactly one `answer`, `evidence`, and `issue` field.
+5. If any question is missing, added, duplicated, moved, or altered, repair the Layer 2 artifact and repeat the comparison. Do not return output until the lists match exactly.
 
 ```text
 ## Layer 2

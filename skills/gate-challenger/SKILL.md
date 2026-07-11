@@ -77,6 +77,7 @@ This skill can work with:
 - pasted text
 - a Markdown file
 - a PDF file that must be converted to Markdown first
+- a DOCX file that must be normalized and checked for structural completeness before review
 
 Before starting, collect two settings from the user if they were not already provided:
 
@@ -164,6 +165,13 @@ If `docling` is not installed or the conversion script cannot import it:
 - tell the user that PDF-to-Markdown conversion requires `docling`
 - offer the user to install `docling`, then resume the review after conversion
 
+If the input is a DOCX file:
+
+- normalize the document once into Markdown while preserving body text, tables, comments and replies, headers and footers, text boxes, and readable content from visual or embedded appendices
+- build a compact inventory of referenced sections, tables, figures, and appendices, then verify that each decision-relevant reference has corresponding extracted content rather than only a title, placeholder, or phase label
+- when a referenced object is visually embedded or the extracted structure is suspiciously sparse, render and visually inspect the relevant pages before dispatching any layer
+- if a decision-relevant reference still cannot be normalized completely, stop and report incomplete normalization; do not treat the missing extracted body as evidence that the source section or appendix is empty
+
 If the input is already a Markdown file:
 
 - read and analyze the Markdown file directly
@@ -216,6 +224,10 @@ Coordinator requirements:
 
 Read the selected stage-specific rubric and evaluate the top-level Layer 1 blocks.
 Do not open any other stage-specific rubric during Layer 1.
+
+Before writing Layer 1 output, build a soft internal root-cause registry for all candidate issues. Assign each root cause a stable semantic family, one primary dimension-home, its evidence, and every distinct consequence it has for the committee decision. Place the full issue in its primary dimension-home. Repeat the same family in another dimension only when that dimension has an independently decision-relevant local consequence, and state that consequence explicitly; shared causation alone is not a reason either to repeat or to suppress an issue.
+
+Run a pre-output atomization pass against that registry. For every proposed `issue`, identify how many independent decision problems it contains. Keep thresholds, examples, symptoms, and other supporting details in `evidence` when they only prove one root problem. Split or preserve separate issues when the committee would make different approval, scope, resource, sequencing, or control decisions because of them. This is a semantic clarity control, not a target for minimizing issue count: never merge or drop distinct committee consequences merely for compactness.
 
 Important:
 

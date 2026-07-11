@@ -28,6 +28,8 @@ Before scoring dimensions, identify exactly what the document asks the committee
 - horizontal or vertical cost allocation
 - conditions and commitments before the next SR
 
+Reconstruct the effective ask from the whole document, not only from its header or formal request. Compare the stated request with the strategy commitments, resource and capacity needs, financial case, roadmap, and conditions implied by the body and supporting tables. If the effective ask is broader than the formal request, use the broader boundary when deciding what evidence and approval conditions are required.
+
 Approval must be scoped. `APPROVE` for 1st Stream Review does not automatically mean production scale, PMF, 2+ Stream Review readiness, Gate 3 readiness, or baseline transfer. It means the discovery-backed stream plan is safe within the approval scope shown by the document.
 
 The final synthesis should explicitly separate:
@@ -88,16 +90,20 @@ For each major roadmap or progress claim capture:
 - milestone and target date
 - user value or capability delivered by the milestone
 - owner and required resources
+- resource and capacity coverage across the relevant delivery and impact horizon, including planned changes in availability
 - Tech peer / TDR / tech solution validation status
 - horizontal dependencies and vertical support where relevant
 - status of prerequisites: solved / in progress / planned / contingent / outside team control
 - whether the prerequisite is in the funded scope
 - consequence if the prerequisite fails
+- whether the claimed effect remains achievable after a resource or capacity change, and what evidence supports that persistence
 
 Hard rules:
 
 - Roadmap dates do not prove delivery realism.
 - Progress claims must be separated from future commitments.
+- Point-in-time resource availability does not prove capacity for the full period being approved. The resource and support plan must cover the relevant horizon and show how delivery or impact changes when capacity changes.
+- A claimed effect cannot be carried forward unchanged after resources are reduced, reallocated, or end unless the document explains why the effect persists or recalculates the expected result.
 - A 1+ year roadmap should follow from discovery learning and dependency readiness, not only from ambition.
 - If the recommended TTM from initiative start to 1st Stream Review exceeds 3 months, the document should explain what was learned during the extra time and why the evidence remains current enough for the decision.
 
@@ -113,6 +119,7 @@ For each material business or financial claim capture:
 - Vertical support for horizontal cases
 - cost allocation logic and match to 3Sigma where relevant
 - financial summary, Increment / ToBe P&L, Kismet triggers, and resource ask where relevant
+- adoption ramp, effect persistence or decay, and downside assumptions over the claimed impact horizon
 - whether yellow / red traffic-light concerns are reflected in the main decision narrative
 
 Hard rules:
@@ -120,6 +127,7 @@ Hard rules:
 - A green traffic light is not proof by itself.
 - A yellow or red signal must be explained in the main approval logic, not buried in FAQ 6.
 - The traction model must be reconstructable from drivers and evidence, not only from topline aspiration.
+- Adoption, persistence, decay, and downside assumptions must be explicit enough to explain both the expected case and what happens when uptake or effect duration is weaker than planned.
 - Resource and cost assumptions must match the approved stream scope.
 
 ### 5. Consistency Matrix
@@ -134,8 +142,10 @@ Cross-check:
 - limited input-driver focus and the full traction model
 - roadmap and unresolved dependencies
 - traction model and resource ask
+- resource and capacity horizon, planned capacity changes, and persistence of the claimed effect
+- adoption, decay, and downside assumptions against the claimed impact horizon
 - traffic-light concerns and main narrative confidence
-- IC ask and proof boundary
+- header / formal request, effective strategy-resource-financial ask, and proof boundary
 
 Hard rule:
 
@@ -210,6 +220,7 @@ Review whether current progress and future roadmap are believable for the curren
 - MLP / near-term stream scope, end state, and out-of-scope areas are clear where relevant
 - roadmap for 1+ year is linked to user value / capabilities and output metrics
 - major milestones have prerequisites, owners, resources, and readiness checks
+- resource, support, and delivery capacity cover the relevant roadmap horizon, and the plan explains whether claimed effects persist after material capacity changes
 - Tech peer, TDR, tech solution validation, vertical support, and horizontal dependencies are reflected where relevant
 
 `PARTIAL` when the roadmap is directionally coherent but readiness, resources, or dependency status is incomplete.
@@ -221,6 +232,8 @@ Look for:
 - roadmap faster than dependency readiness allows
 - progress claims that are actually future commitments
 - resource ask not connected to milestones and output metrics
+- resources or support capacity shown only at one point while approval depends on coverage across a longer horizon
+- delivery or impact assumed to continue unchanged after resources are reduced, reallocated, or end
 - dependencies outside team control treated as solved
 - risk, legal, support, billing, analytics, or vertical constraints hidden outside the roadmap
 
@@ -262,6 +275,7 @@ Review whether the expected stream impact is reconstructable and financially coh
 - Analytics semaphore, Traction YTD deviation, InvCo / FBP validation, and vertical support are reflected in the decision logic
 - financial summary, Increment / ToBe case, cost allocation, Kismet triggers, and resource assumptions are consistent with the stream scope
 - model assumptions are classified by evidence strength
+- adoption ramp, effect persistence or decay, and decision-relevant downside assumptions are explicit and consistent with the resource horizon
 
 `PARTIAL` when the model is directionally plausible but important drivers or validations remain incomplete.
 
@@ -270,6 +284,7 @@ Review whether the expected stream impact is reconstructable and financially coh
 Look for:
 
 - unexplained step-changes in adoption, revenue, GMV, margin, cost, HC, or output metrics
+- impact carried across periods without an evidenced adoption ramp, persistence / decay logic, or downside case
 - large traction tables that do not identify the limited input drivers behind next-period impact
 - changed plan values without evidence-backed reasons
 - yellow / red validation signals absent from the main narrative
@@ -287,6 +302,7 @@ Review whether the document surfaces decision-critical risks and approvals.
 - traffic-light concerns are explained
 - T&S, support, moderation, marketing, billing, tax, legal, accounting, finance, HR, strategy, pricing, Tech, vertical, and domain-owner comments are reflected where relevant
 - mitigations are controls or committed actions with owners, not only awareness statements
+- rollback or stop conditions are tied to observable evidence and state what happens to the next SR path and resource decision when the stream underperforms
 
 `PARTIAL` when risks are visible but controls, owners, or decision consequences are incomplete.
 
@@ -297,6 +313,7 @@ Look for:
 - approvals recorded as dates without conditions or risk comments
 - external dependencies not classified
 - mitigations that only restate the risk
+- rollback or stop conditions missing, not measurable, or disconnected from the resource decision they are meant to constrain
 - yellow / red traffic-light issues hidden in FAQ 6
 - no scenario where the traction, roadmap, or stream thesis stops holding
 
@@ -323,6 +340,7 @@ Look for:
 - validated discovery evidence narrower than the requested approval
 - roadmap not aligned with traction model, resources, or traffic-light concerns
 - supporting sections materially more cautious than the executive summary
+- the header or formal request is narrower than the strategy, resource, capacity, or financial commitment the document effectively asks the committee to accept
 - next SR conditions not connected to remaining hypotheses
 
 ## Layer 2: 1st Stream Review Atomic Checks
@@ -332,6 +350,16 @@ Layer 2 is the closed-world diagnostic pass. Answer every atomic question as `YE
 Use SR 1 duplicate-family keys when useful: `stream-discovery-evidence`, `product-idea-validation`, `progress-vs-roadmap`, `resource-readiness`, `traffic-light-reflection`, `next-sr-conditions`, `scope-proof-boundary`, `plan-fact-reconciliation`, `stream-control-spine`, `driver-focus`, `vision-metric-coupling`, and `discovery-memory`.
 
 ### 1. Discovery framing and evidence
+
+Interpretation rules for the questions below:
+
+**Segment-map relation.** Evaluate the segment map across the whole document, not only whether one section names a segment. Different segmentation axes are acceptable when the document explicitly relates them and preserves the `segment -> pain -> behavior change -> product idea` mapping. Unexplained relabeling, nesting, or switching of axes is not an unconditional `YES`.
+
+**Current problem versus claimed impact.** Treat evidence that a current problem exists separately from evidence for the claimed scale of behavior change or impact. Current-state facts support the significance check only to the extent that the document shows a credible bridge from the observed problem to the effect used in the approval case; projected upside cannot supply that bridge by itself.
+
+**Prioritization.** A list of problem statements or directions is not prioritization by itself. Look for a decision-relevant basis such as relative confidence, expected contribution, or sequencing that explains what leads the stream and what is secondary.
+
+**Unknown timing.** The timing question remains evidence-bearing even when the initiative start date or learning timeline is absent. Use `PARTIAL` when timing and evidence freshness cannot be verified, without automatically treating that uncertainty as blocker-grade; use `NO` only when known timing or stale learning materially undermines the current decision.
 
 - Can the reviewer identify the target segment, pain, and intended behavior change without restoring missing logic by inference?
 - Can the discovery summary be connected to selected product ideas, focused input drivers, and the next SR ask as one concise stream-control story?
@@ -344,6 +372,12 @@ Use SR 1 duplicate-family keys when useful: `stream-discovery-evidence`, `produc
 - If the SR 1 timing exceeds the recommended 3 months from initiative start, does the document explain what was learned and why the evidence is still current?
 
 ### 2. Validated product ideas and solution logic
+
+Interpretation rules for the questions below:
+
+**Diverse value propositions.** When materially different value propositions are combined, separate journeys or local solution descriptions are not enough to establish one stream. The shared path must be credible at the product, resource, and financial levels for the approval being requested; require only the common elements that the effective scope actually depends on.
+
+**Target state versus current path.** A target-state CJM or future end-state diagram does not establish the current launch, rollout, or adoption path. When adoption or conversion is central, check whether the document makes the present path and transition to the target state observable enough to test the claim; do not require production evidence when the current approval scope is still discovery-only.
 
 - Is each product idea tied to a specific segment, pain, expected behavior change, and metric?
 - Does each central product idea use a validation method that actually answers the decision question?
@@ -379,6 +413,12 @@ Use SR 1 duplicate-family keys when useful: `stream-discovery-evidence`, `produc
 - Does FAQ 8 define next SR date, commitments, hypotheses to validate, and go / no-go criteria?
 
 ### 5. Traction, finance, and traffic lights
+
+Interpretation rules for the questions below:
+
+**Plan-value provenance.** Do not assume the plan-value change check is inactive merely because the document omits prior values or their provenance. If the reviewer cannot determine whether a value is an initial baseline or a revision, answer `PARTIAL` and state the provenance limitation. At a first SR, absence of a prior IC value is not a defect by itself when the document clearly identifies the current value as the initial baseline and shows its source or initiative-start basis.
+
+**Cross-vertical activation.** Activate the cross-vertical allocation and attribution check from the effective scope and dependencies, not only from the document header. Require allocation or attribution when shared vertical resources, costs, or effects materially support the approval case; when cross-vertical contribution does not affect resources, cost, or claimed impact, do not invent a distribution requirement.
 
 - Can expected impact be reconstructed from concrete drivers and evidence rather than topline assertion?
 - Do important model rows reconcile with formulas, baselines, driver decomposition, scenario rows, and horizons?
@@ -429,7 +469,7 @@ Check whether the committee is asked to approve a broad stream, platform, resour
 
 ### Resource-first approval
 
-Check whether the document asks for HC, budget, tech capacity, vertical effort, or support load before the product ideas and next SR validation gates justify those resources.
+Check whether the document asks for HC, budget, tech capacity, vertical effort, or support load before the product ideas and next SR validation gates justify those resources, whether capacity covers the relevant horizon, and whether the claimed effect is still supported after planned resource changes.
 
 ### Roadmap as evidence
 
@@ -441,4 +481,4 @@ Check whether yellow / red analytics, finance, tech, or vertical signals are par
 
 ### Next SR ambiguity
 
-Check whether the document avoids concrete next SR commitments, thresholds, go / no-go rules, or failure scenarios, leaving the next committee unable to judge whether SR 1 commitments were met.
+Check whether the document avoids concrete next SR commitments, thresholds, go / no-go rules, rollback or stop conditions, or failure scenarios, leaving the next committee unable to judge whether SR 1 commitments were met or whether resources should continue.

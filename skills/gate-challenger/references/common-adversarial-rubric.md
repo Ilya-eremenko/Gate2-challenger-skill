@@ -34,6 +34,10 @@ Check whether incentives of partners, sellers, buyers, vertical teams, finance, 
 
 Check whether support, billing, antifraud, disputes, cancellations, refunds, partner operations, finance reconciliation, legal approvals, maintenance burden, or incident response are underfunded, underspecified, or assumed away.
 
+### Live exposure vs control maturity
+
+Check whether customers, operations, money, data, safety, security, legal obligations, or fraud exposure are already live while the controls meant to contain the material risk are only planned, untested, lack owners, or lack evidence of effectiveness. Identify the release, rollback, or stop threshold that should bound further exposure; if the document provides none, test whether current continuation or expansion is safe to approve.
+
 ### Evidence laundering
 
 Check whether weak evidence such as a survey, fake-door test, optional flow, small pilot, stakeholder statement, benchmark, or directional operational signal is converted into a large base-case, LTM, or scaled financial effect.
