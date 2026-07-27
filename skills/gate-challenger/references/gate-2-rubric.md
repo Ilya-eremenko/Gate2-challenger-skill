@@ -4,6 +4,17 @@ Layer 1 is the broad, open-world review of the document as a decision narrative.
 
 Layer 1 is dimension-level only. No atomic questions in the output.
 
+## Mandatory stage checklist
+
+Before Layer 1 verdicting, check whether the uploaded Gate 2 document contains these mandatory items and return them in `stage_checklist`:
+
+- `gate2_hypothesis_results`: результаты проверки гипотез из Gate 1 без переигрывания формулировок
+- `gate2_mvp_or_target_product`: описание MVP/целевого продукта
+- `gate2_mockups_or_user_flow`: mockups или лучше видео пользовательского flow
+- `gate2_gate3_commitments`: commitments к Gate 3: сроки, expected performance, метрики
+
+Use `green` only when the document contains decision-grade evidence for the item. Use `red` when the item is absent, only planned, only present as a heading, or not substantiated.
+
 For each block:
 
 - assign `PASS`, `PARTIAL`, or `FAIL`

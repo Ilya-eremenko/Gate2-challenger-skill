@@ -18,6 +18,15 @@ Do not duplicate common checks here unless 2+ Stream Review changes the decision
 
 Do not require PMF, Gate 4, baseline transfer, or production-scale evidence unless the document claims that scope.
 
+## Mandatory stage checklist
+
+Before Layer 1 verdicting, check whether the uploaded 2+ Stream Review document contains these mandatory items and return them in `stage_checklist`:
+
+- `stream_review_2_plus_plan_fact_last_half_year`: план-факт за прошедшие полгода по запускам и метрикам
+- `stream_review_2_plus_next_half_year_plan`: план на следующие полгода по запускам и метрикам
+
+Use `green` only when the document contains decision-grade evidence for the item. Use `red` when the item is absent, only planned, only present as a heading, or not substantiated.
+
 ## 2+ Stream Review Decision Boundary
 
 Before scoring dimensions, identify exactly what the document asks the committee to approve:

@@ -206,12 +206,14 @@ Coordinator requirements:
 - pass the same normalized Markdown and same stage routing record to Layer 1, Layer 2, and Layer 3
 - use one canonical block taxonomy from the selected stage rubric
 - use one evidence standard across all stages
-- before any verdicting, build four mandatory internal reasoning artifacts:
+- before any verdicting, build five mandatory internal reasoning artifacts:
+  - `Stage checklist`: selected-stage mandatory checklist with `green` only when the document contains decision-grade evidence for the item and `red` when the item is absent, only planned, or not substantiated
   - `Hypothesis ledger`: hypothesis, why it matters, validation method, expected result / threshold, actual observed result, author conclusion, reviewer conclusion, status
   - `Evidence ladder`: classify central claims as hard evidence, experiment / pilot result, operational signal, customer feedback / survey / CSAT, benchmark / competitor reference, or narrative assumption
   - `Dependency map`: milestone, prerequisites, status of each prerequisite, control, funded-scope status, blocker severity
   - `Consistency matrix`: cross-check problem, segment, solution, validation, metrics, traction, roadmap, blockers, and legal / ops / risk constraints
 - when converting internal artifacts into Layer 1, Layer 2, and Layer 3 output:
+  - `Stage checklist` must preserve exactly the checklist items from the selected stage rubric, in that order
   - `Hypothesis ledger` must flag planning statements labeled as validation
   - `Evidence ladder` must preserve evidence-type proportionality, especially when surveys, CSAT, quotes, or benchmarks support central business claims
   - `Dependency map` must distinguish owner, funded scope, implemented control, and contingent external dependency

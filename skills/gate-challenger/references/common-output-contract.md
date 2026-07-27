@@ -61,6 +61,22 @@ Required stage fields:
 - `approval_scope`: what can be safely approved now
 - `not_approved_scope`: what remains outside the current approval or is not yet proven
 - `next_gate_conditions`: the concrete evidence, milestones, go / no-go rules, or controls required before the next gate
+- `stage_checklist`: selected-stage mandatory checklist rendered as red/green traffic-light items
+
+`stage_checklist` item format:
+
+- `id`: stable checklist id from the selected stage rubric
+- `label`: checklist text from the selected stage rubric
+- `status`: `green | red`
+- `evidence`: compact source proof when green, or the missing/insufficient proof when red
+
+Rules:
+
+- Include only the checklist for the detected document stage.
+- Preserve the selected stage checklist order exactly.
+- Use `green` only when the uploaded document contains decision-grade evidence for the item.
+- Use `red` when the item is absent, only planned, only named as a heading, or not substantiated by evidence.
+- Do not infer a green status from section titles, template placeholders, or future commitments without dates, metrics, owners, thresholds, or actual results where the item requires them.
 
 For 1st Stream Review, map these fields explicitly in the final synthesis:
 

@@ -16,6 +16,16 @@ This rubric is stage-specific. It should be combined with the shared evidence st
 
 Do not duplicate common checks here unless Gate 3 changes the decision test.
 
+## Mandatory stage checklist
+
+Before Layer 1 verdicting, check whether the uploaded Gate 3 document contains these mandatory items and return them in `stage_checklist`:
+
+- `gate3_working_mvp`: работающий MVP
+- `gate3_performance_vs_gate2_plan`: performance/results по сравнению с планом Gate 2
+- `gate3_pmf_criteria`: критерии product-market fit для следующего review
+
+Use `green` only when the document contains decision-grade evidence for the item. Use `red` when the item is absent, only planned, only present as a heading, or not substantiated.
+
 ## Gate 3 Decision Boundary
 
 Before scoring dimensions, identify exactly what the document asks the committee to approve:

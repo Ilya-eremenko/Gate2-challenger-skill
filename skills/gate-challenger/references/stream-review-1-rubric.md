@@ -16,6 +16,16 @@ This rubric is stage-specific. It should be combined with the shared evidence st
 
 Do not duplicate common checks here unless 1st Stream Review changes the decision test.
 
+## Mandatory stage checklist
+
+Before Layer 1 verdicting, check whether the uploaded 1st Stream Review document contains these mandatory items and return them in `stage_checklist`:
+
+- `stream_review_1_confirmed_problem`: подтвержденная проблематика
+- `stream_review_1_solution_validation`: подтверждение решения через количественники, прототипы или фейкдоры
+- `stream_review_1_half_year_plan_with_metrics`: план работ на полгода, включая метрики
+
+Use `green` only when the document contains decision-grade evidence for the item. Use `red` when the item is absent, only planned, only present as a heading, or not substantiated.
+
 ## 1st Stream Review Decision Boundary
 
 Before scoring dimensions, identify exactly what the document asks the committee to approve:
