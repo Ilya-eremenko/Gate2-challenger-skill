@@ -1,10 +1,10 @@
-# 2+ Stream Review Rubric
+# Progress Review Rubric
 
 ## Purpose
 
-Use this rubric after the coordinator determines that the input is a 2+ Stream Review / 2nd Stream Review document.
+Use this rubric after the coordinator determines that the input is a Progress Review document.
 
-2+ Stream Review answers a recurring stream-control decision question:
+Progress Review answers the same recurring stream-control decision question as 2+ Stream Review:
 
 ```text
 Did the team prove, with plan / fact results from the current period, that previous
@@ -14,21 +14,21 @@ from evidence, and the next quarterly or semiannual stream commitments are safe 
 
 This rubric is stage-specific. It should be combined with the shared evidence standard, consistency rules, verdict policy, output contract, synthesis contract, and adversarial review rules that are common to all gates.
 
-Do not duplicate common checks here unless 2+ Stream Review changes the decision test.
+Do not duplicate common checks here unless Progress Review changes the decision test.
 
 Do not require PMF, Gate 4, baseline transfer, or production-scale evidence unless the document claims that scope.
 
 ## Mandatory stage checklist
 
-Before Layer 1 verdicting, check whether the uploaded 2+ Stream Review document contains these mandatory items and return them in `stage_checklist`:
+Before Layer 1 verdicting, check whether the uploaded Progress Review document contains these mandatory items and return them in `stage_checklist`:
 
-- `stream_review_2_plus_plan_fact_last_half_year`: план-факт за прошедшие полгода по запускам и метрикам
-- `stream_review_2_plus_next_half_year_plan`: план на следующие полгода по запускам и метрикам
-- `stream_review_2_plus_stop_criteria`: stop-критерии - в каких случаях мы останавливаем работу над стримом
+- `progress_review_plan_fact_last_half_year`: план-факт за прошедшие полгода по запускам и метрикам
+- `progress_review_next_half_year_plan`: план на следующие полгода по запускам и метрикам
+- `progress_review_stop_criteria`: stop-критерии - в каких случаях мы останавливаем работу над стримом
 
 Use `green` only when the document contains decision-grade evidence for the item. Use `red` when the item is absent, only planned, only present as a heading, or not substantiated.
 
-## 2+ Stream Review Decision Boundary
+## Progress Review Decision Boundary
 
 Before scoring dimensions, identify exactly what the document asks the committee to approve:
 
@@ -40,15 +40,15 @@ Before scoring dimensions, identify exactly what the document asks the committee
 - validation commitments, go / no-go rules, and review cadence before the next SR
 - reuse of previous approvals because no significant context, expense, cost, product, or business decision changed
 
-Approval must be scoped. `APPROVE` for 2+ Stream Review does not automatically mean production scale, PMF, Gate 4 readiness, or baseline transfer. It means the current period's plan / fact results, updated model, and next-period commitments are safe within the approval scope shown by the document.
+Approval must be scoped. `APPROVE` for Progress Review does not automatically mean production scale, PMF, Gate 4 readiness, or baseline transfer. It means the current period's plan / fact results, updated model, and next-period commitments are safe within the approval scope shown by the document.
 
 The final synthesis should explicitly separate:
 
 - `approval_scope`: what stream continuation, backlog change, resource ask, financial monitoring, or roadmap step is safe to approve now
 - `not_approved_scope`: what remains unproven, broader than current plan / fact evidence, or outside this SR decision
-- `next_sr_conditions`: commitments, metric thresholds, go / no-go rules, controls, and review date required before the next SR
+- `next_review_conditions`: commitments, metric thresholds, go / no-go rules, controls, and review date required before the next review
 
-## 2+ Stream Review Internal Artifacts
+## Progress Review Internal Artifacts
 
 Build these artifacts internally before Layer 1, Layer 2, and Layer 3 verdicting.
 
@@ -160,7 +160,7 @@ Hard rule:
 - If target, fact, and conclusion disagree, reduce the consistency judgment even when each section is individually well written.
 - Strong local detail does not compensate for a missing stream-control spine. If the reviewer cannot reconstruct the high-level product logic, the limited input drivers being managed, the current plan / fact result, and the next-period commitments as one chain, reduce the consistency judgment.
 
-## Layer 1: 2+ Stream Review Decision-Critical Dimensions
+## Layer 1: Progress Review Decision-Critical Dimensions
 
 Layer 1 is the broad decision narrative review. Assign each dimension `PASS`, `PARTIAL`, or `FAIL`.
 
@@ -339,7 +339,7 @@ Look for:
 - roadmap not aligned with traction model, resources, or traffic-light concerns
 - next SR commitments not connected to remaining hypotheses and current deviations
 
-## Layer 2: 2+ Stream Review Atomic Checks
+## Layer 2: Progress Review Atomic Checks
 
 Layer 2 is the closed-world diagnostic pass. Answer every atomic question as `YES`, `PARTIAL`, or `NO`, then aggregate back to Atomic checks block statuses using the common verdict policy.
 
@@ -442,7 +442,7 @@ Use 2+ SR duplicate-family keys when useful: `previous-sr-continuity`, `plan-fac
 - Are next SR commitments tied to the remaining hypotheses, current deviations, and weakest proof points?
 - Does the document avoid using current-period directional signals as proof for broader scale, PMF, Gate 4 readiness, or baseline transfer unless those claims are explicitly evidenced?
 
-## 2+ Stream Review Adversarial Lenses
+## Progress Review Adversarial Lenses
 
 Layer 3 should use these as stage-specific pressure prompts in addition to the common adversarial rubric. They are examples, not mandatory labels.
 
@@ -482,9 +482,9 @@ Check whether the document avoids concrete next SR commitments, thresholds, owne
 
 Check whether rollout or another material exposure is already live while the controls needed to contain safety, security, fraud, legal, financial, or operational risk are only planned, untested, lack owners, or lack effectiveness and release / stop thresholds. Connect the finding to what can safely continue now and what expansion must wait for validated controls.
 
-## Final 2+ Stream Review Verdict Calibration
+## Final Progress Review Verdict Calibration
 
-Use the shared verdict policy, then apply these 2+ SR-specific checks.
+Use the shared verdict policy, then apply these Progress Review-specific checks.
 
 Assign `APPROVE` only when:
 

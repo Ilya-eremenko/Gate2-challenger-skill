@@ -1,16 +1,16 @@
 ---
 name: gate-challenger
-description: Use when reviewing a Gate 2, 1st Stream Review, 2+ Stream Review, or Gate 3 initiative defense document, product defense memo, investment committee package, or approval package and you need a fast stage-aware approval decision with blocker-focused reasoning.
+description: Use when reviewing a Gate 2, 1st Stream Review, 2+ Stream Review, Progress Review, or Gate 3 initiative defense document, product defense memo, investment committee package, or approval package and you need a fast stage-aware approval decision with blocker-focused reasoning.
 ---
 
 # Gate Challenger
 
 ## Overview
 
-Review a Gate 2, 1st Stream Review, 2+ Stream Review, or Gate 3 defense document in six passes:
+Review a Gate 2, 1st Stream Review, 2+ Stream Review, Progress Review, or Gate 3 defense document in six passes:
 
 0. Coordinator: input normalization and preflight
-1. Stage detector: determine `document_stage: GATE_2 | STREAM_REVIEW_1 | STREAM_REVIEW_2_PLUS | GATE_3 | UNKNOWN | FRAGMENT`
+1. Stage detector: determine `document_stage: GATE_2 | STREAM_REVIEW_1 | STREAM_REVIEW_2_PLUS | PROGRESS_REVIEW | GATE_3 | UNKNOWN | FRAGMENT`
 2. Layer 1 worker: stage-specific decision-critical block review
 3. Layer 2 worker: stage-specific atomic weak-link review
 4. Layer 3 worker: adversarial business and committee-risk review using common and stage-specific lenses
@@ -57,7 +57,7 @@ Use any calibration example only for failure-mode discovery.
 
 Use this skill when the user asks for any of the following:
 
-- review a Gate 2, 1st Stream Review, 2+ Stream Review, or Gate 3 product defense
+- review a Gate 2, 1st Stream Review, 2+ Stream Review, Progress Review, or Gate 3 product defense
 - decide approve / reject / need evidence
 - assess initiative defense quality quickly
 - find only the blockers in a strategy or defense document
@@ -186,13 +186,13 @@ Coordinator requirements:
 - determine `full document` vs `fragment` exactly once
 - Read [stage-detection.md](references/stage-detection.md) and determine the stage exactly once before loading a stage-specific rubric
 - emit this internal routing record before any layer work:
-  - `document_stage: GATE_2 | STREAM_REVIEW_1 | STREAM_REVIEW_2_PLUS | GATE_3 | UNKNOWN | FRAGMENT`
+  - `document_stage: GATE_2 | STREAM_REVIEW_1 | STREAM_REVIEW_2_PLUS | PROGRESS_REVIEW | GATE_3 | UNKNOWN | FRAGMENT`
   - `stage_confidence: HIGH | MEDIUM | LOW`
   - `stage_evidence`
   - `stage_conflicts`
-  - `routing_decision: gate_2_rubric | stream_review_1_rubric | stream_review_2_plus_rubric | gate_3_rubric | ask_user | fragment_review`
+  - `routing_decision: gate_2_rubric | stream_review_1_rubric | stream_review_2_plus_rubric | progress_review_rubric | gate_3_rubric | ask_user | fragment_review`
 - Do not start Layer 1, Layer 2, or Layer 3 until the stage is detected
-- if routing is ambiguous, ask the user whether to run Gate 2, 1st Stream Review, 2+ Stream Review, or Gate 3 rubric instead of guessing
+- if routing is ambiguous, ask the user whether to run Gate 2, 1st Stream Review, 2+ Stream Review, Progress Review, or Gate 3 rubric instead of guessing
 - Context loading discipline:
   - Do not read, preload, summarize, or skim any stage-specific rubric before the routing record is complete
   - After routing, read exactly one selected stage-specific rubric
@@ -202,6 +202,7 @@ Coordinator requirements:
   - Gate 2 -> [gate-2-rubric.md](references/gate-2-rubric.md)
   - 1st Stream Review -> [stream-review-1-rubric.md](references/stream-review-1-rubric.md)
   - 2+ Stream Review -> [stream-review-2-plus-rubric.md](references/stream-review-2-plus-rubric.md)
+  - Progress Review -> [progress-review-rubric.md](references/progress-review-rubric.md)
   - Gate 3 -> [gate-3-rubric.md](references/gate-3-rubric.md)
 - pass the same normalized Markdown and same stage routing record to Layer 1, Layer 2, and Layer 3
 - use one canonical block taxonomy from the selected stage rubric
@@ -236,6 +237,7 @@ Important:
 - for Gate 2, the Gate 1 hypotheses presence check is part of Layer 1
 - for 1st Stream Review, the discovery results and validated product ideas chain is part of Layer 1
 - for 2+ Stream Review, previous SR commitments, plan / fact results, backlog updates, traction deltas, and next SR commitments are part of Layer 1
+- for Progress Review, previous commitments, plan / fact results, backlog updates, traction deltas, stop criteria, and next-period commitments are part of Layer 1
 - for Gate 3, the Gate 2 commitment and MLP progress chain is part of Layer 1
 - do not require an explicitly titled prior-gate section if the hypothesis / commitment chain is reconstructable elsewhere
 - Layer 1 dimension statuses are `PASS`, `PARTIAL`, or `FAIL`

@@ -5,13 +5,13 @@ Use this before loading any stage-specific rubric.
 Return this internal routing record:
 
 ```text
-document_stage: GATE_2 | STREAM_REVIEW_1 | STREAM_REVIEW_2_PLUS | GATE_3 | UNKNOWN | FRAGMENT
+document_stage: GATE_2 | STREAM_REVIEW_1 | STREAM_REVIEW_2_PLUS | PROGRESS_REVIEW | GATE_3 | UNKNOWN | FRAGMENT
 stage_confidence: HIGH | MEDIUM | LOW
 stage_evidence:
 - <section/table/phrase proving the stage>
 stage_conflicts:
 - <signals that point to another stage, if any>
-routing_decision: gate_2_rubric | stream_review_1_rubric | stream_review_2_plus_rubric | gate_3_rubric | ask_user | fragment_review
+routing_decision: gate_2_rubric | stream_review_1_rubric | stream_review_2_plus_rubric | progress_review_rubric | gate_3_rubric | ask_user | fragment_review
 ```
 
 ## Gate 2 Signals
@@ -59,6 +59,21 @@ Prefer `STREAM_REVIEW_2_PLUS` when the body of the document shows several of the
 
 Do not require PMF, Gate 4, baseline transfer, customer-experience ledgers, or production-scale evidence for `STREAM_REVIEW_2_PLUS` unless the document itself claims that scope.
 
+## Progress Review Signals
+
+Prefer `PROGRESS_REVIEW` when the document explicitly identifies the current stage as `Progress Review` and its body focuses on recurring stream control, including several of these signals:
+
+- title contains `Progress Review`
+- current review is explicitly named `Progress Review`
+- the document compares plan / fact for launches and metrics over the previous half-year
+- the document defines launches and metrics for the next half-year
+- previous commitments, backlog changes, traction deltas, resource assumptions, or stop criteria are reviewed
+- the decision asks whether the stream should continue, change scope, or stop based on current-period evidence
+
+The Progress Review analytical rubric is intentionally identical to the 2+ Stream Review rubric. Keep `PROGRESS_REVIEW` as a separate stage so its checklist IDs, routing record, and displayed stage remain explicit.
+
+Do not require PMF, Gate 4, baseline transfer, customer-experience ledgers, or production-scale evidence for `PROGRESS_REVIEW` unless the document itself claims that scope.
+
 ## Gate 3 Signals
 
 Prefer `GATE_3` when the body of the document shows several of these signals:
@@ -76,6 +91,7 @@ Prefer `GATE_3` when the body of the document shows several of these signals:
 
 Stage separation rule:
 
+- If the title or explicit current-stage field says `Progress Review`, prefer `PROGRESS_REVIEW` over `STREAM_REVIEW_2_PLUS`; shared plan / fact content does not erase the explicit stage name.
 - If the title and body point to `Stream review 2+`, prefer `STREAM_REVIEW_2_PLUS` over `GATE_3` when the central ask is plan / fact review, backlog update, traction model update, resources, or next SR commitments.
 - Prefer `GATE_3` only when the body asks the Gate 3 question: whether production / MLP facts justify continuation, scale, PMF, Gate 4 readiness, or baseline transfer.
 - Template instruction examples mentioning Gate 3 thresholds do not override the current review title, current / previous review table, FAQ wording, or actual traffic-light thresholds.
@@ -103,8 +119,8 @@ Ambiguity rules:
 
 - If title and body disagree, prefer body evidence and report the conflict.
 - If the current review and next-gate FAQ disagree, report the conflict.
-- If Gate 2, 1st Stream Review, 2+ Stream Review, and Gate 3 signals overlap but the requested decision is unclear, use `routing_decision: ask_user`.
-- If stage remains uncertain after normalization, do not guess. Ask the user whether to run Gate 2, 1st Stream Review, 2+ Stream Review, or Gate 3 rubric.
+- If Gate 2, 1st Stream Review, 2+ Stream Review, Progress Review, and Gate 3 signals overlap but the requested decision is unclear, use `routing_decision: ask_user`.
+- If stage remains uncertain after normalization, do not guess. Ask the user whether to run Gate 2, 1st Stream Review, 2+ Stream Review, Progress Review, or Gate 3 rubric.
 
 ## Routing Decision
 
@@ -113,6 +129,7 @@ Use:
 - `gate_2_rubric` only when `document_stage: GATE_2`
 - `stream_review_1_rubric` only when `document_stage: STREAM_REVIEW_1`
 - `stream_review_2_plus_rubric` only when `document_stage: STREAM_REVIEW_2_PLUS`
+- `progress_review_rubric` only when `document_stage: PROGRESS_REVIEW`
 - `gate_3_rubric` only when `document_stage: GATE_3`
 - `fragment_review` when the input is incomplete and a full verdict would be unsafe
 - `ask_user` when the document is not fragmentary but the stage remains ambiguous

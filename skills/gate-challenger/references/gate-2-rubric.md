@@ -8,10 +8,13 @@ Layer 1 is dimension-level only. No atomic questions in the output.
 
 Before Layer 1 verdicting, check whether the uploaded Gate 2 document contains these mandatory items and return them in `stage_checklist`:
 
-- `gate2_hypothesis_results`: результаты проверки гипотез из Gate 1 без переигрывания формулировок
+- `gate2_unique_value_proposition`: уникальное товарное предложение (УТП) - в чем представленный продукт лучше имеющихся на рынке и почему
+- `gate2_hypothesis_results`: результаты проверки гипотез из Gate 1
 - `gate2_mvp_or_target_product`: описание MVP/целевого продукта
-- `gate2_mockups_or_user_flow`: mockups или лучше видео пользовательского flow
+- `gate2_input_output_metric_link`: есть ли связь Input/Output метрик продукта с самой сутью продукта и его УТП
+- `gate2_mockups_or_user_flow`: mockups или видео пользовательского flow
 - `gate2_gate3_commitments`: commitments к Gate 3: сроки, expected performance, метрики
+- `gate2_stop_criteria`: stop-критерии - в каких случаях мы останавливаем работу над продуктом
 
 Use `green` only when the document contains decision-grade evidence for the item. Use `red` when the item is absent, only planned, only present as a heading, or not substantiated.
 

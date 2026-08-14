@@ -12,24 +12,38 @@ OUTPUT_CONTRACT_PATH = SKILL_DIR / "references" / "common-output-contract.md"
 VERDICT_POLICY_PATH = SKILL_DIR / "references" / "common-verdict-policy.md"
 SYNTHESIS_CONTRACT_PATH = SKILL_DIR / "references" / "common-synthesis-contract.md"
 GATE_3_RUBRIC_PATH = SKILL_DIR / "references" / "gate-3-rubric.md"
+GATE_1_RUBRIC_PATH = SKILL_DIR / "references" / "gate-1-rubric.md"
 STREAM_REVIEW_1_RUBRIC_PATH = SKILL_DIR / "references" / "stream-review-1-rubric.md"
 STREAM_REVIEW_2_PLUS_RUBRIC_PATH = (
     SKILL_DIR / "references" / "stream-review-2-plus-rubric.md"
 )
+PROGRESS_REVIEW_RUBRIC_PATH = SKILL_DIR / "references" / "progress-review-rubric.md"
 STAGE_DETECTION_PATH = SKILL_DIR / "references" / "stage-detection.md"
 
 
 class Gate2ChallengerInstructionTests(unittest.TestCase):
+    def test_gate_1_rubric_exists_but_is_not_routed(self):
+        gate_1_text = GATE_1_RUBRIC_PATH.read_text(encoding="utf-8")
+        skill_text = SKILL_PATH.read_text(encoding="utf-8")
+        detection_text = STAGE_DETECTION_PATH.read_text(encoding="utf-8")
+
+        self.assertIn("Draft only. This rubric is intentionally inactive.", gate_1_text)
+        self.assertNotIn("GATE_1 |", skill_text)
+        self.assertNotIn("gate_1_rubric", skill_text)
+        self.assertNotIn("GATE_1 |", detection_text)
+        self.assertNotIn("gate_1_rubric", detection_text)
+
     def test_skill_is_renamed_to_gate_challenger_and_routes_by_stage(self):
         text = SKILL_PATH.read_text(encoding="utf-8")
 
         required_phrases = [
             "name: gate-challenger",
-            "document_stage: GATE_2 | STREAM_REVIEW_1 | STREAM_REVIEW_2_PLUS | GATE_3 | UNKNOWN | FRAGMENT",
+            "document_stage: GATE_2 | STREAM_REVIEW_1 | STREAM_REVIEW_2_PLUS | PROGRESS_REVIEW | GATE_3 | UNKNOWN | FRAGMENT",
             "Read [stage-detection.md](references/stage-detection.md)",
             "Gate 2 -> [gate-2-rubric.md](references/gate-2-rubric.md)",
             "1st Stream Review -> [stream-review-1-rubric.md](references/stream-review-1-rubric.md)",
             "2+ Stream Review -> [stream-review-2-plus-rubric.md](references/stream-review-2-plus-rubric.md)",
+            "Progress Review -> [progress-review-rubric.md](references/progress-review-rubric.md)",
             "Gate 3 -> [gate-3-rubric.md](references/gate-3-rubric.md)",
             "Do not start Layer 1, Layer 2, or Layer 3 until the stage is detected",
         ]
@@ -51,16 +65,18 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, text)
 
-    def test_stage_detection_has_gate_2_sr1_gate_3_and_ambiguity_rules(self):
+    def test_stage_detection_has_all_supported_stages_and_ambiguity_rules(self):
         text = STAGE_DETECTION_PATH.read_text(encoding="utf-8")
 
         required_phrases = [
-            "document_stage: GATE_2 | STREAM_REVIEW_1 | STREAM_REVIEW_2_PLUS | GATE_3 | UNKNOWN | FRAGMENT",
-            "routing_decision: gate_2_rubric | stream_review_1_rubric | stream_review_2_plus_rubric | gate_3_rubric | ask_user | fragment_review",
+            "document_stage: GATE_2 | STREAM_REVIEW_1 | STREAM_REVIEW_2_PLUS | PROGRESS_REVIEW | GATE_3 | UNKNOWN | FRAGMENT",
+            "routing_decision: gate_2_rubric | stream_review_1_rubric | stream_review_2_plus_rubric | progress_review_rubric | gate_3_rubric | ask_user | fragment_review",
             "FAQ asks for estimated date and success criteria for Gate 3",
             "title contains `Stream review 1` or `1st Stream Review`",
             "FAQ asks for the success criteria and estimated date for the next SR",
             "title contains `Stream review 2+`, `2nd Stream Review`, or `SR 2+`",
+            "title contains `Progress Review`",
+            "prefer `PROGRESS_REVIEW` over `STREAM_REVIEW_2_PLUS`",
             "Green <=10%, Yellow:10%-20%, Red > 20%",
             "FAQ asks about progress on last commitments / MLP",
             "Green <= 10%, Yellow 10%-30%, Red > 30%",
@@ -69,6 +85,52 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
         for phrase in required_phrases:
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, text)
+
+    def test_mandatory_stage_checklists_match_new_summary(self):
+        expected_lines = {
+            LAYER_1_RUBRIC_PATH: [
+                "- `gate2_unique_value_proposition`: уникальное товарное предложение (УТП) - в чем представленный продукт лучше имеющихся на рынке и почему",
+                "- `gate2_hypothesis_results`: результаты проверки гипотез из Gate 1",
+                "- `gate2_mvp_or_target_product`: описание MVP/целевого продукта",
+                "- `gate2_input_output_metric_link`: есть ли связь Input/Output метрик продукта с самой сутью продукта и его УТП",
+                "- `gate2_mockups_or_user_flow`: mockups или видео пользовательского flow",
+                "- `gate2_gate3_commitments`: commitments к Gate 3: сроки, expected performance, метрики",
+                "- `gate2_stop_criteria`: stop-критерии - в каких случаях мы останавливаем работу над продуктом",
+            ],
+            GATE_3_RUBRIC_PATH: [
+                "- `gate3_working_mvp`: работающий MVP",
+                "- `gate3_mvp_hypothesis_confirmation`: подтверждает ли MVP гипотезу решения: уточнили ли мы core-assumptions трекшн-модели",
+                "- `gate3_performance_vs_gate2_plan`: performance/results по сравнению с планом Gate 2",
+                "- `gate3_pmf_criteria`: критерии product-market fit для следующего review",
+                "- `gate3_stop_criteria`: stop-критерии - в каких случаях мы останавливаем работу над продуктом",
+            ],
+            STREAM_REVIEW_1_RUBRIC_PATH: [
+                "- `stream_review_1_confirmed_problem`: подтвержденная проблематика",
+                "- `stream_review_1_input_output_metric_link`: есть ли связь Input/Output метрик продукта с обозначенной проблематикой",
+                "- `stream_review_1_solution_validation`: подтверждение решения через количественники, прототипы или фейкдоры",
+                "- `stream_review_1_half_year_plan_with_metrics`: план работ на полгода, включая метрики",
+                "- `stream_review_1_stop_criteria`: stop-критерии - в каких случаях мы останавливаем работу над стримом",
+            ],
+            STREAM_REVIEW_2_PLUS_RUBRIC_PATH: [
+                "- `stream_review_2_plus_plan_fact_last_half_year`: план-факт за прошедшие полгода по запускам и метрикам",
+                "- `stream_review_2_plus_next_half_year_plan`: план на следующие полгода по запускам и метрикам",
+                "- `stream_review_2_plus_stop_criteria`: stop-критерии - в каких случаях мы останавливаем работу над стримом",
+            ],
+            PROGRESS_REVIEW_RUBRIC_PATH: [
+                "- `progress_review_plan_fact_last_half_year`: план-факт за прошедшие полгода по запускам и метрикам",
+                "- `progress_review_next_half_year_plan`: план на следующие полгода по запускам и метрикам",
+                "- `progress_review_stop_criteria`: stop-критерии - в каких случаях мы останавливаем работу над стримом",
+            ],
+        }
+
+        for path, expected in expected_lines.items():
+            with self.subTest(path=path.name):
+                text = path.read_text(encoding="utf-8")
+                checklist = text.split("## Mandatory stage checklist", 1)[1].split(
+                    "Use `green` only", 1
+                )[0]
+                actual = [line for line in checklist.splitlines() if line.startswith("- `")]
+                self.assertEqual(expected, actual)
 
     def test_stream_review_2_plus_rubric_contains_stage_specific_contract(self):
         text = STREAM_REVIEW_2_PLUS_RUBRIC_PATH.read_text(encoding="utf-8")
@@ -88,6 +150,24 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
             "driver-focus",
             "vision-metric-coupling",
             "Plan-Fact Memory Break",
+        ]
+        for phrase in required_phrases:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, text)
+
+    def test_progress_review_rubric_contains_separate_stage_contract(self):
+        text = PROGRESS_REVIEW_RUBRIC_PATH.read_text(encoding="utf-8")
+
+        required_phrases = [
+            "Use this rubric after the coordinator determines that the input is a Progress Review document.",
+            "Progress Review answers the same recurring stream-control decision question as 2+ Stream Review",
+            "Previous SR Commitment Ledger",
+            "Plan-Fact And Traction Deviation Ledger",
+            "Backlog And Roadmap Update Ledger",
+            "Layer 1: Progress Review Decision-Critical Dimensions",
+            "Layer 2: Progress Review Atomic Checks",
+            "`next_review_conditions`",
+            "Final Progress Review Verdict Calibration",
         ]
         for phrase in required_phrases:
             with self.subTest(phrase=phrase):
@@ -148,6 +228,8 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
             "next_gate_conditions",
             "For 1st Stream Review",
             "`next_sr_conditions`",
+            "For Progress Review",
+            "`next_review_conditions`",
             "For Gate 3",
             "`gate_4_conditions`",
         ]
