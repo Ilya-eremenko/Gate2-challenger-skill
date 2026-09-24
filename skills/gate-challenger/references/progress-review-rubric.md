@@ -14,9 +14,9 @@ Progress Review answers a recurring Progress Review control decision question:
 
 This rubric is stage-specific. It should be combined with the shared evidence standard, consistency rules, verdict policy, output contract, synthesis contract, and adversarial review rules that are common to all gates.
 
-Do not duplicate common checks here unless Progress Review changes the decision test.
+Do not duplicate common checks here unless Progress Review (PR) changes the decision test.
 
-Do not require PMF, Gate 4, baseline transfer, or production-scale evidence unless the document claims that scope.
+Do not require Product Market Fit (PMF), Gate 4, baseline transfer, or production-scale evidence unless the document claims that scope.
 
 ## Mandatory stage checklist
 
@@ -34,12 +34,12 @@ Use `red` when the item is absent completely.
 
 Before scoring dimensions, identify exactly what the document asks the committee to approve:
 
-- continuation of the stream for the next quarter or half-year
+- continuation of the product for the next quarter or half-year
 - no new approval, only financial monitoring
 - additional resources, budget, HC, support, or cross-functional capacity
 - updated backlog or roadmap scope
 - updated traction model, financial summary, cost allocation, or Kismet treatment
-- validation commitments, go / no-go rules, and review cadence before the next SR
+- validation commitments, go / no-go rules, and review cadence before the next Progress Review
 - reuse of previous approvals because no significant context, expense, cost, product, or business decision changed
 
 Approval must be scoped. `APPROVE` for Progress Review does not automatically mean production scale, PMF, Gate 4 readiness, or baseline transfer. It means the current period's plan / fact results, updated model, and next-period commitments are safe within the approval scope shown by the document.
@@ -54,9 +54,9 @@ The final synthesis should explicitly separate:
 
 Build these artifacts internally before Layer 1, Layer 2, and Layer 3 verdicting.
 
-### 1. Previous SR Commitment Ledger
+### 1. Previous PR Commitment Ledger
 
-For every decision-critical previous SR commitment capture:
+For every decision-critical previous PR commitment capture:
 
 - original commitment
 - owner, expected date, expected result, and threshold where available
@@ -64,12 +64,12 @@ For every decision-critical previous SR commitment capture:
 - actual result or current fact
 - reason for miss or change
 - whether the change is justified by new facts or only by narrative reframing
-- consequence for backlog, roadmap, traction, resources, risks, and next SR
+- consequence for backlog, roadmap, traction, resources, risks, and next PR
 
 Hard rules:
 
 - A changed commitment is not a weakness by itself. It becomes a weakness when the change is unexplained, hides a proof gap, or the document still asks approval as if the commitment was delivered.
-- A previous SR summary is not enough; the decision-critical commitments must be traceable.
+- A previous PR summary is not enough; the decision-critical commitments must be traceable.
 
 ### 2. Plan-Fact And Traction Deviation Ledger
 
@@ -81,13 +81,13 @@ For each material plan / fact claim capture:
 - reason for deviation or plan change
 - whether the explanation is evidence-backed, directional, or only asserted
 - change format when applicable: `metric / previous plan / current plan / reason for change`
-- decision consequence for continuation, resources, financial monitoring, or next SR conditions
+- decision consequence for continuation, resources, financial monitoring, or next PR conditions
 
 Hard rules:
 
 - A green traffic light is not proof by itself.
 - Yellow or red signals must be reflected in the main approval logic, not only in FAQ 6.
-- The actual 2+ SR traction thresholds are Green <=10%, Yellow:10%-20%, Red > 20%; Gate 3 example thresholds in template instructions do not determine the stage or the 2+ SR result.
+- The actual PR traction thresholds are Green <=10%, Yellow:10%-20%, Red > 20%; Gate 3 example thresholds in template instructions do not determine the stage or the PR result.
 
 ### 3. Backlog And Roadmap Update Ledger
 
@@ -95,7 +95,7 @@ For every material backlog or roadmap update capture:
 
 - product idea, segment, need, feature, timeline, and expected impact on metrics
 - current progress by the moment
-- what changed versus the previous SR
+- what changed versus the previous PR
 - plan / fact evidence or learning that caused the change
 - Tech peer alignment status
 - dependencies, owner, resource need, and readiness check
@@ -121,32 +121,31 @@ For each material resource, cost, finance, or approval claim capture:
 
 Hard rules:
 
-- FAQ 7 may be skipped only when previous approvals remain valid and there are no significant changes in context, expenses, costs, product decisions, or business decisions.
+- Appendix 5 may be skipped only when previous approvals remain valid and there are no significant changes in context, expenses, costs, product decisions, or business decisions.
 - Previous approval carry-forward is unsafe when the approval context changed but caveats are not revalidated.
 
-### 5. Next SR Commitment And Cadence Ledger
+### 5. Next PR Commitment And Cadence Ledger
 
 For each next-period commitment capture:
 
-- next SR or financial monitoring date
-- quarterly or semiannual cadence
+- next PR or financial monitoring date
+- semiannual cadence
 - commitment, hypothesis, owner, metric, threshold, and expected result
 - go / no-go rule or escalation trigger
-- monitoring control before the next SR
-- whether low-risk status and lack of significant deviation justify semiannual cadence
+- monitoring control before the next PR
 
 Hard rules:
 
-- Next SR commitments must be concrete enough for the next committee to judge plan / fact closure.
-- Semiannual cadence requires low-risk status and no material deviation; otherwise the document should define closer monitoring or quarterly review.
+- Next PR commitments must be concrete enough for the next committee to judge plan / fact closure.
+- Semiannual cadence requires applies for all the initiatives - low or high risks.
 
 ### 6. Consistency Matrix
 
 Cross-check:
 
 - stream-control spine: product vision -> limited input drivers -> current plan / fact -> learning -> next-period commitments
-- previous SR -> commitments -> plan / fact -> learning -> backlog -> roadmap -> metrics -> traction -> resources -> risks -> next SR
-- previous SR promise and current status
+- previous PR -> commitments -> plan / fact -> learning -> backlog -> roadmap -> metrics -> traction -> resources -> risks -> next PR
+- previous PR promise and current status
 - current fact and author conclusion
 - backlog update and plan / fact evidence
 - roadmap and unresolved dependencies
@@ -155,7 +154,7 @@ Cross-check:
 - traction changes and finance / resource ask
 - traffic-light concerns and main narrative confidence
 - skipped approvals and actual context changes
-- next SR commitments and weakest open proof points
+- next PR commitments and weakest open proof points
 
 Hard rule:
 
