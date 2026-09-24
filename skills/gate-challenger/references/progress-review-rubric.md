@@ -4,12 +4,12 @@
 
 Use this rubric after the coordinator determines that the input is a Progress Review document.
 
-Progress Review answers the same recurring stream-control decision question as 2+ Stream Review:
+Progress Review answers a recurring Progress Review control decision question:
 
 ```text
-Did the team prove, with plan / fact results from the current period, that previous
-SR commitments were closed or honestly revised, backlog and traction changes follow
-from evidence, and the next quarterly or semiannual stream commitments are safe to approve?
+- Team proved with plan / fact results from the current period, that previous Gate 3/Progress Review commitments were closed or honestly revised
+- Backlog and traction changes follow from evidence
+- The next quarterly or semiannual stream commitments are safe to approve?
 ```
 
 This rubric is stage-specific. It should be combined with the shared evidence standard, consistency rules, verdict policy, output contract, synthesis contract, and adversarial review rules that are common to all gates.
@@ -26,7 +26,9 @@ Before Layer 1 verdicting, check whether the uploaded Progress Review document c
 - `progress_review_next_half_year_plan`: план на следующие полгода по запускам и метрикам
 - `progress_review_stop_criteria`: stop-критерии - в каких случаях мы останавливаем работу над стримом
 
-Use `green` only when the document contains decision-grade evidence for the item. Use `red` when the item is absent, only planned, only present as a heading, or not substantiated.
+Use `green` only when the document contains decision-grade evidence for the item. 
+Use `yellow` when the item is planned or present as a heading, or nit substantiated.
+Use `red` when the item is absent completely.
 
 ## Progress Review Decision Boundary
 
