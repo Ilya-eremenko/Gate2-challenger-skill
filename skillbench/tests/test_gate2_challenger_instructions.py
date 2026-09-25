@@ -132,6 +132,15 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
                 actual = [line for line in checklist.splitlines() if line.startswith("- `")]
                 self.assertEqual(expected, actual)
 
+    def test_shared_stage_checklist_preserves_three_rubric_statuses(self):
+        skill_text = SKILL_PATH.read_text(encoding="utf-8")
+        contract_text = OUTPUT_CONTRACT_PATH.read_text(encoding="utf-8")
+
+        self.assertIn("`green | yellow | red`", contract_text)
+        self.assertIn("Use `yellow` when the item is partially supported", contract_text)
+        self.assertIn("Use `red` only when the item is absent completely", contract_text)
+        self.assertIn("`yellow` for partial or insufficient support", skill_text)
+
     def test_stream_review_2_plus_rubric_contains_stage_specific_contract(self):
         text = STREAM_REVIEW_2_PLUS_RUBRIC_PATH.read_text(encoding="utf-8")
 
@@ -160,8 +169,8 @@ class Gate2ChallengerInstructionTests(unittest.TestCase):
 
         required_phrases = [
             "Use this rubric after the coordinator determines that the input is a Progress Review document.",
-            "Progress Review answers the same recurring stream-control decision question as 2+ Stream Review",
-            "Previous SR Commitment Ledger",
+            "Progress Review answers a recurring Progress Review control decision question",
+            "Previous PR Commitment Ledger",
             "Plan-Fact And Traction Deviation Ledger",
             "Backlog And Roadmap Update Ledger",
             "Layer 1: Progress Review Decision-Critical Dimensions",
