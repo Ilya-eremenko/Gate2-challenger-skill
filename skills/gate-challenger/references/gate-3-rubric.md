@@ -26,7 +26,9 @@ Before Layer 1 verdicting, check whether the uploaded Gate 3 document contains t
 - `gate3_pmf_criteria`: критерии product-market fit для следующего review
 - `gate3_stop_criteria`: stop-критерии - в каких случаях мы останавливаем работу над продуктом
 
-Use `green` only when the document contains decision-grade evidence for the item. Use `red` when the item is absent, only planned, only present as a heading, or not substantiated.
+Use `green` only when the document contains decision-grade evidence for the item. 
+Use `yellow` when the item is planned or present as a heading, or not substantiated. 
+Use `red` when the item is absent completely.
 
 ## Gate 3 Decision Boundary
 
