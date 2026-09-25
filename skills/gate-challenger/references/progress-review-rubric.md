@@ -47,7 +47,7 @@ Approval must be scoped. `APPROVE` for Progress Review does not automatically me
 The final synthesis should explicitly separate:
 
 - `approval_scope`: what stream continuation, backlog change, resource ask, financial monitoring, or roadmap step is safe to approve now
-- `not_approved_scope`: what remains unproven, broader than current plan / fact evidence, or outside this SR decision
+- `not_approved_scope`: what remains unproven, broader than current plan / fact evidence, or outside this PR decision
 - `next_review_conditions`: commitments, metric thresholds, go / no-go rules, controls, and review date required before the next review
 
 ## Progress Review Internal Artifacts
@@ -172,38 +172,37 @@ For each dimension:
 - cite concrete source sections, values, dates, thresholds, traffic lights, commitments, and contradictions
 - write human-facing issue explanations in Russian by default
 
-### 1. Previous SR Continuity And Current Decision Boundary
+### 1. Previous PR or Gate 3 Continuity And Current Decision Boundary
 
-Review whether the current SR can be safely connected to the previous SR decision.
+Review whether the current PR can be safely connected to the previous PR or Gate 3 decision.
 
 `PASS` when:
 
-- previous SR commitments, expected results, and current IC request are reconstructable
+- previous PR commitments, expected results, and current IC request are reconstructable
 - the current decision boundary is explicit
 - continuation, additional request, no-request monitoring, resource ask, and future evidence are not blurred
-- changes since the previous SR are explained by facts
+- changes since the previous PR are explained by facts
 
 `PARTIAL` when the chain is mostly recoverable but fragmented, or the ask is clear while some boundary conditions are implied.
 
-`FAIL` when the reviewer cannot determine what was promised at the previous SR, what was achieved now, or what exactly is being approved.
+`FAIL` when the reviewer cannot determine what was promised at the previous PR, what was achieved now, or what exactly is being approved.
 
 Look for:
 
-- previous SR summarized without commitment-level traceability
+- previous PR summarized without commitment-level traceability
 - current ask broader than current plan / fact evidence
 - additional resources requested before deviations and learning justify them
-- semiannual next review implied without low-risk and no-deviation support
 
 ### 2. Plan-Fact Results And Commitment Closure
 
-Review whether the team closed or honestly revised previous SR commitments.
+Review whether the team closed or honestly revised previous PR or Gate 3 commitments.
 
 `PASS` when:
 
 - every decision-critical commitment is tracked as delivered, partially delivered, missed, or changed
 - plan and fact are compared for target input and output metrics
 - deviations have evidence-backed reasons
-- missed or changed items are reflected in backlog, traction, resources, risks, or next SR conditions
+- missed or changed items are reflected in backlog, traction, resources, risks, or next PR conditions
 
 `PARTIAL` when plan / fact evidence is directionally useful but some commitments, thresholds, or reasons remain incomplete.
 
@@ -235,15 +234,15 @@ Review whether the updated backlog and 1+ year roadmap follow from current-perio
 
 Look for:
 
-- no explanation of what changed versus previous SR
+- no explanation of what changed versus previous PR
 - detailed product vision without a clear helicopter view of the stream's product bet, target segment, and value mechanism
 - roadmap faster than dependency readiness allows
 - features not tied to user need or metric impact
 - Tech peer alignment missing where roadmap feasibility depends on it
 
-### 4. Success Criteria, Metrics, And Next SR Commitments
+### 4. Success Criteria, Metrics, And Next PR Commitments
 
-Review whether current success criteria and next SR commitments are measurable enough for accountability.
+Review whether current success criteria and next PR commitments are measurable enough for accountability.
 
 `PASS` when:
 
@@ -252,9 +251,9 @@ Review whether current success criteria and next SR commitments are measurable e
 - actual results are compared with thresholds
 - a limited set of decision-driving input metrics is identified and tied to the product vision
 - input metrics explain output metrics
-- FAQ 8 defines next SR date, commitments, hypotheses, owners, thresholds, and go / no-go rules
+- FAQ 9 defines next PR date, commitments, hypotheses, owners, thresholds, and go / no-go rules
 
-`PARTIAL` when metrics are measurable but only partially tied to the stream decision, product vision, or next SR accountability.
+`PARTIAL` when metrics are measurable but only partially tied to the stream decision, product vision, or next PR accountability.
 
 `FAIL` when success criteria measure activity, roadmap completion, or operational readiness while the document claims product value, business impact, or plan closure.
 
@@ -264,19 +263,19 @@ Look for:
 - too many traction drivers or input metrics without a small set of levers the team will actually manage next period
 - input metrics that are measurable but not clearly connected to the product vision or output metric
 - plan statements counted as evidence
-- next SR commitments too vague to be checked later
+- next PR commitments too vague to be checked later
 - no escalation trigger when deviation is material
 
 ### 5. Traction, Finance, And Resource Credibility
 
-Review whether the updated stream impact and finance case are credible after current-period facts.
+Review whether the updated product impact and finance case are credible after current-period facts.
 
 `PASS` when:
 
 - planned traction can be reconstructed from input metrics, output metrics, baselines, horizons, formulas, and drivers
 - the traction model separates the few decision-driving input metrics from supporting diagnostics or appendix detail
 - current plan / fact, Traction YTD deviation, traffic-light color, Analytics semaphore, InvCo / FBP validation, and Vertical support are reflected in the decision logic
-- financial summary, Increment / ToBe case, cost allocation, Kismet triggers, and resources are consistent with the approved stream scope
+- financial summary, Increment / ToBe case, cost allocation, Kismet triggers, and resources are consistent with the approved product scope
 - changed planned values use `metric / previous plan / current plan / reason for change`
 
 `PARTIAL` when the model is directionally plausible but important drivers, deltas, validations, or resource assumptions remain incomplete.
@@ -288,7 +287,7 @@ Look for:
 - unexplained step-changes in adoption, revenue, GMV, margin, costs, HC, support load, or output metrics
 - large traction tables that do not identify the limited input drivers behind next-period impact
 - yellow / red validation signals absent from the main narrative
-- cost allocation not linked to future impact or 3Sigma
+- cost allocation not linked to future impact or 3sigma
 - resource ask not connected to next-period commitments
 
 ### 6. Risks, Validations, And Approval Carry-Forward
@@ -298,14 +297,14 @@ Review whether risks and cross-functional approvals make the next stream period 
 `PASS` when:
 
 - killer assumptions and traffic-light concerns are explicit
-- yellow / red lines are explained in FAQ 6 and main decision logic
-- FAQ 7 approvals are refreshed when material context changed, or skipped only when the template's skip condition is satisfied
+- yellow / red lines are explained in FAQ 7 and main decision logic
+- Appendix 5 approvals are refreshed when material context changed, or skipped only when the template's skip condition is satisfied
 - T&S, support, moderation, marketing, billing, tax, legal, accounting, finance, HR, strategy, pricing, Tech, vertical, and domain-owner comments are reflected where relevant
 - mitigations are controls or committed actions with owners, not only awareness statements
 
 `PARTIAL` when risks are visible but controls, owners, approval caveats, or decision consequences are incomplete.
 
-`FAIL` when unresolved legal, operational, financial, technical, or stakeholder constraints materially affect the next-period approval but are not integrated into the stream decision.
+`FAIL` when unresolved legal, operational, financial, technical, or stakeholder constraints materially affect the next-period approval but are not integrated into the product decision.
 
 Look for:
 
@@ -318,33 +317,33 @@ Look for:
 
 ### 7. Consistency And Evidence Proportionality
 
-Review whether the full 2+ SR story is coherent:
+Review whether the full PR story is coherent:
 
 ```text
 product vision -> limited input drivers -> current plan / fact -> learning -> next-period commitments
-previous SR -> commitments -> plan / fact -> learning -> backlog -> roadmap -> metrics -> traction -> resources -> risks -> next SR
+previous PR or Gate 3 -> commitments -> plan / fact -> learning -> backlog -> roadmap -> metrics -> traction -> resources -> risks -> next PR
 ```
 
-`PASS` when the stream-control spine and the full SR chain can be restored without major inference and the IC ask is aligned with the proof boundary.
+`PASS` when the product-control spine and the full PR chain can be restored without major inference and the IC ask is aligned with the proof boundary.
 
 `PARTIAL` when the story is mostly coherent but has weakly linked or fragmented pieces.
 
-`FAIL` when different sections defend different stream scopes, plan / fact conclusions, resource needs, economics, readiness levels, or next SR commitments.
+`FAIL` when different sections defend different stream scopes, plan / fact conclusions, resource needs, economics, readiness levels, or next PR commitments.
 
 Look for:
 
 - detailed local answers without a compact, committee-readable helicopter view
-- executive summary more confident than FAQ 3, FAQ 6, FAQ 7, finance, or validation comments
+- executive summary more confident than FAQ 4, FAQ 7, Appendix 5, finance, or validation comments
 - product vision, input metrics, and next-period work describing different theories of impact
 - plan / fact evidence narrower than requested approval
 - roadmap not aligned with traction model, resources, or traffic-light concerns
-- next SR commitments not connected to remaining hypotheses and current deviations
+- next PR commitments not connected to remaining hypotheses and current deviations
 
 ## Layer 2: Progress Review Atomic Checks
 
 Layer 2 is the closed-world diagnostic pass. Answer every atomic question as `YES`, `PARTIAL`, or `NO`, then aggregate back to Atomic checks block statuses using the common verdict policy.
 
-Use 2+ SR duplicate-family keys when useful: `previous-sr-continuity`, `plan-fact-reconciliation`, `commitment-closure`, `backlog-learning-link`, `roadmap-readiness`, `traction-delta`, `traffic-light-reflection`, `finance-resource-fit`, `approval-carry-forward`, `next-sr-conditions`, `cadence-justification`, `scope-proof-boundary`, `stream-control-spine`, `driver-focus`, `vision-metric-coupling`, and `plan-fact-memory`.
+Use PR duplicate-family keys when useful: `previous-pr-continuity`, `plan-fact-reconciliation`, `commitment-closure`, `backlog-learning-link`, `roadmap-readiness`, `traction-delta`, `traffic-light-reflection`, `finance-resource-fit`, `approval-carry-forward`, `next-pr-conditions`, `cadence-justification`, `scope-proof-boundary`, `product-control-spine`, `driver-focus`, `vision-metric-coupling`, and `plan-fact-memory`.
 
 ### Interpretation rules for independent decision tests
 
@@ -352,36 +351,34 @@ Use 2+ SR duplicate-family keys when useful: `previous-sr-continuity`, `plan-fac
 - Judge the clarity of the IC request category separately from consistency of the resource quantities or delivery capacity behind that request.
 - Judge whether the document identifies a limited set of managed input drivers separately from whether the impact formulas, baselines, and horizons are reconstructable.
 - Judge whether the stated traffic-light thresholds are correct separately from whether those thresholds are correctly applied to plan / fact data.
-- Judge stability of the current problem definition across the current document separately from traceability to the previous SR.
+- Judge stability of the current problem definition across the current document separately from traceability to the previous PR or Gate 3.
 - Use `PARTIAL` when the decision-relevant structure or evidence is present but incomplete, weakly linked, or only partly reconciled. Preserve the concrete evidence that is present; do not upgrade the gap to `NO` merely because an adjacent test fails.
 - Use `NO` when the capability or evidence required by this atomic question is absent, directly contradicted, or otherwise fails the question's own decision test. Do not use `NO` as a generic severity label for a partially evidenced answer.
-- For conditional questions, use `YES` / `No material issue` only when the triggering condition is clearly not present. If a roughly half-year interval is stated or implied, treat the semiannual-cadence check as triggered even when the cadence label is ambiguous; if low-risk status or absence of material deviation is not proven, preserve that gap as `PARTIAL` or `NO` according to the direct evidence.
+- For conditional questions, use `YES` / `No material issue` only when the triggering condition is clearly not present. If a roughly half-year interval is stated or implied, treat the semiannual-cadence check as triggered even when the cadence label is ambiguous.
 
-### 1. Previous SR Continuity And Current Decision Boundary
+### 1. Previous PR Continuity And Current Decision Boundary
 
-- Are previous SR commitments, expected results, owners, and dates explicitly stated or reconstructable?
-- Can the current-period summary be connected to the previous SR and the next-period ask as one concise stream-control story?
+- Are previous PR commitments, expected results, owners, and dates explicitly stated or reconstructable?
+- Can the current-period summary be connected to the previous PR and the next-period ask as one concise product-control story?
 - Is the current IC request clear: new request, additional request, no request, or financial monitoring?
 - Does the document separate what can be approved now from what remains future evidence?
-- Are changes since the previous SR justified by facts rather than narrative reframing?
-- Is the next review cadence clear: quarterly or semiannual?
-- If semiannual cadence is proposed, does the document show low-risk status and no material deviation?
+- Are changes since the previous PR justified by facts rather than narrative reframing?
 - If the current ask is broader than previous scope, is the approval boundary explicit?
 
 ### 2. Plan-Fact Results And Commitment Closure
 
-- Are all decision-critical previous SR commitments tracked as delivered, partially delivered, missed, or changed?
+- Are all decision-critical previous PR commitments tracked as delivered, partially delivered, missed, or changed?
 - Are plan and fact shown for the target input and output metrics of the current period?
-- Does the plan / fact view preserve continuity of metrics and work from the previous SR into the next SR plan?
+- Does the plan / fact view preserve continuity of metrics and work from the previous PR or Gate 3 into the next PR plan?
 - Are deviation calculations, periods, baselines, and thresholds clear enough to verify the traffic-light color?
 - Are missed or changed commitments explained with specific decision-relevant reasons?
-- Are deviations reflected in backlog, roadmap, traction, resources, risks, or next SR commitments?
+- Are deviations reflected in backlog, roadmap, traction, resources, risks, or next PR commitments?
 - Are current progress claims separated from future roadmap commitments?
 - Are author conclusions consistent with actual plan / fact results?
 
 ### 3. Product Learning, Backlog, And Roadmap Update
 
-- Is it clear what changed in stream idea, target segments, user needs, features, or value proposition since the previous SR?
+- Is it clear what changed in product idea, target segments, user needs, features, or value proposition since the previous PR or Gate 3?
 - Can the reviewer reconstruct the high-level product vision before reading detailed feature-level plans?
 - Is each material backlog change tied to plan / fact evidence, customer learning, operational learning, or validated hypotheses?
 - Does each central roadmap item identify user segment, need, feature, timeline, and impact on metrics?
@@ -391,9 +388,9 @@ Use 2+ SR duplicate-family keys when useful: `previous-sr-continuity`, `plan-fac
 - Are Tech peer alignment, owners, resources, and readiness checks shown where relevant?
 - Are unresolved dependencies classified as solved, in progress, planned, contingent, or outside team control?
 
-### 4. Success Criteria, Metrics, And Next SR Commitments
+### 4. Success Criteria, Metrics, And Next PR Commitments
 
-- Is each success criterion measurable and tied to the actual stream decision question?
+- Is each success criterion measurable and tied to the actual product decision question?
 - Do success criteria prove the stated user pain, product value, or business impact rather than only activity or delivery progress?
 - Is there an explicit threshold where the document claims validation or plan closure?
 - When a threshold exists, do actual results meet it?
@@ -401,7 +398,7 @@ Use 2+ SR duplicate-family keys when useful: `previous-sr-continuity`, `plan-fac
 - Are input metrics, output metrics, baselines, horizons, and plan / fact reconciled?
 - Does the document identify a limited set of key input metrics or drivers the team will manage next period?
 - Are the chosen input metrics explicitly connected to the product vision and output metric?
-- Does FAQ 8 define next SR date, commitments, hypotheses to validate, owners, thresholds, and go / no-go criteria?
+- Does FAQ 9 define next PR date, commitments, hypotheses to validate, owners, thresholds, and go / no-go criteria?
 - Are monitoring triggers or escalation rules defined when deviation or risk is material?
 
 ### 5. Traction, Finance, And Resources
@@ -410,37 +407,37 @@ Use 2+ SR duplicate-family keys when useful: `previous-sr-continuity`, `plan-fac
 - Do important model rows reconcile with formulas, baselines, driver decomposition, scenario rows, and horizons?
 - Does the traction model explain why the selected input drivers, not the full metric catalog, are the levers for next-period impact?
 - Are current-period plan / fact values and Traction YTD deviation reconciled with the traffic-light color?
-- Does the document apply 2+ SR thresholds: Green <=10%, Yellow:10%-20%, Red > 20%?
-- Are Analytics semaphore, InvCo / FBP validation, Tech solution validation, and Vertical support conclusions reflected in the main narrative?
-- If traffic-light lines are yellow or red, are details, comments, links, and decision consequences provided in FAQ 6 and the main case?
-- If planned values changed since the previous IC or previous SR, are previous value, current value, and reason for change provided?
+- Does the document apply PR thresholds: Green <=10%, Yellow:10%-20%, Red > 20%?
+- Are Analytics semaphore, InvCo / FBP validation, and Vertical support conclusions (for horizontal initiatives only) reflected in the main narrative?
+- If traffic-light lines are yellow or red, are details, comments, links, and decision consequences provided in FAQ 7 and the main case?
+- If planned values changed since the previous IC or previous PR, are previous value, current value, and reason for change provided?
 - Does cost allocation across Verticals follow future impact and match the 3Sigma card where relevant?
-- Are financial summary, Increment / ToBe case, Kismet triggers, and resources consistent with the approved stream scope?
+- Are financial summary, Increment / ToBe case, Kismet triggers, and resources consistent with the approved product scope?
 - Is the resource ask tied to next-period commitments and delivery capacity?
 - Is the financial case resilient to downside scenarios already visible in the document?
 
 ### 6. Risks, Validations, And Approval Carry-Forward
 
 - Are killer assumptions explicit, and are validated assumptions separated from remaining hypotheses?
-- Are yellow or red traffic-light concerns reflected in FAQ 6 and the main approval logic?
+- Are yellow or red traffic-light concerns reflected in Appendix 5 and the main approval logic?
 - Do mitigations control the risk rather than merely acknowledge it?
 - Are owners, dates, and committed actions present for material risk mitigations?
-- Are FAQ 7 approvals refreshed when context, expenses, costs, product decisions, or business decisions changed?
-- If FAQ 7 is skipped, does the document prove previous approvals remain valid under the template skip condition?
+- Are Appendix 5 approvals refreshed when context, expenses, costs, product decisions, or business decisions changed?
+- If Appendix 5 is skipped, does the document prove previous approvals remain valid under the template skip condition?
 - Are alignment / approval comments interpreted, rather than treated as green just because a date exists?
 - Are Legal, Tax, Accounting, Billing, Support, Moderation, T&S, Antifraud, Marketing, HR, Strategy, Pricing, Tech peer, Vertical, and domain-owner caveats included where relevant?
 - Are external dependencies classified as secured, in progress, contingent, or outside team control?
-- Does the document define a scenario in which the traction model, roadmap, or stream thesis stops holding together?
+- Does the document define a scenario in which the traction model, roadmap, or product thesis stops holding together?
 
 ### 7. Consistency And Evidence Proportionality
 
-- Can the reviewer restore a continuous chain of `previous SR -> commitments -> plan / fact -> learning -> backlog -> roadmap -> metrics -> traction -> resources -> risks -> next SR` without major logical jumps?
-- Can the reviewer also restore the stream-control spine of `product vision -> limited input drivers -> current plan / fact -> learning -> next-period commitments` without major logical jumps?
-- Does the stream problem definition stay stable from FAQ 1 through FAQ 2, traction, finance, and risks?
+- Can the reviewer restore a continuous chain of `previous PR -> commitments -> plan / fact -> learning -> backlog -> roadmap -> metrics -> traction -> resources -> risks -> next PR` without major logical jumps?
+- Can the reviewer also restore the product-control spine of `product vision -> limited input drivers -> current plan / fact -> learning -> next-period commitments` without major logical jumps?
+- Does the product problem definition stay stable from FAQ 1 through FAQ 2, traction, finance, and risks?
 - Do target, fact, and conclusion stay aligned across sections?
-- Do ambition, metrics, roadmap, resources, and risks describe the same stream scope?
+- Do ambition, metrics, roadmap, resources, and risks describe the same product scope?
 - Are supporting-section cautions visible in the main decision narrative rather than ignored?
-- Are next SR commitments tied to the remaining hypotheses, current deviations, and weakest proof points?
+- Are next PR commitments tied to the remaining hypotheses, current deviations, and weakest proof points?
 - Does the document avoid using current-period directional signals as proof for broader scale, PMF, Gate 4 readiness, or baseline transfer unless those claims are explicitly evidenced?
 
 ## Progress Review Adversarial Lenses
@@ -453,31 +450,27 @@ Check whether missed commitments, underperformance, delayed roadmap items, or ch
 
 ### Plan-Fact Memory Break
 
-Check whether plan / fact from the previous period, changed input metrics, changed roadmap work, and next SR commitments are presented as separate facts rather than one continuous accountability chain.
+Check whether plan / fact from the previous period, changed input metrics, changed roadmap work, and next PR commitments are presented as separate facts rather than one continuous accountability chain.
 
 ### Backlog Momentum Bias
 
-Check whether the stream continues the same roadmap or adds features despite facts that should narrow, stop, reprioritize, or revalidate the backlog.
+Check whether the product continues the same roadmap or adds features despite facts that should narrow, stop, reprioritize, or revalidate the backlog.
 
 ### Traffic-Light Insulation
 
-Check whether yellow / red analytics, traction, finance, tech, or vertical signals are parked in traffic-light sections but do not change the approval request, resources, or next SR conditions.
+Check whether yellow / red analytics, traction, finance, tech, or vertical signals are parked in traffic-light sections but do not change the approval request, resources, or next PR conditions.
 
 ### Approval Carry-Forward Risk
 
 Check whether previous approvals are reused despite material changes in context, expenses, costs, product decisions, business decisions, roadmap, risk profile, or cost allocation.
 
-### Cadence Gaming
-
-Check whether the document asks for a semiannual review cycle while deviations, unresolved dependencies, or high-risk assumptions call for quarterly review or closer monitoring.
-
 ### Resource-First Continuation
 
 Check whether the document asks for additional resources, HC, budget, or cross-functional capacity before current plan / fact closure and next-period commitments justify that ask.
 
-### Next SR Ambiguity
+### Next PR Ambiguity
 
-Check whether the document avoids concrete next SR commitments, thresholds, owners, go / no-go rules, or failure scenarios, leaving the next committee unable to judge whether this SR's commitments were met.
+Check whether the document avoids concrete next PR commitments, thresholds, owners, go / no-go rules, or failure scenarios, leaving the next committee unable to judge whether this PR's commitments were met.
 
 ### Live Exposure vs Control Maturity
 
@@ -489,30 +482,30 @@ Use the shared verdict policy, then apply these Progress Review-specific checks.
 
 Assign `APPROVE` only when:
 
-- the 2+ SR document is complete
-- previous SR commitments are reconstructable
+- the PR document is complete
+- previous PR or Gate 3 commitments are reconstructable
 - plan / fact results support the requested approval scope
-- the stream-control spine is reconstructable: product vision, focused input drivers, current plan / fact, learning, and next-period commitments fit together
-- deviations and changed planned values are evidence-backed and reflected in backlog, traction, resources, risks, and next SR conditions
 - input metrics are focused enough for next-period management and explicitly connected to the product vision and output metric
+- the product-control spine is reconstructable: product vision, focused input drivers, current plan / fact, learning, and next-period commitments fit together
+- deviations and changed planned values are evidence-backed and reflected in backlog, traction, resources, risks, and next PR conditions
 - traction, finance, resources, and traffic lights are internally consistent
 - approval carry-forward is valid or refreshed where material context changed
-- next SR commitments and cadence are concrete enough for accountability
+- next PR commitments and cadence are concrete enough for accountability
 - no blocker-grade contradiction or unresolved foundational dependency remains
 
 Assign `NEED_EVIDENCE` when:
 
-- the stream remains directionally viable
+- the product remains directionally viable
 - the requested approval scope can be narrowed safely
-- one or two proof points remain open, such as plan / fact reconciliation, driver focus, vision-metric coupling, traffic-light explanation, resource support, approval carry-forward, or next SR conditions
-- the missing evidence is concrete and plausibly obtainable before the next SR or before additional resources are consumed
+- one or two proof points remain open, such as plan / fact reconciliation, driver focus, vision-metric coupling, traffic-light explanation, resource support, approval carry-forward, or next PR conditions
+- the missing evidence is concrete and plausibly obtainable before the next PR or before additional resources are consumed
 
 Assign `REJECT` when:
 
-- previous SR commitments were materially missed or rewritten without evidence
+- previous PR commitments were materially missed or rewritten without evidence
 - plan / fact results do not support the requested continuation, resources, or financial monitoring
 - the document cannot connect product vision, input drivers, plan / fact results, and next-period commitments well enough to define what continuation means
 - traction or financial case is structurally unsupported or contradicts current-period facts
 - roadmap depends on unresolved foundational blockers
 - cross-functional, legal, finance, support, or technical constraints make the requested next-period approval unsafe
-- next SR commitments are too vague to make the next review accountable
+- next PR commitments are too vague to make the next review accountable
