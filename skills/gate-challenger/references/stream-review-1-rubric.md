@@ -26,7 +26,9 @@ Before Layer 1 verdicting, check whether the uploaded 1st Stream Review document
 - `stream_review_1_half_year_plan_with_metrics`: план работ на полгода, включая метрики
 - `stream_review_1_stop_criteria`: stop-критерии - в каких случаях мы останавливаем работу над стримом
 
-Use `green` only when the document contains decision-grade evidence for the item. Use `red` when the item is absent, only planned, only present as a heading, or not substantiated.
+Use `green` only when the document contains decision-grade evidence for the item. 
+Use `yellow` when the item is planned or present as a heading, or not substantiated. 
+Use `red` when the item is absent completely.
 
 ## 1st Stream Review Decision Boundary
 
