@@ -13,7 +13,7 @@ Before Layer 1 verdicting, check whether the uploaded Gate 2 document contains t
 - `gate2_mvp_or_target_product`: описание MVP/целевого продукта
 - `gate2_input_output_metric_link`: есть ли связь Input/Output метрик продукта с самой сутью продукта и его УТП
 - `gate2_mockups_or_user_flow`: mockups или видео пользовательского flow
-- `gate2_gate3_commitments`: commitments к Gate 3: сроки, expected performance, метрики
+- `gate2_gate3_commitments`: commitments к Gate 3: список функционала и метрики
 - `gate2_stop_criteria`: stop-критерии - в каких случаях мы останавливаем работу над продуктом
 
 Use `green` only when the document contains decision-grade evidence for the item. 
