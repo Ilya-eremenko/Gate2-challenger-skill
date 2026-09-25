@@ -208,7 +208,7 @@ Coordinator requirements:
 - use one canonical block taxonomy from the selected stage rubric
 - use one evidence standard across all stages
 - before any verdicting, build five mandatory internal reasoning artifacts:
-  - `Stage checklist`: selected-stage mandatory checklist with `green` only when the document contains decision-grade evidence for the item and `red` when the item is absent, only planned, or not substantiated
+  - `Stage checklist`: selected-stage mandatory checklist with `green` for decision-grade evidence, `yellow` for partial or insufficient support (including only planned or named items), and `red` only when the item is absent completely
   - `Hypothesis ledger`: hypothesis, why it matters, validation method, expected result / threshold, actual observed result, author conclusion, reviewer conclusion, status
   - `Evidence ladder`: classify central claims as hard evidence, experiment / pilot result, operational signal, customer feedback / survey / CSAT, benchmark / competitor reference, or narrative assumption
   - `Dependency map`: milestone, prerequisites, status of each prerequisite, control, funded-scope status, blocker severity
