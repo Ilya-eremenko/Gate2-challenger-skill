@@ -70,7 +70,7 @@ Prefer `PROGRESS_REVIEW` when the document explicitly identifies the current sta
 - previous commitments, backlog changes, traction deltas, resource assumptions, or stop criteria are reviewed
 - the decision asks whether the stream should continue, change scope, or stop based on current-period evidence
 
-The Progress Review analytical rubric is intentionally identical to the 2+ Stream Review rubric. Keep `PROGRESS_REVIEW` as a separate stage so its checklist IDs, routing record, and displayed stage remain explicit.
+Progress Review has its own analytical rubric. Its checklist overlaps with 2+ Stream Review, but keep `PROGRESS_REVIEW` as a separate stage so its checks, routing record, and displayed stage remain explicit.
 
 Do not require PMF, Gate 4, baseline transfer, customer-experience ledgers, or production-scale evidence for `PROGRESS_REVIEW` unless the document itself claims that scope.
 
